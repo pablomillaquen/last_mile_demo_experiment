@@ -1,0 +1,25 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env
+.env.local
+
+# Node
+node_modules/
+.next/
+
+# PHP
+/vendor/
+
+# Docker
+pgdata/
+
+# Logs
+*.log
