@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
-Active plan: specs/001-last-mile-operation/plan.md
+Active spec: specs/002-route-measurement/spec.md
 Data model: specs/001-last-mile-operation/data-model.md
 API contract: specs/001-last-mile-operation/contracts/api.md
 
