@@ -43,6 +43,10 @@ export interface Route {
   route_date: string;
   notes: string | null;
   route_packages_count?: number;
+  total_distance_km?: number;
+  avg_distance_per_delivery_km?: number;
+  estimated_time?: string;
+  deliveries_count?: number;
   route_packages?: RoutePackage[];
   created_at: string;
   updated_at: string;
@@ -73,6 +77,18 @@ export const routesApi = {
     request<RoutePackage>(`/routes/${id}/assign`, { method: 'POST', body: JSON.stringify({ package_id: packageId, sequence }) }),
   unassign: (id: number, packageId: number) =>
     request<void>(`/routes/${id}/unassign`, { method: 'POST', body: JSON.stringify({ package_id: packageId }) }),
+};
+
+export interface Settings {
+  warehouse_lat: string;
+  warehouse_lng: string;
+  average_speed_kmh: string;
+}
+
+export const settingsApi = {
+  get: () => request<Settings>('/settings'),
+  update: (data: Partial<Settings>) =>
+    request<Settings>('/settings', { method: 'PUT', body: JSON.stringify(data) }),
 };
 
 export const packagesApi = {

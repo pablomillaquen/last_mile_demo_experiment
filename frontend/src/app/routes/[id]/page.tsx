@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { routesApi, Route as RouteType, packagesApi, Package } from '@/lib/api';
+import { routesApi, Route as RouteType, packagesApi, Package, RoutePackage } from '@/lib/api';
+import RouteSequenceTable from '@/components/RouteSequenceTable';
 
 export default function RouteDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -33,7 +34,8 @@ export default function RouteDetailPage() {
 
   const assignedIds = new Set((route.route_packages || []).map((rp) => rp.package_id));
   const unassigned = packages.filter((p) => !p.assigned);
-  const assigned = (route.route_packages || []).map((rp) => rp.package).filter(Boolean) as Package[];
+  const routePackages = (route.route_packages || []).filter((rp) => rp.package) as RoutePackage[];
+  const assigned = routePackages.map((rp) => rp.package as Package);
 
   return (
     <div>
@@ -44,35 +46,31 @@ export default function RouteDetailPage() {
           <p>Fecha: {route.route_date?.split('T')[0].split('-').reverse().join('/')}</p>
           <p>Paquetes asignados: {route.route_packages_count ?? 0}</p>
           {route.notes && <p>Notas: {route.notes}</p>}
+          {route.total_distance_km !== undefined && (
+            <div className="mt-3 pt-3 border-t space-y-1">
+              <p>Distancia total: <strong>{route.total_distance_km} km</strong></p>
+              <p>Distancia promedio por entrega: <strong>{route.avg_distance_per_delivery_km} km</strong></p>
+              <p>Tiempo estimado: <strong>{route.estimated_time}</strong></p>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded border shadow-sm p-4">
           <h2 className="text-lg font-semibold mb-3">Paquetes Asignados</h2>
-          {assigned.length === 0 ? (
+          {routePackages.length === 0 ? (
             <p className="text-sm text-gray-400">No hay paquetes asignados</p>
           ) : (
-            <ul className="space-y-2">
-              {assigned.map((pkg) => (
-                <li key={pkg.id} className="flex items-center justify-between text-sm border-b pb-2">
-                  <span>{pkg.tracking_number} - {pkg.recipient_name}</span>
-                  <button
-                    onClick={async () => {
-                      try {
-                        await routesApi.unassign(route.id, pkg.id);
-                        fetchRoute();
-                      } catch (err) {
-                        alert('Error al desasignar');
-                      }
-                    }}
-                    className="text-red-600 hover:underline text-xs"
-                  >
-                    Desasignar
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <RouteSequenceTable
+              routePackages={routePackages}
+              onUnassign={async (pkgId) => {
+                try {
+                  await routesApi.unassign(route.id, pkgId);
+                  fetchRoute();
+                } catch { alert('Error al desasignar'); }
+              }}
+            />
           )}
         </div>
 

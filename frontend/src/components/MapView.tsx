@@ -1,13 +1,23 @@
 'use client';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import { Package } from '@/lib/api';
+import { settingsApi, Settings } from '@/lib/api';
+import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
+
+interface PolylineData {
+  positions: [number, number][];
+  color: string;
+  name: string;
+}
 
 interface MapViewProps {
   packages: Package[];
   getRouteColor?: (pkg: Package) => string;
+  getSequence?: (pkg: Package) => number | null;
+  polylines?: PolylineData[];
 }
 
 // Fix default marker icons
@@ -22,21 +32,39 @@ const DefaultIcon = L.icon({
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-function createColoredIcon(color: string) {
+const warehouseIcon = L.divIcon({
+  className: 'warehouse-marker',
+  html: `<div style="background:#2563eb;width:24px;height:24px;border-radius:4px;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:bold;">B</div>`,
+  iconSize: [24, 24],
+  iconAnchor: [12, 12],
+  popupAnchor: [0, -14],
+});
+
+function createColoredIcon(color: string, sequence?: number) {
+  const label = sequence !== undefined ? `<span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-size:10px;font-weight:bold;text-shadow:0 0 2px rgba(0,0,0,0.8);">${sequence}</span>` : '';
   return L.divIcon({
     className: 'custom-marker',
-    html: `<div style="background:${color};width:16px;height:16px;border-radius:50%;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);"></div>`,
-    iconSize: [16, 16],
-    iconAnchor: [8, 8],
-    popupAnchor: [0, -10],
+    html: `<div style="background:${color};width:20px;height:20px;border-radius:50%;border:2px solid white;box-shadow:0 1px 3px rgba(0,0,0,0.3);position:relative;">${label}</div>`,
+    iconSize: [20, 20],
+    iconAnchor: [10, 10],
+    popupAnchor: [0, -12],
   });
 }
 
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
-export default function MapView({ packages, getRouteColor }: MapViewProps) {
-  const center: [number, number] = [-33.045, -71.55]; // Valparaíso center
+export default function MapView({ packages, getRouteColor, getSequence, polylines }: MapViewProps) {
+  const center: [number, number] = [-33.045, -71.55];
   const defaultColor = '#3b82f6';
+  const [settings, setSettings] = useState<Settings | null>(null);
+
+  useEffect(() => {
+    settingsApi.get().then(setSettings).catch(() => {});
+  }, []);
+
+  const warehousePos: [number, number] | null = settings
+    ? [parseFloat(settings.warehouse_lat), parseFloat(settings.warehouse_lng)]
+    : null;
 
   return (
     <MapContainer center={center} zoom={12} className="w-full h-[600px] rounded border" scrollWheelZoom={true}>
@@ -44,9 +72,33 @@ export default function MapView({ packages, getRouteColor }: MapViewProps) {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      {polylines?.map((pl, i) => (
+        <Polyline
+          key={i}
+          positions={pl.positions}
+          pathOptions={{ color: pl.color, weight: 3, opacity: 0.7 }}
+        >
+          <Tooltip sticky direction="top">{pl.name}</Tooltip>
+        </Polyline>
+      ))}
+      {warehousePos && (
+        <Marker position={warehousePos} icon={warehouseIcon}>
+          <Tooltip permanent direction="top" offset={[0, -14]}>
+            Bodega
+          </Tooltip>
+          <Popup>
+            <div className="text-sm">
+              <strong>Bodega Central</strong><br />
+              Lat: {settings?.warehouse_lat}<br />
+              Lng: {settings?.warehouse_lng}
+            </div>
+          </Popup>
+        </Marker>
+      )}
       {packages.map((pkg) => {
         const color = getRouteColor?.(pkg) || defaultColor;
-        const icon = pkg.assigned ? createColoredIcon(color) : DefaultIcon;
+        const seq = getSequence?.(pkg);
+        const icon = pkg.assigned ? createColoredIcon(color, seq ?? undefined) : DefaultIcon;
         return (
           <Marker
             key={pkg.id}

@@ -25,9 +25,9 @@
 
 **Purpose**: Verificar que el entorno existente funciona antes de comenzar.
 
-- [ ] T001 Verificar que los contenedores Docker están activos: `docker compose ps`
-- [ ] T002 Verificar que la API responde: `curl http://localhost:8000/api/metrics`
-- [ ] T003 Verificar que el frontend responde: `curl http://localhost:3000`
+- [X] T001 Verificar que los contenedores Docker están activos: `docker compose ps`
+- [X] T002 Verificar que la API responde: `curl http://localhost:8000/api/metrics`
+- [X] T003 Verificar que el frontend responde: `curl http://localhost:3000`
 
 **Checkpoint**: Entorno listo para desarrollo.
 
@@ -40,11 +40,11 @@ tabla `settings`, `HaversineService`, `RouteMetricsService`, `SettingsController
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T004 [P] Crear migración `create_settings_table` en `backend/database/migrations/`
-- [ ] T005 [P] Crear modelo `Setting` en `backend/app/Models/Setting.php`
-- [ ] T006 [P] Crear `SettingsSeeder` con valores iniciales (warehouse_lat=-33.045, warehouse_lng=-71.62, average_speed_kmh=30) en `backend/database/seeders/SettingsSeeder.php`
-- [ ] T007 [P] Crear `HaversineService` con método estático `calculate($lat1, $lng1, $lat2, $lng2): float` en `backend/app/Services/HaversineService.php`
-- [ ] T008 [P] Crear `RouteMetricsService` en `backend/app/Services/RouteMetricsService.php` con un método único `getRouteMetrics(Route $route): array` que retorna:
+- [X] T004 [P] Crear migración `create_settings_table` en `backend/database/migrations/`
+- [X] T005 [P] Crear modelo `Setting` en `backend/app/Models/Setting.php`
+- [X] T006 [P] Crear `SettingsSeeder` con valores iniciales (warehouse_lat=-33.045, warehouse_lng=-71.62, average_speed_kmh=30) en `backend/database/seeders/SettingsSeeder.php`
+- [X] T007 [P] Crear `HaversineService` con método estático `calculate($lat1, $lng1, $lat2, $lng2): float` en `backend/app/Services/HaversineService.php`
+- [X] T008 [P] Crear `RouteMetricsService` en `backend/app/Services/RouteMetricsService.php` con un método único `getRouteMetrics(Route $route): array` que retorna:
   ```php
   [
     'total_distance_km' => float,          // suma Haversine: bodega→P1 + P1→P2 + ... + PN→bodega
@@ -57,11 +57,11 @@ tabla `settings`, `HaversineService`, `RouteMetricsService`, `SettingsController
   - Obtiene coordenadas de bodega desde settings (warehouse_lat, warehouse_lng)
   - Si la ruta no tiene paquetes: total_distance_km = 0, avg = 0, estimated_time = "0h 0m"
   - Este mismo método es reutilizado por RouteController y MetricsController para evitar cálculos divergentes
-- [ ] T009 [P] Crear `SettingsController` en `backend/app/Http/Controllers/SettingsController.php` con:
+- [X] T009 [P] Crear `SettingsController` en `backend/app/Http/Controllers/SettingsController.php` con:
   - `GET /api/settings` — devuelve todas las settings como JSON plano
   - `PUT /api/settings` — actualización parcial (solo envía los campos a modificar), validando lat ∈ [-90,90], lng ∈ [-180,180], speed > 0
-- [ ] T010 Registrar ruta `GET /api/settings` y `PUT /api/settings` en `backend/routes/api.php`
-- [ ] T011 Ejecutar migración y seeder: `docker compose exec backend php artisan migrate:fresh --seed`
+- [X] T010 Registrar ruta `GET /api/settings` y `PUT /api/settings` en `backend/routes/api.php`
+- [X] T011 Ejecutar migración y seeder: `docker compose exec backend php artisan migrate:fresh --seed`
 
 **Checkpoint**: Foundation ready — `GET /api/settings` responde con valores iniciales. User stories pueden comenzar.
 
@@ -79,18 +79,18 @@ La bodega se muestra en el mapa con marcador distintivo.
 
 #### Frontend
 
-- [ ] T012 [P] [US6] Extender `api.ts` en `frontend/src/lib/api.ts` con `settingsApi.get()` y `settingsApi.update(data)`
-- [ ] T013 [P] [US6] Crear `SettingsForm` component en `frontend/src/components/SettingsForm.tsx` con campos:
+- [X] T012 [P] [US6] Extender `api.ts` en `frontend/src/lib/api.ts` con `settingsApi.get()` y `settingsApi.update(data)`
+- [X] T013 [P] [US6] Crear `SettingsForm` component en `frontend/src/components/SettingsForm.tsx` con campos:
   - warehouse_lat (number input)
   - warehouse_lng (number input)
   - average_speed_kmh (number input)
   - Botón guardar → PUT /api/settings
-- [ ] T014 [P] [US6] Crear ruta `/settings` en `frontend/src/app/settings/page.tsx` que renderiza `SettingsForm`
-- [ ] T015 [P] [US6] Agregar link "Configuración" en la barra de navegación en `frontend/src/app/layout.tsx`
+- [X] T014 [P] [US6] Crear ruta `/settings` en `frontend/src/app/settings/page.tsx` que renderiza `SettingsForm`
+- [X] T015 [P] [US6] Agregar link "Configuración" en la barra de navegación en `frontend/src/app/layout.tsx`
 
 #### Mapa — Marcador de Bodega
 
-- [ ] T016 [US6] Modificar `MapView` en `frontend/src/components/MapView.tsx` para:
+- [X] T016 [US6] Modificar `MapView` en `frontend/src/components/MapView.tsx` para:
   - Obtener `warehouse_lat` y `warehouse_lng` desde `GET /api/settings`
   - Renderizar un marcador distintivo (icono diferente, ej. azul con ícono de casa) en esa posición
   - El marcador debe tener un tooltip "Bodega"
@@ -112,14 +112,14 @@ El endpoint `/api/metrics` incluye ruta más larga y más corta.
 
 #### Backend
 
-- [ ] T017 [US9] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir:
+- [X] T017 [US9] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir:
   - `total_distance_km` (calculado con `RouteMetricsService::getRouteMetrics`)
   - `avg_distance_per_delivery_km`
   - `estimated_time` (formato "Xh Ym")
   - `deliveries_count` (route_packages_count, la cantidad de entregas)
   - Si la ruta no tiene paquetes: total_distance_km = 0, avg = 0, estimated_time = "0h 0m"
   - packages ordenados por `sequence` ascendente
-- [ ] T018 [US9] Extender `MetricsController` en `backend/app/Http/Controllers/MetricsController.php` para incluir:
+- [X] T018 [US9] Extender `MetricsController` en `backend/app/Http/Controllers/MetricsController.php` para incluir:
   - `route_metrics.longest_route` (name, deliveries_count, total_distance_km, avg_distance_per_delivery_km, estimated_time)
   - `route_metrics.shortest_route` (name, deliveries_count, total_distance_km, avg_distance_per_delivery_km, estimated_time)
   - `route_metrics.average_speed_kmh` (velocidad configurada actual)
@@ -127,12 +127,12 @@ El endpoint `/api/metrics` incluye ruta más larga y más corta.
 
 #### Frontend
 
-- [ ] T019 [P] [US9] Extender `RouteDetail` page en `frontend/src/app/routes/[id]/page.tsx` para mostrar:
+- [X] T019 [P] [US9] Extender `RouteDetail` page en `frontend/src/app/routes/[id]/page.tsx` para mostrar:
   - Cantidad de entregas
   - Distancia total (km)
   - Distancia promedio por entrega (km)
   - Tiempo estimado (Xh Ym)
-- [ ] T020 [P] [US10] Extender `MetricsCards` component en `frontend/src/components/MetricsCards.tsx` para mostrar:
+- [X] T020 [P] [US10] Extender `MetricsCards` component en `frontend/src/components/MetricsCards.tsx` para mostrar:
   - Ruta más larga (nombre + distancia + tiempo)
   - Ruta más corta (nombre + distancia + tiempo)
   - Velocidad promedio configurada
@@ -153,16 +153,16 @@ números correlativos. En el mapa, los marcadores de paquetes muestran su númer
 
 #### Backend
 
-- [ ] T021 [US7] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir en cada paquete el campo `sequence` desde `route_packages`. Los paquetes deben devolverse ordenados por `sequence` ascendente. El mapa consume `GET /routes` y necesita este campo para numerar los marcadores.
+- [X] T021 [US7] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir en cada paquete el campo `sequence` desde `route_packages`. Los paquetes deben devolverse ordenados por `sequence` ascendente. El mapa consume `GET /routes` y necesita este campo para numerar los marcadores.
 
 #### Frontend — Tabla de Secuencia
 
-- [ ] T022 [P] [US7] Modificar tabla de paquetes en `frontend/src/app/routes/[id]/page.tsx` para agregar columna "Secuencia" que muestre `package.sequence`
-- [ ] T023 [P] [US7] Si no existe, crear `RouteSequenceTable` component en `frontend/src/components/RouteSequenceTable.tsx` que muestre: secuencia, tracking_number, recipient_name, address en orden de secuencia
+- [X] T022 [P] [US7] Modificar tabla de paquetes en `frontend/src/app/routes/[id]/page.tsx` para agregar columna "Secuencia" que muestre `package.sequence`
+- [X] T023 [P] [US7] Si no existe, crear `RouteSequenceTable` component en `frontend/src/components/RouteSequenceTable.tsx` que muestre: secuencia, tracking_number, recipient_name, address en orden de secuencia
 
 #### Frontend — Mapa con Secuencia
 
-- [ ] T024 [US7] Modificar `MapView` en `frontend/src/components/MapView.tsx` para mostrar el número de secuencia en los marcadores de paquetes
+- [X] T024 [US7] Modificar `MapView` en `frontend/src/components/MapView.tsx` para mostrar el número de secuencia en los marcadores de paquetes
   - Formato sugerido: círculo con número dentro, o tooltip que incluya "Entrega #N"
   - Los marcadores deben mantener el color de su ruta
 
@@ -182,14 +182,14 @@ en orden. Al asignar un paquete nuevo, la línea se actualiza.
 
 #### Frontend — Polylines
 
-- [ ] T025 [P] [US8] Modificar `MapView` en `frontend/src/components/MapView.tsx` para dibujar `Polyline` por cada ruta:
+- [X] T025 [P] [US8] Modificar `MapView` en `frontend/src/components/MapView.tsx` para dibujar `Polyline` por cada ruta:
   - Puntos: [bodega, P1, P2, ..., PN, bodega]
   - Color distinto por ruta (usar el mismo color que los marcadores de paquetes)
   - Opcional: tooltip en la polyline con el nombre de la ruta y distancia total
-- [ ] T026 [US8] Asegurar que las polylines se actualicen dinámicamente al cambiar la asignación:
+- [X] T026 [US8] Asegurar que las polylines se actualicen dinámicamente al cambiar la asignación:
   - Cuando se asigna un paquete a una ruta (desde `/routes/{id}`), la polyline se redibuja al navegar al mapa
   - Opcional: el mapa recibe las rutas como prop y se refresca automáticamente
-- [ ] T027 [US8] Asegurar que todas las rutas se muestren simultáneamente en el mapa con sus respectivas polylines (no una por una)
+- [X] T027 [US8] Asegurar que todas las rutas se muestren simultáneamente en el mapa con sus respectivas polylines (no una por una)
 
 **Checkpoint**: Mapa muestra todas las rutas con líneas conectando entregas.
 
@@ -199,11 +199,11 @@ en orden. Al asignar un paquete nuevo, la línea se actualiza.
 
 **Purpose**: Mejoras que afectan múltiples user stories.
 
-- [ ] T028 [P] Ejecutar y verificar todos los escenarios de `quickstart.md` en `specs/002-route-measurement/quickstart.md`
-- [ ] T029 [P] Verificar que el endpoint `/api/metrics` responde correctamente con rutas vacías y con datos
-- [ ] T030 [P] Verificar que actualización parcial de settings funciona (enviar solo 1 campo)
-- [ ] T031 [P] Verificar que validaciones de latitud/longitud/velocidad funcionan en `PUT /api/settings`
-- [ ] T032 Verificar recorrido completo Bodega→P1→...→PN→Bodega para casos borde:
+- [X] T028 [P] Ejecutar y verificar todos los escenarios de `quickstart.md` en `specs/002-route-measurement/quickstart.md`
+- [X] T029 [P] Verificar que el endpoint `/api/metrics` responde correctamente con rutas vacías y con datos
+- [X] T030 [P] Verificar que actualización parcial de settings funciona (enviar solo 1 campo)
+- [X] T031 [P] Verificar que validaciones de latitud/longitud/velocidad funcionan en `PUT /api/settings`
+- [X] T032 Verificar recorrido completo Bodega→P1→...→PN→Bodega para casos borde:
   - Ruta con 1 paquete (bodega→P1→bodega debe sumar 2 segmentos)
   - Ruta con varios paquetes (bodega→P1→P2→...→PN→bodega)
   - Ruta con 0 paquetes (distancia 0, tiempo "0h 0m", excluida del ranking)

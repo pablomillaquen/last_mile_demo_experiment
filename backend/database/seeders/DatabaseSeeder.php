@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             DemoDataSeeder::class,
+            SettingsSeeder::class,
             RandomAssignmentSeeder::class,
         ]);
     }
