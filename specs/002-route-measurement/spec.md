@@ -219,18 +219,26 @@ decimales.
 
 5.2. El tiempo debe mostrarse en formato `Xh Ym` (horas y minutos).
 
-5.3. La velocidad promedio debe ser configurable por el operador (en km/h).
+5.3. La velocidad promedio debe ser una configuración global (aplica a todas
+las rutas por igual), no por ruta individual.
 
-5.4. El valor inicial de velocidad promedio debe ser 30 km/h.
+5.4. La velocidad promedio debe ser configurable por el operador (en km/h)
+desde la interfaz.
+
+5.5. El valor inicial de velocidad promedio debe ser 30 km/h.
 
 ### RF6 — Métricas Operativas
 
 6.1. El endpoint `/api/metrics` debe incluir:
 - Distancia total de cada ruta.
-- Distancia promedio por entrega.
+- Distancia promedio por entrega (km recorridos por paquete entregado).
 - Tiempo estimado por ruta.
 - Ruta más larga (mayor distancia).
 - Ruta más corta (menor distancia).
+
+6.2. Las métricas de "ruta más larga" y "ruta más corta" consideran
+únicamente rutas con al menos un paquete asignado. Rutas sin paquetes
+son excluidas de esta comparación.
 
 ---
 
