@@ -13,7 +13,7 @@
 | Capa | Tecnología |
 |------|-----------|
 | Frontend | Next.js 14 (TypeScript), Leaflet + OpenStreetMap |
-| API | Laravel 11 (PHP 8.2) |
+| API | Laravel 12 (PHP 8.2) |
 | Base de datos | PostgreSQL 16 |
 | Infraestructura | Docker Compose |
 

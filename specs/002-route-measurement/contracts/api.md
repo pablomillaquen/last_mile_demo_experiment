@@ -30,19 +30,29 @@ Response: `200 OK`
 PUT /settings
 ```
 
-Request:
+Request (actualización parcial — solo enviar los campos a modificar):
 ```json
 {
-  "warehouse_lat": "-33.0450000",
-  "warehouse_lng": "-71.6200000",
-  "average_speed_kmh": "30"
+  "average_speed_kmh": 40
 }
 ```
 
-Response: `200 OK` con las configuraciones actualizadas.
+o
 
-Nota: Se esperan siempre los 3 valores. Cada clave se actualiza
-individualmente en la tabla `settings`.
+```json
+{
+  "warehouse_lat": -33.04,
+  "warehouse_lng": -71.62
+}
+```
+
+Response: `200 OK` con todas las configuraciones (incluyendo las no enviadas).
+Valores numéricos se aceptan como number o string.
+
+**Validación**:
+- `warehouse_lat` debe ser un número entre -90 y 90
+- `warehouse_lng` debe ser un número entre -180 y 180
+- `average_speed_kmh` debe ser un número entero positivo (> 0)
 
 ---
 

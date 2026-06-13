@@ -19,13 +19,18 @@ Representa un valor de configuración global del sistema.
 - `key` es obligatorio, único, máximo 100 caracteres
 - `value` puede ser texto (el parseo depende del tipo esperado)
 
+**Validación**:
+- `warehouse_lat` debe estar entre -90 y 90
+- `warehouse_lng` debe estar entre -180 y 180
+- `average_speed_kmh` debe ser un número entero positivo (> 0)
+
 **Claves predefinidas**:
 
-| Key | Tipo esperado | Valor inicial | Descripción |
-|-----|---------------|---------------|-------------|
-| `warehouse_lat` | decimal | -33.0450000 | Latitud de la bodega |
-| `warehouse_lng` | decimal | -71.6200000 | Longitud de la bodega |
-| `average_speed_kmh` | integer | 30 | Velocidad promedio global (km/h) |
+| Key | Tipo esperado | Valor inicial | Rango válido | Descripción |
+|-----|---------------|---------------|--------------|-------------|
+| `warehouse_lat` | decimal | -33.0450000 | [-90, 90] | Latitud de la bodega |
+| `warehouse_lng` | decimal | -71.6200000 | [-180, 180] | Longitud de la bodega |
+| `average_speed_kmh` | integer | 30 | > 0 | Velocidad promedio global (km/h) |
 
 ## Route (extensión)
 

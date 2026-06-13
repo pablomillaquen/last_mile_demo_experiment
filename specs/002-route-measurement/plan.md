@@ -13,7 +13,7 @@ distribución (bodega). Todo el cómputo vive en el backend (Laravel Services).
 
 ## Technical Context
 
-**Language/Version**: PHP 8.2 (Laravel 11), TypeScript (Next.js 14)
+**Language/Version**: PHP 8.2 (Laravel 12), TypeScript (Next.js 14)
 
 **Primary Dependencies**: phpunit, Pest (testing), Leaflet + react-leaflet (mapa)
 

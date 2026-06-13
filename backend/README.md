@@ -1,10 +1,10 @@
-# Last Mile Demo — API (Laravel 11)
+# Last Mile Demo — API (Laravel 12)
 
 API REST del experimento de simulación logística. Proporciona endpoints para gestionar paquetes, rutas, asignaciones y métricas operativas.
 
 ## Tecnologías
 
-- Laravel 11 (PHP 8.2)
+- Laravel 12 (PHP 8.2)
 - PostgreSQL 16
 - Docker Compose
 
