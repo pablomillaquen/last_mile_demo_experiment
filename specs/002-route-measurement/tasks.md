@@ -44,10 +44,19 @@ tabla `settings`, `HaversineService`, `RouteMetricsService`, `SettingsController
 - [ ] T005 [P] Crear modelo `Setting` en `backend/app/Models/Setting.php`
 - [ ] T006 [P] Crear `SettingsSeeder` con valores iniciales (warehouse_lat=-33.045, warehouse_lng=-71.62, average_speed_kmh=30) en `backend/database/seeders/SettingsSeeder.php`
 - [ ] T007 [P] Crear `HaversineService` con método estático `calculate($lat1, $lng1, $lat2, $lng2): float` en `backend/app/Services/HaversineService.php`
-- [ ] T008 [P] Crear `RouteMetricsService` en `backend/app/Services/RouteMetricsService.php` con métodos:
-  - `calculateDistance(Route $route): float` — suma Haversine entre todos los pares consecutivos + bodega → P1 + PN → bodega
-  - `calculateEstimatedTime(float $distanceKm): int` — minutos = (distancia / velocidad global) * 60
+- [ ] T008 [P] Crear `RouteMetricsService` en `backend/app/Services/RouteMetricsService.php` con un método único `getRouteMetrics(Route $route): array` que retorna:
+  ```php
+  [
+    'total_distance_km' => float,          // suma Haversine: bodega→P1 + P1→P2 + ... + PN→bodega
+    'avg_distance_per_delivery_km' => float, // total_distance / N (0 si N=0)
+    'estimated_time_minutes' => int,        // (total_distance / velocidad_global) * 60
+    'estimated_time_formatted' => string,   // "Xh Ym"
+  ]
+  ```
   - Obtiene velocidad global desde `Setting::where('key', 'average_speed_kmh')->first()->value`
+  - Obtiene coordenadas de bodega desde settings (warehouse_lat, warehouse_lng)
+  - Si la ruta no tiene paquetes: total_distance_km = 0, avg = 0, estimated_time = "0h 0m"
+  - Este mismo método es reutilizado por RouteController y MetricsController para evitar cálculos divergentes
 - [ ] T009 [P] Crear `SettingsController` en `backend/app/Http/Controllers/SettingsController.php` con:
   - `GET /api/settings` — devuelve todas las settings como JSON plano
   - `PUT /api/settings` — actualización parcial (solo envía los campos a modificar), validando lat ∈ [-90,90], lng ∈ [-180,180], speed > 0
@@ -103,18 +112,23 @@ El endpoint `/api/metrics` incluye ruta más larga y más corta.
 
 #### Backend
 
-- [ ] T017 [US9] Extender `RouteController@show` en `backend/app/Http/Controllers/RouteController.php` para incluir:
-  - `total_distance_km` (calculado con `RouteMetricsService::calculateDistance`)
-  - `avg_distance_per_delivery_km` (total_distance / route_packages_count, 0 si no hay paquetes)
-  - `estimated_time` (calculado con `RouteMetricsService::calculateEstimatedTime`, formateado como "Xh Ym")
+- [ ] T017 [US9] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir:
+  - `total_distance_km` (calculado con `RouteMetricsService::getRouteMetrics`)
+  - `avg_distance_per_delivery_km`
+  - `estimated_time` (formato "Xh Ym")
+  - `deliveries_count` (route_packages_count, la cantidad de entregas)
+  - Si la ruta no tiene paquetes: total_distance_km = 0, avg = 0, estimated_time = "0h 0m"
+  - packages ordenados por `sequence` ascendente
 - [ ] T018 [US9] Extender `MetricsController` en `backend/app/Http/Controllers/MetricsController.php` para incluir:
-  - `route_metrics.longest_route` (name, total_distance_km, estimated_time)
-  - `route_metrics.shortest_route` (name, total_distance_km, estimated_time)
+  - `route_metrics.longest_route` (name, deliveries_count, total_distance_km, avg_distance_per_delivery_km, estimated_time)
+  - `route_metrics.shortest_route` (name, deliveries_count, total_distance_km, avg_distance_per_delivery_km, estimated_time)
+  - `route_metrics.average_speed_kmh` (velocidad configurada actual)
   - Excluir rutas sin paquetes de ambos rankings
 
 #### Frontend
 
 - [ ] T019 [P] [US9] Extender `RouteDetail` page en `frontend/src/app/routes/[id]/page.tsx` para mostrar:
+  - Cantidad de entregas
   - Distancia total (km)
   - Distancia promedio por entrega (km)
   - Tiempo estimado (Xh Ym)
@@ -139,7 +153,7 @@ números correlativos. En el mapa, los marcadores de paquetes muestran su númer
 
 #### Backend
 
-- [ ] T021 [US7] Extender `RouteController@show` en `backend/app/Http/Controllers/RouteController.php` para incluir en cada paquete el campo `sequence` desde `route_packages`
+- [ ] T021 [US7] Extender `RouteController@show` e `@index` en `backend/app/Http/Controllers/RouteController.php` para incluir en cada paquete el campo `sequence` desde `route_packages`. Los paquetes deben devolverse ordenados por `sequence` ascendente. El mapa consume `GET /routes` y necesita este campo para numerar los marcadores.
 
 #### Frontend — Tabla de Secuencia
 
@@ -189,6 +203,10 @@ en orden. Al asignar un paquete nuevo, la línea se actualiza.
 - [ ] T029 [P] Verificar que el endpoint `/api/metrics` responde correctamente con rutas vacías y con datos
 - [ ] T030 [P] Verificar que actualización parcial de settings funciona (enviar solo 1 campo)
 - [ ] T031 [P] Verificar que validaciones de latitud/longitud/velocidad funcionan en `PUT /api/settings`
+- [ ] T032 Verificar recorrido completo Bodega→P1→...→PN→Bodega para casos borde:
+  - Ruta con 1 paquete (bodega→P1→bodega debe sumar 2 segmentos)
+  - Ruta con varios paquetes (bodega→P1→P2→...→PN→bodega)
+  - Ruta con 0 paquetes (distancia 0, tiempo "0h 0m", excluida del ranking)
 
 ---
 
