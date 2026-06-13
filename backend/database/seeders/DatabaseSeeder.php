@@ -13,9 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            DemoDataSeeder::class,
+            RouteMeasurementDemoSeeder::class,
             SettingsSeeder::class,
-            RandomAssignmentSeeder::class,
         ]);
     }
 }

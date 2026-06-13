@@ -37,8 +37,15 @@ El servicio se ejecuta dentro de Docker Compose. No se despliega de forma indepe
 docker compose exec backend php artisan migrate:fresh --seed
 
 # Seeders adicionales
-docker compose exec backend php artisan db:seed --class=DemoDatasetSeeder
+docker compose exec backend php artisan db:seed --class=RouteMeasurementDemoSeeder
 ```
+
+El seeder `RouteMeasurementDemoSeeder` genera 150 paquetes con coordenadas únicas en 5 perfiles claramente diferenciados:
+- **Ruta A** — Cluster compacto eficiente (espiral, Concón)
+- **Ruta B** — Dispersión en las 5 comunas
+- **Ruta C** — Zigzag Viña Centro ↔ Miraflores
+- **Ruta D** — Barrido limpio costa Concón → Reñaca
+- **Ruta E** — Cluster Concón + 4 outliers en Quilpué
 
 Las migraciones incluyen constraints de clave foránea con `ON DELETE CASCADE` para paquetes y `RESTRICT` para rutas con asignaciones existentes.
 
