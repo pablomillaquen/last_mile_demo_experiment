@@ -1,8 +1,11 @@
 # Experimento 001: Comparación de Evaluaciones (Baseline)
 
 **Fecha**: 2026-06-19
+
 **Dataset**: Valparaíso Demo — 300 entregas, 10 rutas (Ruta A×2, B×2, C×2, D×2, E×2)
+
 **Algoritmo**: `manual-asignacion` v1.0 (asignación manual existente)
+
 **Objetivo**: Establecer baseline cuantitativo antes de optimización.
 
 ## 1. Parámetros por Evaluación

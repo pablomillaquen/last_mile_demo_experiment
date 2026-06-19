@@ -48,6 +48,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/var/www/html
+      - ./experiments:/var/www/html/experiments
     depends_on:
       postgres:
         condition: service_healthy
