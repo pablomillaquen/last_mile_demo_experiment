@@ -22,7 +22,8 @@ class EvaluationResource extends JsonResource
             $data['route_metrics'] = $detailed['route_metrics'] ?? [];
             $data['anomalies'] = $detailed['anomalies'] ?? [];
             $data['ranking'] = $detailed['ranking'] ?? [];
-            $data['files'] = $detailed['files'] ?? [];
+            $raw = $detailed['files'] ?? null;
+            $data['files'] = is_array($raw) && !empty($raw) ? $raw : null;
         }
 
         if ($this->output_path !== null) {

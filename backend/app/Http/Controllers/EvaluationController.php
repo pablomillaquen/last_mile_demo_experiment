@@ -53,6 +53,19 @@ class EvaluationController extends Controller
 
         $files = [];
 
+        $result['files'] = [
+            'json' => $outputDir . '/evaluation.json',
+            'csv' => $outputDir . '/evaluation.csv',
+            'deliveries_csv' => $outputDir . '/deliveries.csv',
+        ];
+
+        $mapFiles = $result['map_files'] ?? [];
+        $result['files']['maps'] = [
+            'overview' => !empty($mapFiles['overview']) ? $outputDir . '/' . $mapFiles['overview'] : null,
+            'routes' => array_map(fn($f) => $outputDir . '/' . $f, $mapFiles['routes'] ?? []),
+            'anomalies' => !empty($mapFiles['anomalies']) ? $outputDir . '/' . $mapFiles['anomalies'] : null,
+        ];
+
         $jsonPath = $outputPath . '/evaluation.json';
         $this->metricsExporter->exportJson($result, $jsonPath);
         $files['json'] = $outputDir . '/evaluation.json';
@@ -65,13 +78,6 @@ class EvaluationController extends Controller
         $deliveriesPath = $outputPath . '/deliveries.csv';
         $this->metricsExporter->exportDeliveriesCsv($deliveriesFlat, $deliveriesPath);
         $files['deliveries_csv'] = $outputDir . '/deliveries.csv';
-
-        $mapFiles = $result['map_files'] ?? [];
-        $files['maps'] = [
-            'overview' => !empty($mapFiles['overview']) ? $outputDir . '/' . $mapFiles['overview'] : null,
-            'routes' => array_map(fn($f) => $outputDir . '/' . $f, $mapFiles['routes'] ?? []),
-            'anomalies' => !empty($mapFiles['anomalies']) ? $outputDir . '/' . $mapFiles['anomalies'] : null,
-        ];
 
         $metricsSummary = $result['metrics_summary'];
 
