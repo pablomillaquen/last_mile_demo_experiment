@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RouteAssignmentController;
@@ -14,3 +15,8 @@ Route::post('routes/{route}/unassign', [RouteAssignmentController::class, 'unass
 Route::get('metrics', [MetricsController::class, 'index']);
 Route::get('settings', [SettingsController::class, 'index']);
 Route::put('settings', [SettingsController::class, 'update']);
+
+Route::post('/evaluations', [EvaluationController::class, 'store']);
+Route::get('/evaluations', [EvaluationController::class, 'index']);
+Route::get('/evaluations/{id}', [EvaluationController::class, 'show'])->whereNumber('id');
+Route::get('/evaluations/{id}/files/{filename}', [EvaluationController::class, 'file'])->whereNumber('id');
