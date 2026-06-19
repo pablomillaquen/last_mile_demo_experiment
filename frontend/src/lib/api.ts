@@ -183,6 +183,11 @@ export interface Evaluation {
   anomalies?: Anomaly[];
   ranking?: RankingItem[];
   files?: EvaluationFiles;
+  experiment?: {
+    id: number;
+    identifier: string;
+    name: string;
+  };
 }
 
 const API_BASE_FILES = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -199,4 +204,32 @@ export const evaluationsApi = {
   }) => request<Evaluation>('/evaluations', { method: 'POST', body: JSON.stringify(params || {}) }),
   fileUrl: (evaluationId: number, filename: string) =>
     `${API_BASE_FILES}/evaluations/${evaluationId}/files/${filename}`,
+  pdfUrl: (evaluationId: number) =>
+    `${API_BASE_FILES}/evaluations/${evaluationId}/pdf`,
+};
+
+export interface Experiment {
+  id: number;
+  identifier: string;
+  name: string;
+  description: string | null;
+  objective: string;
+  hypothesis: string | null;
+  baseline_evaluation_id: number | null;
+  evaluation_ids: number[];
+  author: string | null;
+  created_at: string;
+  updated_at: string;
+  evaluations_count: number;
+  report_url: string;
+  report_pdf_url: string;
+  evaluations?: Evaluation[];
+}
+
+export const experimentsApi = {
+  list: () => request<{ data: Experiment[] }>('/experiments'),
+  get: (id: number) => request<Experiment>(`/experiments/${id}`),
+  reportUrl: (id: number) => `${API_BASE_FILES}/experiments/${id}/report`,
+  reportPdfUrl: (id: number) => `${API_BASE_FILES}/experiments/${id}/report.pdf`,
+  assetUrl: (id: number, filename: string) => `${API_BASE_FILES}/experiments/${id}/assets/${filename}`,
 };

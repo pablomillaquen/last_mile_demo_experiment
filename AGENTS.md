@@ -1,4 +1,5 @@
 <!-- SPECKIT START -->
+Active spec: specs/004-experiment-reporting/ (SPEC-004)
 Completed spec: specs/003-results-measurement/ (SPEC-003)
 Experiments: experiments/001-baseline-comparison/ (baseline analysis)
 

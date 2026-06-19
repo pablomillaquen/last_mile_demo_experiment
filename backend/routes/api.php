@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\DocsController;
 use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\ExperimentController;
 use App\Http\Controllers\MetricsController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RouteAssignmentController;
@@ -20,3 +22,13 @@ Route::post('/evaluations', [EvaluationController::class, 'store']);
 Route::get('/evaluations', [EvaluationController::class, 'index']);
 Route::get('/evaluations/{id}', [EvaluationController::class, 'show'])->whereNumber('id');
 Route::get('/evaluations/{id}/files/{filename}', [EvaluationController::class, 'file'])->whereNumber('id');
+
+Route::get('/experiments', [ExperimentController::class, 'index']);
+Route::get('/experiments/{id}', [ExperimentController::class, 'show'])->whereNumber('id');
+Route::get('/experiments/{id}/report', [ExperimentController::class, 'report'])->whereNumber('id');
+Route::get('/experiments/{id}/report.pdf', [ExperimentController::class, 'reportPdf'])->whereNumber('id');
+Route::get('/experiments/{id}/assets/{filename}', [ExperimentController::class, 'asset'])->whereNumber('id');
+
+Route::get('/evaluations/{id}/pdf', [EvaluationController::class, 'pdf'])->whereNumber('id');
+
+Route::get('/docs/{path}', [DocsController::class, 'show'])->where('path', '.*');

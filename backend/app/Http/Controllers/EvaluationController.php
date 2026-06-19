@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\MetricsExporter;
 use App\Http\Resources\EvaluationResource;
 use App\Models\Evaluation;
+use App\Models\Experiment;
 use App\Services\MeasurementService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -127,9 +128,14 @@ class EvaluationController extends Controller
 
         $evaluation->setRelation('detailedMetrics', $detailed);
 
-        return response()->json(
-            (new EvaluationResource($evaluation))->toArray($request)
-        );
+        $experiment = Experiment::whereJsonContains('evaluation_ids', $id)->first(['id', 'identifier', 'name']);
+
+        $response = (new EvaluationResource($evaluation))->toArray($request);
+        if ($experiment) {
+            $response['experiment'] = $experiment->toArray();
+        }
+
+        return response()->json($response);
     }
 
     public function file(int $id, string $filename)
@@ -157,6 +163,17 @@ class EvaluationController extends Controller
 
         return response()->file($filePath, [
             'Content-Type' => $mimeTypes[$ext] ?? 'application/octet-stream',
+        ]);
+    }
+
+    public function pdf(int $id)
+    {
+        $evaluation = Evaluation::findOrFail($id);
+
+        $pdfPath = app(\App\Services\PdfReportService::class)->generate($id);
+
+        return response()->file($pdfPath, [
+            'Content-Type' => 'application/pdf',
         ]);
     }
 

@@ -17,6 +17,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a href="/map" className="font-medium text-gray-700 hover:text-blue-600">Mapa</a>
             <a href="/dashboard" className="font-medium text-gray-700 hover:text-blue-600">Dashboard</a>
             <a href="/evaluations" className="font-medium text-gray-700 hover:text-blue-600">Evaluaciones</a>
+            <a href="/experiments" className="font-medium text-gray-700 hover:text-blue-600">Experimentos</a>
+            <a href="/docs/guias" className="font-medium text-gray-700 hover:text-blue-600">Guía</a>
+            <a href="/docs/pantallas" className="font-medium text-gray-700 hover:text-blue-600">Pantallas</a>
             <a href="/settings" className="font-medium text-gray-700 hover:text-blue-600">Configuración</a>
           </div>
         </nav>

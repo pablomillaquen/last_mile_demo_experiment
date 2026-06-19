@@ -1,0 +1,9 @@
+{
+    "identifier": "001-baseline-comparison",
+    "name": "Comparación de Evaluaciones (Baseline)",
+    "objective": "Establecer baseline cuantitativo antes de optimización.",
+    "hypothesis": null,
+    "baseline_evaluation_id": 2,
+    "evaluation_ids": [2, 3, 4, 5, 6, 7],
+    "author": "Sistema"
+}

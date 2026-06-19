@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { evaluationsApi, Evaluation, RouteMetric, Anomaly } from '@/lib/api';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 function n(v: number | undefined | null, decimals = 2): string {
   if (v === undefined || v === null) return '-';
@@ -259,7 +260,7 @@ export default function EvaluationDetailPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 flex-wrap">
         <a href="/evaluations" className="text-blue-600 hover:text-blue-800 text-sm">&larr; Volver</a>
         <h1 className="text-xl font-semibold">
           Evaluación #{evaluation.id}
@@ -270,6 +271,26 @@ export default function EvaluationDetailPage() {
         <span className="text-xs text-gray-400 ml-auto">
           {evaluation.parameters?.dataset} | {evaluation.total_deliveries} entregas, {evaluation.total_routes} rutas
         </span>
+      </div>
+
+      {evaluation.experiment && (
+        <div className="bg-blue-50 border border-blue-200 rounded px-4 py-2 text-sm">
+          Pertenece al experimento:{' '}
+          <a href={`/experiments/${evaluation.experiment.id}`} className="text-blue-600 hover:text-blue-800 font-medium underline">
+            {evaluation.experiment.name}
+          </a>
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <a
+          href={`${API_BASE}/evaluations/${evaluation.id}/pdf`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700"
+        >
+          Descargar PDF
+        </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
