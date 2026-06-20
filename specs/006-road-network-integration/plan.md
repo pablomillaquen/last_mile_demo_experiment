@@ -108,7 +108,7 @@ frontend/                     # Sin cambios
 
 ### Phase 1: OSRM Docker Infrastructure
 
-**Purpose**: OSRM corriendo como contenedor Docker con datos de Valparaíso preprocesados.
+**Purpose**: OSRM corriendo como contenedor Docker con datos de Chile completo preprocesados.
 
 **CRITICAL**: All subsequent phases depend on OSRM being available.
 
