@@ -48,7 +48,13 @@ docker compose --profile tools up -d
 ├── frontend/         # App Next.js (TypeScript)
 ├── docker/           # Infraestructura auxiliar
 ├── specs/            # Documentación del feature
-│   └── 001-last-mile-operation/
+│   ├── 001-last-mile-operation/
+│   ├── 002-evaluation-metrics/
+│   ├── 003-results-measurement/
+│   ├── 004-experiment-reporting/
+│   └── 005-research-publication/
+├── research/         # Conocimiento acumulativo (hallazgos, preguntas, decisiones, contribuciones)
+├── publications/     # Activos de divulgación (documento técnico, artículo, resumen, post, narrativa)
 ├── docker-compose.yml
 └── README.md
 ```
