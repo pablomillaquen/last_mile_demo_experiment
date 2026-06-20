@@ -22,7 +22,7 @@ Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluació
 
 **Performance Goals**: Cálculo vial para 300 entregas / 10 rutas ≤ 10× del geodésico actual (RNF2)
 
-**Constraints**: Sin APIs externas (RNF1). Datos OSM de Valparaíso descargados y preprocesados en build. OSRM sin Internet en runtime.
+**Constraints**: Sin APIs externas (RNF1). Datos OSM de Chile completo descargados y preprocesados en build. OSRM sin Internet en runtime.
 
 **Scale/Scope**: 1 bodega, ~300 entregas, 10 rutas, 6 evaluaciones (IDs 2–7), modo intercambiable
 
@@ -116,9 +116,8 @@ frontend/                     # Sin cambios
 1. Crear volumen `osrm-data` en `docker-compose.yml`.
 2. Crear `backend/docker/osrm/Dockerfile`:
    - Base: `ghcr.io/project-osrm/osrm-backend`
-   - Descargar extracto OSM Chile desde GeoFabrik
-   - Extraer subset Valparaíso con `osrm-extract --bounds`
-   - Ejecutar `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize`
+   - Descargar extracto OSM Chile completo desde GeoFabrik
+   - Ejecutar `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize` sobre Chile completo (sin bounding box restrictivo — permite rutas en Valparaíso, Viña, Concón, Quilpué, Villa Alemana, Limache, y reproducibilidad futura en Santiago/Concepción)
 3. Crear `backend/docker/osrm/profiles/car.lua` con velocidades adaptadas (residential=30, living_street=15).
 4. Agregar servicio `osrm` en `docker-compose.yml` con healthcheck.
 5. Verificar: `curl http://osrm:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05`
@@ -157,8 +156,9 @@ frontend/                     # Sin cambios
    - `execute()` lee `distance_mode` de `$parameters`, llama a `setMode()` antes del pipeline
    - `buildDeliveriesFlat()` usa DistanceService
 3. Inyectar DistanceService a MetricsCalculatorService en MeasurementService.
-4. Calcular M001–M006 en modo vial: implementar lógica post-ejecución que compare resultados contra el baseline geodésico correspondiente (evaluaciones IDs 2–7).
-5. Verificar que evaluaciones en modo geodésico producen resultados idénticos a los originales.
+4. Calcular M001–M004 y M006 en modo vial: implementar lógica post-ejecución que compare resultados contra el baseline geodésico correspondiente (evaluaciones IDs 2–7). M005 se calcula a nivel de experimento.
+5. Registrar tiempo de ejecución (`microtime(true)` antes/después del pipeline) en `metrics_summary` para medir degradación computacional.
+6. Verificar que evaluaciones en modo geodésico producen resultados idénticos a los originales.
 
 **Checkpoint**: MeasurementService ejecuta pipeline completo en ambos modos.
 
@@ -189,8 +189,14 @@ frontend/                     # Sin cambios
    - Registrar IDs resultantes
 3. Comparar métricas por par (geodésico vs vial):
    - Distancia total, promedio, penalidad, cobertura, balance, ranking
-   - Calcular M001–M006 para cada par
-4. Generar `experiments/002-road-network/report.md` con tablas comparativas, mapas de distorsión y M006 por zona.
+   - Calcular M001–M004 y M006 para cada par
+   - Registrar tiempo de ejecución de cada evaluación (geodésica y vial) para medir degradación computacional
+4. Generar `experiments/002-road-network/report.md` con:
+   - Tablas comparativas por evaluación
+   - Factor de desvío promedio (M002) y distorsión territorial por zona (M006)
+   - Mapas de distorsión
+   - **M005** — Persistencia de Hallazgos: tabla de revalidación H001–H006 con estados Válido / Válido con ajustes / Revisado / Rechazado
+   - Tabla de tiempos de ejecución comparativos (geodésico vs vial) y factor de degradación observado
 5. Verificar con `experiments:sync`.
 
 **Checkpoint**: Exp002 completo con reporte generado.
@@ -206,7 +212,7 @@ frontend/                     # Sin cambios
    V002 | H002 | Válido con ajustes | Exp002 | Magnitudes cambiaron +15%
    ```
 2. Documentar H007–H010 en `research/hallazgos.md`.
-3. Agregar PI-006 a PI-011 en `research/preguntas-investigacion.md`.
+3. Agregar PI-006 a PI-012 en `research/preguntas-investigacion.md`.
 4. Agregar D006+ en `research/decisiones.md` (OSRM, DistanceService, car.lua).
 5. Agregar C004–C005 en `research/contribuciones.md`.
 6. Actualizar `research/evidence-matrix.md` con todos los nuevos IDs.

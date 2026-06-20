@@ -46,7 +46,7 @@ Se agrega `distance_mode` al JSONB existente:
 
 ## metrics_summary (extensión)
 
-Se agregan campos M001–M006 al JSONB existente:
+Se agregan campos M001–M004, M006 y execution_time_sec al JSONB existente. M005 se documenta a nivel de experimento:
 
 ```json
 {
@@ -58,11 +58,11 @@ Se agregan campos M001–M006 al JSONB existente:
   "total_anomalias_detectadas": 2,
   "inter_cluster_min_distance_km": 2.1,
   "operational_penalty_total": 12.5,
+  "execution_time_sec": 3.42,
   "error_geodesico_medio_km": 2.1,
   "factor_desvio_promedio": 1.25,
   "error_maximo_trayecto_km": 5.8,
   "variacion_ranking": 3,
-  "persistencia_hallazgos_pct": 83.3,
   "distorsion_territorial": {
     "por_ruta": [
       {"route_id": 1, "route_name": "Ruta A", "indice": 1.15, "zona": "eficiente", "d_geodesica_km": 8.5, "d_vial_km": 9.8},
@@ -80,12 +80,14 @@ Se agregan campos M001–M006 al JSONB existente:
 
 | Campo | Tipo | Unidad | Descripción |
 |-------|------|--------|-------------|
+| execution_time_sec | float | s | Tiempo total de ejecución del pipeline (microtime) |
 | error_geodesico_medio_km | float\|null | km | M001 — avg(d_vial − d_geodésica) |
 | factor_desvio_promedio | float\|null | — | M002 — avg(d_vial / d_geodésica) |
 | error_maximo_trayecto_km | float\|null | km | M003 — max(d_vial − d_geodésica) |
 | variacion_ranking | int\|null | cambios | M004 — cuántas posiciones cambiaron en el ranking |
-| persistencia_hallazgos_pct | float\|null | % | M005 — hallazgos_válidos / hallazgos_totales × 100 |
 | distorsion_territorial | object\|null | — | M006 — índice por ruta y por punto |
+
+**Nota**: M005 (Persistencia de Hallazgos) no está en metrics_summary. Se calcula a nivel de experimento en `experiments/002-road-network/report.md` como métrica de revalidación experimental.
 
 `null` cuando la evaluación es geodésica (no hay comparación posible).
 

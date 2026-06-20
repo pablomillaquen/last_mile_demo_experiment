@@ -62,7 +62,10 @@ Incrementar el realismo operacional del sistema incorporando cálculo de rutas s
 - Nuevos hallazgos formales (H007+).
 - Nuevas preguntas de investigación (PI-006 a PI-010).
 - Revalidación de hallazgos previos (H001–H006).
-- Nuevas validaciones de hallazgos previos (V001+) — nueva categoría de evidencia para revalidación.
+- Nuevas validaciones de hallazgos previos (V001+) con estructura formal.
+- Identificación de zonas de distorsión territorial (M006).
+- PI-011 registrada como pregunta abierta.
+- PI-012 registrada como pregunta abierta (costo computacional).
 - Nuevas decisiones arquitectónicas (D006+).
 - Nuevas contribuciones (C004+).
 
@@ -114,6 +117,34 @@ Para responder PI-010 objetivamente, cada hallazgo previo recibe uno de estos es
 | Revisado | La nueva evidencia contradice parcialmente la conclusión original |
 | Rechazado | El hallazgo deja de sostenerse con el nuevo modelo |
 
+### Estructura de Validaciones (V)
+
+Cada revalidación de un hallazgo previo se documenta como una entidad V con el siguiente esquema:
+
+```text
+V{id}
+Hallazgo validado: H{id}
+Estado: {Válido | Válido con ajustes | Revisado | Rechazado}
+Evidencia: Exp002
+Observaciones: {detalles}
+```
+
+Donde:
+- **H** = conocimiento descubierto (hallazgo original)
+- **V** = conocimiento revalidado (validación tras nueva evidencia)
+
+### PI-011
+
+¿Existen zonas geográficas cuya configuración vial produce sistemáticamente mayores costos operacionales que los estimados por distancia geodésica?
+
+### PI-012
+
+¿Cuál es el impacto computacional de reemplazar cálculo geodésico local por consultas a red vial (OSRM) en el tiempo de ejecución de una evaluación completa?
+
+### PI-013 (Futura — habilitada por infraestructura nacional)
+
+¿Varía el factor de desvío geodésico-vial (M002) según la morfología urbana de una ciudad? (Valparaíso topografía compleja vs Santiago trama regular vs Concepción estructura policéntrica)
+
 ---
 
 ## 7. Historias de Usuario
@@ -144,7 +175,7 @@ Para responder PI-010 objetivamente, cada hallazgo previo recibe uno de estos es
 
 **RF5**: El sistema debe reejecutar las evaluaciones IDs 2–7 sobre la red vial, manteniendo idénticos los parámetros de evaluación originales (seed, threshold, ratio).
 
-**RF6**: El sistema debe calcular para cada evaluación las nuevas métricas de error (M001–M005) entre el modelo geodésico y el modelo vial.
+**RF6**: El sistema debe calcular para cada evaluación las nuevas métricas de error (M001–M004, M006) entre el modelo geodésico y el modelo vial.
 
 **RF7**: El sistema debe generar un reporte comparativo que muestre, para cada evaluación, las diferencias en distancia total, distancia promedio, penalidad, cobertura y balance entre ambos modelos.
 
@@ -160,7 +191,7 @@ Para responder PI-010 objetivamente, cada hallazgo previo recibe uno de estos es
 
 **RNF1 (Reproducibilidad)**: El entorno de red vial debe ser reproducible mediante Docker, permitiendo que cualquier persona ejecute exactamente las mismas evaluaciones sin depender de servicios externos.
 
-**RNF2 (Rendimiento)**: El cálculo de distancia vial para una evaluación completa (300 entregas, 10 rutas) debe completarse en un tiempo comparable al cálculo geodésico actual, con una tolerancia de hasta 10× debido a la complejidad adicional del ruteo vial.
+**RNF2 (Medición de Rendimiento)**: El sistema debe registrar el tiempo de ejecución de cada evaluación en modo vial y documentar el factor de degradación observado respecto al modo geodésico. No se impone un límite máximo a priori; la medición es el primer paso para establecer líneas base.
 
 **RNF3 (Compatibilidad)**: El nuevo modelo vial no debe romper las evaluaciones existentes. El modo geodésico debe seguir funcionando exactamente como antes.
 
@@ -178,7 +209,8 @@ Para responder PI-010 objetivamente, cada hallazgo previo recibe uno de estos es
 | M002 | Factor de Desvío | d_vial / d_geodésica | 1.0 = idéntico, 1.2 = ruta vial 20% más larga |
 | M003 | Error Máximo de Trayecto | max(d_vial − d_geodésica) | Mayor diferencia observada entre modelos |
 | M004 | Variación de Ranking | cambios en orden relativo de rutas | Cuánto cambia la clasificación de rutas |
-| M005 | Persistencia de Hallazgos | hallazgos_válidos / hallazgos_totales × 100 | Porcentaje de hallazgos previos que siguen siendo válidos |
+| M005 | Persistencia de Hallazgos | hallazgos_válidos / hallazgos_totales × 100 | Métrica de revalidación experimental (reporte Exp002, no por evaluación individual) |
+| M006 | Índice de Distorsión Territorial | d_vial / d_geodésica (por punto o ruta) | Identifica zonas donde la red vial infla significativamente la distancia real |
 
 ### Métricas del Sistema (Actualizadas)
 
@@ -194,7 +226,7 @@ Las 15 métricas existentes (operacionales, balance, calidad, utilización) se c
 
 **CA3**: El sistema puede alternar entre modo geodésico y modo vial mediante configuración.
 
-**CA4**: Las métricas M001–M005 se calculan automáticamente y se incluyen en el reporte de cada evaluación.
+**CA4**: Las métricas M001–M004 y M006 se calculan automáticamente y se incluyen en el reporte de cada evaluación. M005 se calcula a nivel de experimento (Exp002).
 
 **CA5**: Se completa el Experimento 002 — Comparación Geodésica vs Vial, con baseline en SPEC-003/004/Experimento 001.
 
@@ -203,6 +235,8 @@ Las 15 métricas existentes (operacionales, balance, calidad, utilización) se c
 **CA7**: Se determina explícitamente, para cada hallazgo previo (H001–H006), si permanece válido o requiere revisión.
 
 **CA8**: La integración de OSM + OSRM funciona correctamente en Docker, sin depender de servicios externos.
+
+**CA9**: El reporte de Exp002 incluye M005 (Persistencia de Hallazgos) con el estado de revalidación de cada hallazgo H001–H006.
 
 ---
 
@@ -299,8 +333,11 @@ Las 15 métricas existentes (operacionales, balance, calidad, utilización) se c
 - Nuevas decisiones D006+ (actualizar `research/decisiones.md`).
 - Nuevas contribuciones C004+ (actualizar `research/contribuciones.md`).
 - Actualización de `research/evidence-matrix.md` con nuevos IDs.
-- Nuevas métricas de error M001–M005 documentadas.
-- Documentar la nueva categoría de evidencia "Validaciones (V)" en `research/evidence-matrix.md` y `research/hallazgos.md`.
+- Nuevas métricas M001–M004, M006 documentadas (por evaluación); M005 documentada en reporte de Exp002.
+- PI-011 (distorsión territorial) y PI-012 (costo computacional) registradas en `research/preguntas-investigacion.md`.
+- Documentar la nueva categoría de evidencia "Validaciones (V)" con su estructura formal en `research/evidence-matrix.md` y `research/hallazgos.md`.
+- Mapa de distorsión territorial (zonas con alto índice M006).
+- Tabla de tiempos de ejecución comparativos (geodésico vs vial) para medir degradación computacional.
 
 ---
 
@@ -310,7 +347,7 @@ Toda especificación debe cumplir la Constitución del proyecto.
 
 Especialmente:
 - **Evidencia antes de solución**: Este spec no propone optimización; propone aumentar la fidelidad del modelo de evaluación antes de optimizar.
-- **Decisiones medibles**: Las 5 nuevas métricas (M001–M005) y la reejecución de evaluaciones existentes garantizan medición objetiva.
+- **Decisiones medibles**: Las nuevas métricas (M001–M004, M006) y la reejecución de evaluaciones existentes garantizan medición objetiva. M005 se evalúa a nivel de experimento.
 - **Complejidad incremental**: Se excluyen explícitamente optimización, ML y clustering.
 - **Optimizaciones comparables**: Ambos modelos (geodésico y vial) coexisten y son comparables.
 - **Visualización como análisis**: Los mapas de rutas sobre red vial constituyen una mejora visual significativa.
@@ -323,6 +360,6 @@ Especialmente:
 
 Esta feature cumple las siguientes condiciones:
 1. **Representa un problema operacional real**: Las distancias geodésicas no reflejan el costo real de desplazamiento en ciudades con geografía compleja.
-2. **Permite medir una característica del sistema**: M001–M005 cuantifican el error del modelo actual.
+2. **Permite medir una característica del sistema**: M001–M004 y M006 cuantifican el error del modelo actual; M005 mide la revalidación experimental.
 3. **Introduce una mejora cuantificable**: Aumenta la fidelidad operacional del sistema y permite revalidar hallazgos previos.
 4. **Permite comparar dos estrategias distintas**: Comparación directa entre modelo geodésico y modelo vial bajo idénticas condiciones.

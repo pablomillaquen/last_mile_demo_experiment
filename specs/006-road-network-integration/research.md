@@ -110,10 +110,13 @@ Origen: GeoFabrik — extracto Chile completo (~200MB PBF).
 https://download.geofabrik.de/south-america/chile-latest.osm.pbf
 ```
 
-Extraer subset Valparaíso usando `osrm-extract` con bounding box:
+Procesar con `osrm-extract` sobre Chile completo (sin subset por bounding box). Esto permite:
+- Rutas que abarcan toda la Región de Valparaíso (incluyendo Viña del Mar, Concón, Quilpué, Villa Alemana, Limache).
+- Posibilidad futura de evaluar en Santiago, Concepción y otras ciudades (reproducibilidad).
+- OSRM funciona de manera óptima con el extracto completo de Chile (~200MB PBF).
+
 ```
 osrm-extract -p /opt/car.lua chile-latest.osm.pbf
-  --bounds="-71.8,-33.2,-71.3,-32.8"
 ```
 
 ### Pipeline de Preprocesado
@@ -135,13 +138,13 @@ osrm-routed (servicio HTTP)
 
 | Etapa | Tiempo Estimado | Disco | RAM Peak |
 |-------|-----------------|-------|----------|
-| osrm-extract | ~5 min | ~200MB | 1GB |
-| osrm-contract | ~10 min | ~150MB | 2GB |
-| osrm-partition | ~2 min | ~50MB | 500MB |
-| osrm-customize | ~3 min | ~50MB | 500MB |
-| Total | ~20 min | ~450MB | 2GB |
+| osrm-extract | ~15 min | ~600MB | 2GB |
+| osrm-contract | ~20 min | ~400MB | 4GB |
+| osrm-partition | ~5 min | ~100MB | 1GB |
+| osrm-customize | ~5 min | ~100MB | 1GB |
+| Total | ~45 min | ~1.2GB | 4GB |
 
-Aceptable para desarrollo en máquina moderna.
+Aceptable para desarrollo en máquina moderna. El volumen Docker persistente evita reprocesar en cada inicio.
 
 ## 5. Estrategia de Distancias
 
@@ -165,7 +168,32 @@ MeasurementService
 - DistanceService permite pruebas unitarias mockeando cualquiera de los dos backend
 - El modo se configura por evaluación (parámetro POST), permitiendo Exp002
 
-## 6. Evaluación de Dependencias PHP
+## 6. Decisión Arquitectónica: Cobertura Geográfica
+
+### Decisión
+
+La infraestructura de ruteo utilizará el extracto nacional de Chile como fuente base de red vial. Los experimentos individuales definen su propio dataset (coordenadas de entregas), pero el grafo de OSRM cubre todo el territorio nacional.
+
+### Tres niveles diferenciados
+
+| Nivel | Ámbito | Qué es | Responsabilidad |
+|-------|--------|--------|-----------------|
+| 1 | Dataset experimental | Gran Valparaíso (coordenadas de entregas actuales) | Experimentos (Exp001, Exp002) |
+| 2 | Cobertura de infraestructura | Chile completo (grafo OSRM) | Docker / OSRM build |
+| 3 | Generalización futura | Santiago, Concepción, Antofagasta, Temuco | Investigación (SPEC-008+) |
+
+### Rationale
+
+- **Reproducibilidad**: El mismo contenedor OSRM sirve para cualquier experimento futuro, sin reconstruir el grafo.
+- **Reutilización del conocimiento**: Un experimento en Santiago (SPEC-008) usaría exactamente el mismo stack, cambiando solo las coordenadas del dataset.
+- **Conexión con preguntas de investigación**: Esta decisión habilita una futura PI-013: *¿Varía el factor de desvío geodésico-vial según la morfología urbana?* Comparando Valparaíso (topografía compleja), Santiago (trama regular) y Concepción (estructura policéntrica) con idéntica infraestructura.
+- **Evolución del proyecto**: Consistente con los principios de Complejidad Incremental y Conocimiento Reutilizable de la Constitución.
+
+### Alternativa Rechazada
+
+**Subset regional por bounding box**: Rechazada porque acopla la infraestructura al experimento actual. Cualquier expansión geográfica futura requeriría reconstruir OSRM y modificar el stack Docker, rompiendo la reproducibilidad histórica.
+
+## 7. Evaluación de Dependencias PHP
 
 | Librería | Propósito | Decisión |
 |----------|-----------|----------|
@@ -174,7 +202,7 @@ MeasurementService
 | `league/csv` | Exportación (existente) | ✅ Ya incluida |
 | GD | Mapas (existente) | ✅ Nativo PHP |
 
-## 7. Tiempo Estimado de Viaje
+## 8. Tiempo Estimado de Viaje
 
 OSRM retorna `duration` en segundos por defecto (basado en velocidad máxima por tipo de vía, sin tráfico en tiempo real). Se convertirá a minutos:
 
@@ -184,6 +212,6 @@ tiempo_min = duration_segundos / 60
 
 **Limitación conocida**: No incluye congestión vehicular, tiempos de carga/descarga, ni demoras operacionales. Documentado en Amenazas a la Validez.
 
-## 8. Estrategia de Caché
+## 9. Estrategia de Caché
 
 OSRM no requiere caché adicional — las consultas son stateless y rápidas. Si el número de waypoints creciera significativamente (>1000 pares), se podría considerar una caché LRU, pero no es necesario para el alcance actual (300 entregas).

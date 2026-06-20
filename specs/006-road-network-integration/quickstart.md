@@ -70,12 +70,11 @@ print('M001 error_geodesico_medio_km:', ms.get('error_geodesico_medio_km'))
 print('M002 factor_desvio_promedio:', ms.get('factor_desvio_promedio'))
 print('M003 error_maximo_trayecto_km:', ms.get('error_maximo_trayecto_km'))
 print('M004 variacion_ranking:', ms.get('variacion_ranking'))
-print('M005 persistencia_hallazgos_pct:', ms.get('persistencia_hallazgos_pct'))
+print('execution_time_sec:', ms.get('execution_time_sec'))
 print('M006 distorsion_territorial:', ms.get('distorsion_territorial'))
 "
-```
 
-**Resultado esperado**: 6 métricas pobladas (M006 puede ser parcial si no se ha ejecutado Exp002 completo).
+**Resultado esperado**: execution_time_sec > 0, M001–M004 poblados, M006 poblado. M005 se calcula en reporte de Exp002.
 
 ## Escenario 5: Reproducibilidad vial
 
