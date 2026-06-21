@@ -73,18 +73,18 @@ El preprocesamiento se separa del servidor para evitar builds pesados: el grafo 
 
 **⚠️ CRITICAL**: No US1 work can begin until this phase is complete.
 
-- [ ] T009 Agregar `guzzlehttp/guzzle` a `backend/composer.json` y ejecutar `docker compose exec backend composer install`.
-- [ ] T010 [P] Crear `backend/app/Services/OsrmClient.php`:
+- [X] T009 Agregar `guzzlehttp/guzzle` a `backend/composer.json` y ejecutar `docker compose exec backend composer install`.
+- [X] T010 [P] Crear `backend/app/Services/OsrmClient.php`:
   - Constructor: `__construct(string $baseUrl = 'http://osrm:5000')`
   - Método `route(float $lng1, float $lat1, float $lng2, float $lat2): array` — llama a OSRM `/route/v1/driving/{lng},{lat};{lng},{lat}`, parsea response, retorna `['distance_km' => float, 'duration_min' => float, 'code' => string]`
   - Manejo de errores: NoRoute, NoSegment, timeout, conexión rechazada
-- [ ] T011 [P] Crear `backend/app/Services/DistanceService.php`:
+- [X] T011 [P] Crear `backend/app/Services/DistanceService.php`:
   - Constructor inyecta `HaversineService` y `OsrmClient`
   - Método `setMode(string $mode)`: acepta `'geodesic'` o `'vial'`
   - Método `calculate(float $lat1, float $lng1, float $lat2, float $lng2): array` — retorna `['distance_km' => float|null, 'duration_min' => float|null, 'mode' => string]`
   - Si mode='geodesic', delega a `HaversineService::calculate()` (duration_min = null)
   - Si mode='vial', delega a `OsrmClient::route()` y convierte respuesta
-- [ ] T012 Verificar que `DistanceService::calculate()` retorna distancias correctas en ambos modos (comparar contra HaversineService conocido y contra response OSRM directo).
+- [X] T012 Verificar que `DistanceService::calculate()` retorna distancias correctas en ambos modos (comparar contra HaversineService conocido y contra response OSRM directo).
 
 **Checkpoint**: `DistanceService` funcional con ambos modos.
 
