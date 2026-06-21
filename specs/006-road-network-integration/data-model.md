@@ -46,7 +46,7 @@ Se agrega `distance_mode` al JSONB existente:
 
 ## metrics_summary (extensión)
 
-Se agregan campos M001–M004, M006 y execution_time_sec al JSONB existente. M005 se documenta a nivel de experimento:
+Se agrega `execution_time_sec` al JSONB existente. M001–M006 no se incluyen por evaluación — se calculan exclusivamente en Exp002 a partir de pares experimentales.
 
 ```json
 {
@@ -58,38 +58,17 @@ Se agregan campos M001–M004, M006 y execution_time_sec al JSONB existente. M00
   "total_anomalias_detectadas": 2,
   "inter_cluster_min_distance_km": 2.1,
   "operational_penalty_total": 12.5,
-  "execution_time_sec": 3.42,
-  "error_geodesico_medio_km": 2.1,
-  "factor_desvio_promedio": 1.25,
-  "error_maximo_trayecto_km": 5.8,
-  "variacion_ranking": 3,
-  "distorsion_territorial": {
-    "por_ruta": [
-      {"route_id": 1, "route_name": "Ruta A", "indice": 1.15, "zona": "eficiente", "d_geodesica_km": 8.5, "d_vial_km": 9.8},
-      {"route_id": 2, "route_name": "Ruta B", "indice": 2.40, "zona": "critica", "d_geodesica_km": 5.2, "d_vial_km": 12.5}
-    ],
-    "por_punto": [
-      {"delivery_id": 101, "route_id": 2, "indice": 4.1, "zona": "critica"}
-    ],
-    "zonas_criticas": ["sector_cerro_alegre", "sector_placeres"]
-  }
+  "execution_time_sec": 3.42
 }
 ```
 
-### Descripción de nuevos campos
+### Campo nuevo
 
 | Campo | Tipo | Unidad | Descripción |
 |-------|------|--------|-------------|
 | execution_time_sec | float | s | Tiempo total de ejecución del pipeline (microtime) |
-| error_geodesico_medio_km | float\|null | km | M001 — avg(d_vial − d_geodésica) |
-| factor_desvio_promedio | float\|null | — | M002 — avg(d_vial / d_geodésica) |
-| error_maximo_trayecto_km | float\|null | km | M003 — max(d_vial − d_geodésica) |
-| variacion_ranking | int\|null | cambios | M004 — cuántas posiciones cambiaron en el ranking |
-| distorsion_territorial | object\|null | — | M006 — índice por ruta y por punto |
 
-**Nota**: M005 (Persistencia de Hallazgos) no está en metrics_summary. Se calcula a nivel de experimento en `experiments/002-road-network/report.md` como métrica de revalidación experimental.
-
-`null` cuando la evaluación es geodésica (no hay comparación posible).
+**Nota sobre M001–M006**: Estas métricas comparativas no están en `metrics_summary`. Se calculan en Exp002 a partir de pares de evaluaciones (geodésica + vial). M005 (Persistencia de Hallazgos) se calcula en el reporte de Exp002 como métrica de revalidación experimental.
 
 ## M006 — Índice de Distorsión Territorial
 
@@ -165,11 +144,64 @@ Extensión de la entidad Experiment existente (estructura `experiment.json`):
   "name": "Comparación Geodésica vs Vial",
   "objective": "Cuantificar el impacto de reemplazar distancias geodésicas por distancias sobre red vial real en las métricas operacionales del sistema.",
   "hypothesis": "H1: La red vial modifica significativamente las métricas operacionales.",
-  "baseline_evaluation_id": null,
-  "evaluation_ids": [8, 9, 10, 11, 12, 13],
+  "baseline_reference": {
+    "experiment_id": 1,
+    "description": "Evaluaciones originales del experimento baseline (modo geodésico)"
+  },
+  "evaluation_pairs": [
+    {
+      "geodesic_id": 8,
+      "vial_id": 14,
+      "parameters_hash": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"
+    }
+  ],
   "author": "Sistema"
 }
 ```
+
+### parameters_hash — Definición
+
+El `parameters_hash` garantiza que cada par geodésica↔vial comparte exactamente los mismos parámetros de entrada. Permite la vinculación sin depender de IDs fijos de evaluación.
+
+**Campos incluidos (orden de normalización)**:
+1. `random_seed` (int)
+2. `algorithm` (string)
+3. `algorithm_version` (string)
+4. `near_delivery_threshold_km` (float)
+5. `ignored_delivery_ratio` (float)
+6. `dataset` (string)
+7. `warehouse_lat` (float, 6 decimales)
+8. `warehouse_lng` (float, 6 decimales)
+
+**Campos excluidos**: `distance_mode`, timestamps, IDs internos, nombres de ruta, cualquier campo de salida o metadata de ejecución.
+
+**Normalización**:
+1. Serializar a JSON compacto (sin espacios, keys en orden alfabético del listado anterior).
+2. Aplicar `md5()` sobre el string JSON resultante.
+3. Representación hexadecimal (32 caracteres, lowercase).
+
+**Ejemplo**:
+```json
+{"algorithm":"kmeans","algorithm_version":"1.0","dataset":"Valparaíso Demo","ignored_delivery_ratio":2.0,"near_delivery_threshold_km":1.0,"random_seed":42,"warehouse_lat":-33.045,"warehouse_lng":-71.62}
+```
+→ `md5` → `a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6`
+
+**Regla de igualdad**: Dos evaluaciones tienen los mismos parámetros si y solo si sus `parameters_hash` son idénticos. Esto permite emparejar evaluaciones geodésica↔vial sin depender de IDs de baseline.
+
+### baseline_reference — Definición
+
+El `baseline_reference` establece el origen histórico de los parámetros replicados. No es un enlace funcional (no se usan IDs para pairing), sino un registro de trazabilidad.
+
+| Campo | Tipo | Descripción |
+|-------|------|-------------|
+| experiment_id | int | ID del experimento que originó los parámetros baseline (Exp001) |
+| description | string | Descripción textual del origen |
+
+**Reglas**:
+- Exp001 es fuente histórica: no se recalcula, no se modifica.
+- Los parámetros se extraen de las evaluaciones de Exp001 para replicarlos en Exp002.
+- `baseline_reference` es informativo; el pairing real se hace mediante `parameters_hash`.
+- Si en el futuro se agrega un Exp003 con otros parámetros, su `baseline_reference` apuntaría a Exp002 (o al experimento que corresponda).
 
 ## Relaciones
 

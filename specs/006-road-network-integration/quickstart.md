@@ -57,7 +57,7 @@ echo "$GEO" | python3 -c "import sys,json; d=json.load(sys.stdin); print([r['est
 
 **Resultado esperado**: Mismas distancias que la evaluación original (retrocompatibilidad total).
 
-## Escenario 4: Nuevas métricas M001–M006 aparecen en modo vial
+## Escenario 4: Métricas crudas en modo vial
 
 ```bash
 # Obtener última evaluación vial
@@ -66,15 +66,13 @@ curl -s "http://localhost:8000/api/evaluations/$EVAL_ID" | python3 -c "
 import sys,json
 d=json.load(sys.stdin)
 ms=d['metrics_summary']
-print('M001 error_geodesico_medio_km:', ms.get('error_geodesico_medio_km'))
-print('M002 factor_desvio_promedio:', ms.get('factor_desvio_promedio'))
-print('M003 error_maximo_trayecto_km:', ms.get('error_maximo_trayecto_km'))
-print('M004 variacion_ranking:', ms.get('variacion_ranking'))
 print('execution_time_sec:', ms.get('execution_time_sec'))
-print('M006 distorsion_territorial:', ms.get('distorsion_territorial'))
+print('mode:', d.get('mode'))
+if d.get('mode') == 'vial':
+    print('estimated_time_min:', d['route_metrics'][0].get('estimated_time_min'))
 "
 
-**Resultado esperado**: execution_time_sec > 0, M001–M004 poblados, M006 poblado. M005 se calcula en reporte de Exp002.
+**Resultado esperado**: execution_time_sec > 0, mode = "vial". En modo vial, estimated_time_min > 0. Las métricas comparativas M001–M006 se validan en Exp002 (Escenario 7).
 
 ## Escenario 5: Reproducibilidad vial
 
@@ -118,19 +116,19 @@ print('distance_mode:', d['parameters'].get('distance_mode'))
 
 **Resultado esperado**: `mode = "geodesic"`, `distance_mode = "geodesic"`.
 
-## Escenario 7: Experiment 002 se registra
+## Escenario 7: Experiment 002 se registra con evaluation_pairs
 
 ```bash
 # Sincronizar experimentos
 docker compose exec backend php artisan experiments:sync
 
-# Verificar que Exp002 aparece
+# Verificar que Exp002 aparece con pares
 curl -s http://localhost:8000/api/experiments | python3 -c "
 import sys,json
 for exp in json.load(sys.stdin)['data']:
     if exp['identifier'] == '002-road-network':
         print('Found:', exp['name'])
-        print('Evaluations:', exp.get('evaluation_ids', []))
+        print('Pairs:', len(exp.get('evaluation_pairs', [])))
 "
 ```
 

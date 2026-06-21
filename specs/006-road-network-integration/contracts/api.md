@@ -2,7 +2,7 @@
 
 Base URL: `http://localhost:8000/api`
 
-Se extiende el contrato existente de EvaluationController para soportar el modo de distancia (geodésico/vial) y las nuevas métricas M001–M006.
+Se extiende el contrato existente de EvaluationController para soportar el modo de distancia (geodésico/vial) y el tiempo de ejecución (execution_time_sec). Las métricas comparativas M001–M006 se calculan exclusivamente en Exp002.
 
 ---
 
@@ -54,12 +54,7 @@ Ejecuta el sistema completo de métricas sobre los datos actuales, ahora con sop
     "total_anomalias_detectadas": 2,
     "inter_cluster_min_distance_km": 2.1,
     "operational_penalty_total": 12.5,
-    "execution_time_sec": 3.42,
-    "error_geodesico_medio_km": null,
-    "factor_desvio_promedio": null,
-    "error_maximo_trayecto_km": null,
-    "variacion_ranking": null,
-    "distorsion_territorial": null
+    "execution_time_sec": 3.42
   },
   "output_path": "evaluations/20260620_143000",
   "route_metrics": [
@@ -98,11 +93,10 @@ Ejecuta el sistema completo de métricas sobre los datos actuales, ahora con sop
 ```
 
 **Notas sobre la respuesta**:
-- Los campos `error_geodesico_medio_km` a `distorsion_territorial` son `null` si `mode = "geodesic"` (no hay nada que comparar).
 - `execution_time_sec` está presente en ambos modos y registra el tiempo total del pipeline.
-- M005 (Persistencia de Hallazgos) no está en metrics_summary; se calcula en reporte de Exp002.
 - `estimated_time_min` aparece solo en modo vial.
 - `estimated_route_distance_km` refleja el modo seleccionado (geodésico = suma Haversine, vial = suma OSRM).
+- Las métricas comparativas M001–M006 no están en la respuesta por evaluación. Se calculan exclusivamente en Exp002 a partir de pares experimentales (ver `data-model.md` → parameters_hash).
 
 ### Validación adicional
 
