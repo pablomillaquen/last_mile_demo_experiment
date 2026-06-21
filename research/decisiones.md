@@ -165,3 +165,26 @@ Formato basado en ADR (Architecture Decision Records).
 - La trazabilidad se mantiene: cada publicación referencia el SPEC y EXP que originó sus datos.
 
 **Fecha**: 2026-06-21
+
+---
+
+## D011
+
+**Decisión**: `documento-tecnico.md` es el artefacto documental principal del proyecto; toda publicación externa se deriva de una versión específica de este documento.
+
+**Contexto**: Hasta SPEC-005, el proyecto generó `documento-tecnico.md` como fuente de verdad documental, con publicaciones derivadas (resumen ejecutivo, narrativa de conexión, artículo de portafolio, LinkedIn). SPEC-007 y EXP-002 generaron nuevos hallazgos (H007–H012) que no existían al momento de redactar la v1. Para mantener la trazabilidad y permitir que nuevas publicaciones coexistan con las históricas sin conflicto, se requiere un versionado explícito del documento técnico.
+
+**Razón**:
+- `documento-tecnico.md` (v1) captura el estado del conocimiento hasta SPEC-005 (hallazgos H001–H006, modelo geodésico).
+- Los hallazgos de SPEC-006 y SPEC-007 (H007–H012, modelo vial) requieren una v2 que preserve todo el contenido de v1 y agregue las nuevas secciones.
+- Las publicaciones derivadas (PUB-001, PUB-002, etc.) referencian una versión específica del documento técnico como fuente.
+- El pipeline completo es: Experimentos → Hallazgos → Documento técnico → Publicaciones derivadas.
+
+**Impacto**:
+- `documento-tecnico-v1.md` permanece inmutable como snapshot histórico.
+- `documento-tecnico-v2.md` consolida hallazgos acumulados (H001–H012).
+- Cada PUB tiene `source-version.txt` que indica qué versión del documento técnico utilizó.
+- Las publicaciones derivadas históricas (resumen-ejecutivo.md, narrativa-conexion.md, articulo-portafolio.md, linkedin-post.md) se mantienen intactas, referenciando documento-tecnico v1.
+- Las nuevas publicaciones derivadas (PUB-001, PUB-002, PUB-003) referenciarán la versión que corresponda.
+
+**Fecha**: 2026-06-21
