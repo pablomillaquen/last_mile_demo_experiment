@@ -130,7 +130,7 @@ export default function MapPage() {
     };
   });
 
-  const vialAvailable = routeLegs !== undefined && routeLegs.length > 0;
+  const vialAvailable = routeLegs !== undefined && routeLegs.some(leg => leg.mode === 'vial');
 
   if (loading) return <div className="p-4 text-gray-500">Cargando mapa...</div>;
 

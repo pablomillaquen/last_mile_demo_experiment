@@ -303,7 +303,7 @@ export default function EvaluationDetailPage() {
     return result;
   }, [routeLegs, routeColorById, routeNameById]);
 
-  const vialAvailable = routeLegs !== undefined && routeLegs.length > 0;
+  const vialAvailable = routeLegs !== undefined && routeLegs.some(leg => leg.mode === 'vial');
 
   useEffect(() => {
     const id = Number(params.id);
