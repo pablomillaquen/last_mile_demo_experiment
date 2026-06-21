@@ -48,7 +48,7 @@ class EvaluationController extends Controller
         $parameters['warehouse_lng'] = $warehouse['lng'];
         $parameters['dataset'] = 'Valparaíso Demo';
 
-        $timestamp = Carbon::now()->format('Ymd_His');
+        $timestamp = Carbon::now()->format('Ymd_His') . '_' . \Illuminate\Support\Str::random(6);
         $outputDir = 'evaluations/' . $timestamp;
         $outputPath = Storage::disk('local')->path($outputDir);
 

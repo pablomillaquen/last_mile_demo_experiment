@@ -1,0 +1,14 @@
+[
+    {"id": 2,  "source": "/var/www/html/storage/app/private/evaluations/20260619_092601/evaluation.json",         "label": "Exp001-Historic seed=42 geo",          "executed_at": "2026-06-19 09:26:01"},
+    {"id": 3,  "source": "/var/www/html/storage/app/private/evaluations/20260619_162157/evaluation.json",        "label": "Exp001-Historic seed=123 geo",         "executed_at": "2026-06-19 16:21:57"},
+    {"id": 4,  "source": "/var/www/html/storage/app/private/evaluations/20260621_042138_xTWYv4/evaluation.json", "label": "Exp001-Reconstructed seed=200 geo",    "executed_at": "2026-06-21 04:21:38"},
+    {"id": 5,  "source": "/var/www/html/storage/app/private/evaluations/20260621_042302_pq0gOd/evaluation.json", "label": "Exp001-Reconstructed seed=100 geo",    "executed_at": "2026-06-21 04:23:02"},
+    {"id": 6,  "source": "/var/www/html/storage/app/private/evaluations/20260619_163806/evaluation.json",        "label": "Exp001-Historic seed=400 geo",         "executed_at": "2026-06-19 16:38:06"},
+    {"id": 7,  "source": "/var/www/html/storage/app/private/evaluations/20260619_163807/evaluation.json",        "label": "Exp001-Historic seed=300 geo",         "executed_at": "2026-06-19 16:38:07"},
+    {"id": 8,  "source": "/var/www/html/storage/app/private/evaluations/20260621_040510/evaluation.json",        "label": "Exp002-Paired seed=42 vial",            "executed_at": "2026-06-21 04:05:10"},
+    {"id": 9,  "source": "/var/www/html/storage/app/private/evaluations/20260621_040538/evaluation.json",        "label": "Exp002-Paired seed=123 vial",           "executed_at": "2026-06-21 04:05:38"},
+    {"id": 10, "source": "/var/www/html/storage/app/private/evaluations/20260621_040605/evaluation.json",        "label": "Exp002-Paired seed=200 vial",           "executed_at": "2026-06-21 04:06:05"},
+    {"id": 11, "source": "/var/www/html/storage/app/private/evaluations/20260621_040632/evaluation.json",        "label": "Exp002-Paired seed=100 vial",           "executed_at": "2026-06-21 04:06:32"},
+    {"id": 12, "source": "/var/www/html/storage/app/private/evaluations/20260621_040700/evaluation.json",        "label": "Exp002-Paired seed=400 vial",           "executed_at": "2026-06-21 04:07:00"},
+    {"id": 13, "source": "/var/www/html/storage/app/private/evaluations/20260621_040728/evaluation.json",        "label": "Exp002-Paired seed=300 vial",           "executed_at": "2026-06-21 04:07:28"}
+]

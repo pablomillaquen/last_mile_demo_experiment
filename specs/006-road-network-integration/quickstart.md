@@ -13,7 +13,7 @@ Escenarios de validación para verificar que la integración OSM/OSRM y el modo 
 ## Escenario 1: OSRM responde a ruteo directo
 
 ```bash
-curl -s "http://localhost:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05?overview=false&steps=false"
+curl -s "http://localhost:5001/route/v1/driving/-71.62,-33.045;-71.61,-33.05?overview=false&steps=false"
 ```
 
 **Resultado esperado**:

@@ -1,0 +1,2739 @@
+{
+    "parameters": {
+        "near_delivery_threshold_km": 1,
+        "ignored_delivery_ratio": 2,
+        "random_seed": 123,
+        "algorithm": "unknown",
+        "algorithm_version": "1.0",
+        "warehouse_lat": -33.045,
+        "warehouse_lng": -71.62,
+        "dataset": "Valparaíso Demo"
+    },
+    "total_deliveries": 300,
+    "total_routes": 10,
+    "metrics_summary": {
+        "coverage_territorial_km": 24.2284,
+        "distancia_promedio_general_km": 13.4651,
+        "desviacion_estandar_distancias_km": 4.684,
+        "balance_general_cv": 0,
+        "balance_index": 1,
+        "inter_cluster_min_distance_km": 0.0055,
+        "total_anomalias_detectadas": 10,
+        "operational_penalty_total": 232.2619
+    },
+    "route_metrics": [
+        {
+            "route_id": 1,
+            "route_name": "Ruta A",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 15.5443,
+            "max_distance_to_warehouse_km": 16.0572,
+            "avg_distance_to_warehouse_km": 15.8111,
+            "centroid_lat": -32.9292803,
+            "centroid_lng": -71.5215,
+            "centroid_to_warehouse_km": 15.8105,
+            "cluster_radius_km": 0.2982,
+            "avg_distance_to_centroid_km": 0.1721,
+            "estimated_route_distance_km": 22.0368
+        },
+        {
+            "route_id": 2,
+            "route_name": "Ruta B",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 0.4759,
+            "max_distance_to_warehouse_km": 24.0095,
+            "avg_distance_to_warehouse_km": 12.9928,
+            "centroid_lat": -33.0115553,
+            "centroid_lng": -71.5023937,
+            "centroid_to_warehouse_km": 11.5775,
+            "cluster_radius_km": 13.5831,
+            "avg_distance_to_centroid_km": 9.1659,
+            "estimated_route_distance_km": 71.9322
+        },
+        {
+            "route_id": 3,
+            "route_name": "Ruta C",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 6.0728,
+            "max_distance_to_warehouse_km": 9.8649,
+            "avg_distance_to_warehouse_km": 7.9583,
+            "centroid_lat": -33.0244187,
+            "centroid_lng": -71.5384523,
+            "centroid_to_warehouse_km": 7.9388,
+            "cluster_radius_km": 1.9865,
+            "avg_distance_to_centroid_km": 1.6011,
+            "estimated_route_distance_km": 98.084
+        },
+        {
+            "route_id": 4,
+            "route_name": "Ruta D",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 13.0005,
+            "max_distance_to_warehouse_km": 15.9472,
+            "avg_distance_to_warehouse_km": 14.252,
+            "centroid_lat": -32.957049,
+            "centroid_lng": -71.5105853,
+            "centroid_to_warehouse_km": 14.1334,
+            "cluster_radius_km": 3.4145,
+            "avg_distance_to_centroid_km": 1.7628,
+            "estimated_route_distance_km": 23.391
+        },
+        {
+            "route_id": 5,
+            "route_name": "Ruta E",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 15.3128,
+            "max_distance_to_warehouse_km": 19.4887,
+            "avg_distance_to_warehouse_km": 16.3426,
+            "centroid_lat": -32.9450337,
+            "centroid_lng": -71.5077953,
+            "centroid_to_warehouse_km": 15.2664,
+            "cluster_radius_km": 15.3135,
+            "avg_distance_to_centroid_km": 4.058,
+            "estimated_route_distance_km": 48.5787
+        },
+        {
+            "route_id": 6,
+            "route_name": "Ruta A",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 15.5918,
+            "max_distance_to_warehouse_km": 16.1403,
+            "avg_distance_to_warehouse_km": 15.8555,
+            "centroid_lat": -32.9286543,
+            "centroid_lng": -71.5217273,
+            "centroid_to_warehouse_km": 15.855,
+            "cluster_radius_km": 0.3406,
+            "avg_distance_to_centroid_km": 0.1867,
+            "estimated_route_distance_km": 23.6713
+        },
+        {
+            "route_id": 7,
+            "route_name": "Ruta B",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 0.301,
+            "max_distance_to_warehouse_km": 24.2284,
+            "avg_distance_to_warehouse_km": 12.973,
+            "centroid_lat": -33.0119013,
+            "centroid_lng": -71.501982,
+            "centroid_to_warehouse_km": 11.6016,
+            "cluster_radius_km": 13.8827,
+            "avg_distance_to_centroid_km": 9.1442,
+            "estimated_route_distance_km": 70.0463
+        },
+        {
+            "route_id": 8,
+            "route_name": "Ruta C",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 6.0306,
+            "max_distance_to_warehouse_km": 9.8841,
+            "avg_distance_to_warehouse_km": 7.8949,
+            "centroid_lat": -33.0241833,
+            "centroid_lng": -71.5392693,
+            "centroid_to_warehouse_km": 7.8736,
+            "cluster_radius_km": 2.0588,
+            "avg_distance_to_centroid_km": 1.6087,
+            "estimated_route_distance_km": 99.6796
+        },
+        {
+            "route_id": 9,
+            "route_name": "Ruta D",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 13.019,
+            "max_distance_to_warehouse_km": 15.9444,
+            "avg_distance_to_warehouse_km": 14.2594,
+            "centroid_lat": -32.9570133,
+            "centroid_lng": -71.510545,
+            "centroid_to_warehouse_km": 14.1389,
+            "cluster_radius_km": 3.4877,
+            "avg_distance_to_centroid_km": 1.7708,
+            "estimated_route_distance_km": 23.2837
+        },
+        {
+            "route_id": 10,
+            "route_name": "Ruta E",
+            "total_deliveries": 30,
+            "min_distance_to_warehouse_km": 15.4051,
+            "max_distance_to_warehouse_km": 19.4573,
+            "avg_distance_to_warehouse_km": 16.3117,
+            "centroid_lat": -32.9455053,
+            "centroid_lng": -71.5073827,
+            "centroid_to_warehouse_km": 15.2547,
+            "cluster_radius_km": 15.1422,
+            "avg_distance_to_centroid_km": 4.0175,
+            "estimated_route_distance_km": 46.8633
+        }
+    ],
+    "anomalies": [
+        {
+            "delivery_id": 46,
+            "route_id": 2,
+            "distance_to_warehouse_km": 0.6546,
+            "centroid_distance_km": 11.5775,
+            "ratio": 17.6864
+        },
+        {
+            "delivery_id": 47,
+            "route_id": 2,
+            "distance_to_warehouse_km": 0.8262,
+            "centroid_distance_km": 11.5775,
+            "ratio": 14.013
+        },
+        {
+            "delivery_id": 48,
+            "route_id": 2,
+            "distance_to_warehouse_km": 0.4759,
+            "centroid_distance_km": 11.5775,
+            "ratio": 24.3276
+        },
+        {
+            "delivery_id": 49,
+            "route_id": 2,
+            "distance_to_warehouse_km": 0.7018,
+            "centroid_distance_km": 11.5775,
+            "ratio": 16.4969
+        },
+        {
+            "delivery_id": 50,
+            "route_id": 2,
+            "distance_to_warehouse_km": 0.8489,
+            "centroid_distance_km": 11.5775,
+            "ratio": 13.6382
+        },
+        {
+            "delivery_id": 196,
+            "route_id": 7,
+            "distance_to_warehouse_km": 0.3255,
+            "centroid_distance_km": 11.6016,
+            "ratio": 35.6424
+        },
+        {
+            "delivery_id": 197,
+            "route_id": 7,
+            "distance_to_warehouse_km": 0.301,
+            "centroid_distance_km": 11.6016,
+            "ratio": 38.5435
+        },
+        {
+            "delivery_id": 198,
+            "route_id": 7,
+            "distance_to_warehouse_km": 0.9907,
+            "centroid_distance_km": 11.6016,
+            "ratio": 11.7105
+        },
+        {
+            "delivery_id": 199,
+            "route_id": 7,
+            "distance_to_warehouse_km": 0.5328,
+            "centroid_distance_km": 11.6016,
+            "ratio": 21.7748
+        },
+        {
+            "delivery_id": 200,
+            "route_id": 7,
+            "distance_to_warehouse_km": 0.3019,
+            "centroid_distance_km": 11.6016,
+            "ratio": 38.4286
+        }
+    ],
+    "ranking": [
+        {
+            "rank": 1,
+            "route_id": 8,
+            "route_name": "Ruta C",
+            "avg_distance_km": 7.8949
+        },
+        {
+            "rank": 2,
+            "route_id": 3,
+            "route_name": "Ruta C",
+            "avg_distance_km": 7.9583
+        },
+        {
+            "rank": 3,
+            "route_id": 7,
+            "route_name": "Ruta B",
+            "avg_distance_km": 12.973
+        },
+        {
+            "rank": 4,
+            "route_id": 2,
+            "route_name": "Ruta B",
+            "avg_distance_km": 12.9928
+        },
+        {
+            "rank": 5,
+            "route_id": 4,
+            "route_name": "Ruta D",
+            "avg_distance_km": 14.252
+        },
+        {
+            "rank": 6,
+            "route_id": 9,
+            "route_name": "Ruta D",
+            "avg_distance_km": 14.2594
+        },
+        {
+            "rank": 7,
+            "route_id": 1,
+            "route_name": "Ruta A",
+            "avg_distance_km": 15.8111
+        },
+        {
+            "rank": 8,
+            "route_id": 6,
+            "route_name": "Ruta A",
+            "avg_distance_km": 15.8555
+        },
+        {
+            "rank": 9,
+            "route_id": 10,
+            "route_name": "Ruta E",
+            "avg_distance_km": 16.3117
+        },
+        {
+            "rank": 10,
+            "route_id": 5,
+            "route_name": "Ruta E",
+            "avg_distance_km": 16.3426
+        }
+    ],
+    "deliveries_flat": [
+        {
+            "delivery_id": 1,
+            "route_id": 1,
+            "latitude": -32.92957,
+            "longitude": -71.52134,
+            "distance_to_warehouse_km": 15.793,
+            "distance_to_centroid_km": 0.0355
+        },
+        {
+            "delivery_id": 2,
+            "route_id": 1,
+            "latitude": -32.92951,
+            "longitude": -71.52187,
+            "distance_to_warehouse_km": 15.7697,
+            "distance_to_centroid_km": 0.043
+        },
+        {
+            "delivery_id": 3,
+            "route_id": 1,
+            "latitude": -32.92872,
+            "longitude": -71.52162,
+            "distance_to_warehouse_km": 15.8548,
+            "distance_to_centroid_km": 0.0633
+        },
+        {
+            "delivery_id": 4,
+            "route_id": 1,
+            "latitude": -32.92862,
+            "longitude": -71.52178,
+            "distance_to_warehouse_km": 15.8553,
+            "distance_to_centroid_km": 0.0779
+        },
+        {
+            "delivery_id": 5,
+            "route_id": 1,
+            "latitude": -32.92983,
+            "longitude": -71.52223,
+            "distance_to_warehouse_km": 15.7212,
+            "distance_to_centroid_km": 0.0915
+        },
+        {
+            "delivery_id": 6,
+            "route_id": 1,
+            "latitude": -32.92982,
+            "longitude": -71.52246,
+            "distance_to_warehouse_km": 15.7097,
+            "distance_to_centroid_km": 0.1078
+        },
+        {
+            "delivery_id": 7,
+            "route_id": 1,
+            "latitude": -32.92946,
+            "longitude": -71.52266,
+            "distance_to_warehouse_km": 15.7316,
+            "distance_to_centroid_km": 0.1101
+        },
+        {
+            "delivery_id": 8,
+            "route_id": 1,
+            "latitude": -32.93026,
+            "longitude": -71.52232,
+            "distance_to_warehouse_km": 15.6774,
+            "distance_to_centroid_km": 0.1331
+        },
+        {
+            "delivery_id": 9,
+            "route_id": 1,
+            "latitude": -32.93013,
+            "longitude": -71.52054,
+            "distance_to_warehouse_km": 15.7862,
+            "distance_to_centroid_km": 0.1302
+        },
+        {
+            "delivery_id": 10,
+            "route_id": 1,
+            "latitude": -32.92977,
+            "longitude": -71.52283,
+            "distance_to_warehouse_km": 15.6943,
+            "distance_to_centroid_km": 0.1355
+        },
+        {
+            "delivery_id": 11,
+            "route_id": 1,
+            "latitude": -32.92849,
+            "longitude": -71.52023,
+            "distance_to_warehouse_km": 15.951,
+            "distance_to_centroid_km": 0.1476
+        },
+        {
+            "delivery_id": 12,
+            "route_id": 1,
+            "latitude": -32.92799,
+            "longitude": -71.52074,
+            "distance_to_warehouse_km": 15.9685,
+            "distance_to_centroid_km": 0.1601
+        },
+        {
+            "delivery_id": 13,
+            "route_id": 1,
+            "latitude": -32.92896,
+            "longitude": -71.51993,
+            "distance_to_warehouse_km": 15.9249,
+            "distance_to_centroid_km": 0.1508
+        },
+        {
+            "delivery_id": 14,
+            "route_id": 1,
+            "latitude": -32.92832,
+            "longitude": -71.52284,
+            "distance_to_warehouse_km": 15.8257,
+            "distance_to_centroid_km": 0.1644
+        },
+        {
+            "delivery_id": 15,
+            "route_id": 1,
+            "latitude": -32.92869,
+            "longitude": -71.51992,
+            "distance_to_warehouse_km": 15.9498,
+            "distance_to_centroid_km": 0.1614
+        },
+        {
+            "delivery_id": 16,
+            "route_id": 1,
+            "latitude": -32.93091,
+            "longitude": -71.52087,
+            "distance_to_warehouse_km": 15.6979,
+            "distance_to_centroid_km": 0.1905
+        },
+        {
+            "delivery_id": 17,
+            "route_id": 1,
+            "latitude": -32.92736,
+            "longitude": -71.52131,
+            "distance_to_warehouse_km": 15.995,
+            "distance_to_centroid_km": 0.2143
+        },
+        {
+            "delivery_id": 18,
+            "route_id": 1,
+            "latitude": -32.92806,
+            "longitude": -71.51991,
+            "distance_to_warehouse_km": 16.0072,
+            "distance_to_centroid_km": 0.2011
+        },
+        {
+            "delivery_id": 19,
+            "route_id": 1,
+            "latitude": -32.93046,
+            "longitude": -71.51985,
+            "distance_to_warehouse_km": 15.7944,
+            "distance_to_centroid_km": 0.2023
+        },
+        {
+            "delivery_id": 20,
+            "route_id": 1,
+            "latitude": -32.92994,
+            "longitude": -71.5195,
+            "distance_to_warehouse_km": 15.8604,
+            "distance_to_centroid_km": 0.2006
+        },
+        {
+            "delivery_id": 21,
+            "route_id": 1,
+            "latitude": -32.92825,
+            "longitude": -71.52334,
+            "distance_to_warehouse_km": 15.8054,
+            "distance_to_centroid_km": 0.2064
+        },
+        {
+            "delivery_id": 22,
+            "route_id": 1,
+            "latitude": -32.93092,
+            "longitude": -71.52007,
+            "distance_to_warehouse_km": 15.7411,
+            "distance_to_centroid_km": 0.226
+        },
+        {
+            "delivery_id": 23,
+            "route_id": 1,
+            "latitude": -32.92768,
+            "longitude": -71.51981,
+            "distance_to_warehouse_km": 16.047,
+            "distance_to_centroid_km": 0.2378
+        },
+        {
+            "delivery_id": 24,
+            "route_id": 1,
+            "latitude": -32.93006,
+            "longitude": -71.5237,
+            "distance_to_warehouse_km": 15.6212,
+            "distance_to_centroid_km": 0.2229
+        },
+        {
+            "delivery_id": 25,
+            "route_id": 1,
+            "latitude": -32.92852,
+            "longitude": -71.52383,
+            "distance_to_warehouse_km": 15.7547,
+            "distance_to_centroid_km": 0.2333
+        },
+        {
+            "delivery_id": 26,
+            "route_id": 1,
+            "latitude": -32.92747,
+            "longitude": -71.52316,
+            "distance_to_warehouse_km": 15.8863,
+            "distance_to_centroid_km": 0.254
+        },
+        {
+            "delivery_id": 27,
+            "route_id": 1,
+            "latitude": -32.9277,
+            "longitude": -71.51959,
+            "distance_to_warehouse_km": 16.0572,
+            "distance_to_centroid_km": 0.2503
+        },
+        {
+            "delivery_id": 28,
+            "route_id": 1,
+            "latitude": -32.93042,
+            "longitude": -71.52377,
+            "distance_to_warehouse_km": 15.5846,
+            "distance_to_centroid_km": 0.2469
+        },
+        {
+            "delivery_id": 29,
+            "route_id": 1,
+            "latitude": -32.93109,
+            "longitude": -71.52339,
+            "distance_to_warehouse_km": 15.5443,
+            "distance_to_centroid_km": 0.2676
+        },
+        {
+            "delivery_id": 30,
+            "route_id": 1,
+            "latitude": -32.93143,
+            "longitude": -71.51959,
+            "distance_to_warehouse_km": 15.722,
+            "distance_to_centroid_km": 0.2982
+        },
+        {
+            "delivery_id": 31,
+            "route_id": 2,
+            "latitude": -32.92407,
+            "longitude": -71.52499,
+            "distance_to_warehouse_km": 16.1043,
+            "distance_to_centroid_km": 9.9537
+        },
+        {
+            "delivery_id": 32,
+            "route_id": 2,
+            "latitude": -32.93109,
+            "longitude": -71.5203,
+            "distance_to_warehouse_km": 15.7131,
+            "distance_to_centroid_km": 9.1019
+        },
+        {
+            "delivery_id": 33,
+            "route_id": 2,
+            "latitude": -32.92491,
+            "longitude": -71.52487,
+            "distance_to_warehouse_km": 16.0325,
+            "distance_to_centroid_km": 9.86
+        },
+        {
+            "delivery_id": 34,
+            "route_id": 2,
+            "latitude": -32.93017,
+            "longitude": -71.5255,
+            "distance_to_warehouse_km": 15.5152,
+            "distance_to_centroid_km": 9.3028
+        },
+        {
+            "delivery_id": 35,
+            "route_id": 2,
+            "latitude": -32.92411,
+            "longitude": -71.52359,
+            "distance_to_warehouse_km": 16.1728,
+            "distance_to_centroid_km": 9.9225
+        },
+        {
+            "delivery_id": 36,
+            "route_id": 2,
+            "latitude": -32.97545,
+            "longitude": -71.53662,
+            "distance_to_warehouse_km": 10.9661,
+            "distance_to_centroid_km": 5.129
+        },
+        {
+            "delivery_id": 37,
+            "route_id": 2,
+            "latitude": -32.97394,
+            "longitude": -71.53756,
+            "distance_to_warehouse_km": 11.0239,
+            "distance_to_centroid_km": 5.3152
+        },
+        {
+            "delivery_id": 38,
+            "route_id": 2,
+            "latitude": -32.9758,
+            "longitude": -71.54371,
+            "distance_to_warehouse_km": 10.4791,
+            "distance_to_centroid_km": 5.5367
+        },
+        {
+            "delivery_id": 39,
+            "route_id": 2,
+            "latitude": -32.96842,
+            "longitude": -71.5407,
+            "distance_to_warehouse_km": 11.2779,
+            "distance_to_centroid_km": 5.9808
+        },
+        {
+            "delivery_id": 40,
+            "route_id": 2,
+            "latitude": -32.96812,
+            "longitude": -71.53626,
+            "distance_to_warehouse_km": 11.5782,
+            "distance_to_centroid_km": 5.7709
+        },
+        {
+            "delivery_id": 41,
+            "route_id": 2,
+            "latitude": -33.02828,
+            "longitude": -71.54666,
+            "distance_to_warehouse_km": 7.0848,
+            "distance_to_centroid_km": 4.5268
+        },
+        {
+            "delivery_id": 42,
+            "route_id": 2,
+            "latitude": -33.02146,
+            "longitude": -71.5496,
+            "distance_to_warehouse_km": 7.0655,
+            "distance_to_centroid_km": 4.5371
+        },
+        {
+            "delivery_id": 43,
+            "route_id": 2,
+            "latitude": -33.02332,
+            "longitude": -71.55129,
+            "distance_to_warehouse_km": 6.8438,
+            "distance_to_centroid_km": 4.7429
+        },
+        {
+            "delivery_id": 44,
+            "route_id": 2,
+            "latitude": -33.02329,
+            "longitude": -71.54874,
+            "distance_to_warehouse_km": 7.0679,
+            "distance_to_centroid_km": 4.5139
+        },
+        {
+            "delivery_id": 45,
+            "route_id": 2,
+            "latitude": -33.02591,
+            "longitude": -71.54537,
+            "distance_to_warehouse_km": 7.2735,
+            "distance_to_centroid_km": 4.3132
+        },
+        {
+            "delivery_id": 46,
+            "route_id": 2,
+            "latitude": -33.04011,
+            "longitude": -71.62391,
+            "distance_to_warehouse_km": 0.6546,
+            "distance_to_centroid_km": 11.7653
+        },
+        {
+            "delivery_id": 47,
+            "route_id": 2,
+            "latitude": -33.04053,
+            "longitude": -71.62708,
+            "distance_to_warehouse_km": 0.8262,
+            "distance_to_centroid_km": 12.0625
+        },
+        {
+            "delivery_id": 48,
+            "route_id": 2,
+            "latitude": -33.04684,
+            "longitude": -71.62461,
+            "distance_to_warehouse_km": 0.4759,
+            "distance_to_centroid_km": 12.0502
+        },
+        {
+            "delivery_id": 49,
+            "route_id": 2,
+            "latitude": -33.04283,
+            "longitude": -71.62707,
+            "distance_to_warehouse_km": 0.7018,
+            "distance_to_centroid_km": 12.1323
+        },
+        {
+            "delivery_id": 50,
+            "route_id": 2,
+            "latitude": -33.04327,
+            "longitude": -71.62887,
+            "distance_to_warehouse_km": 0.8489,
+            "distance_to_centroid_km": 12.3071
+        },
+        {
+            "delivery_id": 51,
+            "route_id": 2,
+            "latitude": -33.0579,
+            "longitude": -71.40937,
+            "distance_to_warehouse_km": 19.6834,
+            "distance_to_centroid_km": 10.0873
+        },
+        {
+            "delivery_id": 52,
+            "route_id": 2,
+            "latitude": -33.05966,
+            "longitude": -71.4143,
+            "distance_to_warehouse_km": 19.2405,
+            "distance_to_centroid_km": 9.8004
+        },
+        {
+            "delivery_id": 53,
+            "route_id": 2,
+            "latitude": -33.0578,
+            "longitude": -71.41489,
+            "distance_to_warehouse_km": 19.1695,
+            "distance_to_centroid_km": 9.6426
+        },
+        {
+            "delivery_id": 54,
+            "route_id": 2,
+            "latitude": -33.05696,
+            "longitude": -71.41578,
+            "distance_to_warehouse_km": 19.0801,
+            "distance_to_centroid_km": 9.5227
+        },
+        {
+            "delivery_id": 55,
+            "route_id": 2,
+            "latitude": -33.05629,
+            "longitude": -71.40942,
+            "distance_to_warehouse_km": 19.6667,
+            "distance_to_centroid_km": 9.993
+        },
+        {
+            "delivery_id": 56,
+            "route_id": 2,
+            "latitude": -33.04606,
+            "longitude": -71.36532,
+            "distance_to_warehouse_km": 23.7384,
+            "distance_to_centroid_km": 13.3423
+        },
+        {
+            "delivery_id": 57,
+            "route_id": 2,
+            "latitude": -33.04424,
+            "longitude": -71.36357,
+            "distance_to_warehouse_km": 23.9017,
+            "distance_to_centroid_km": 13.4427
+        },
+        {
+            "delivery_id": 58,
+            "route_id": 2,
+            "latitude": -33.04389,
+            "longitude": -71.36585,
+            "distance_to_warehouse_km": 23.6894,
+            "distance_to_centroid_km": 13.2275
+        },
+        {
+            "delivery_id": 59,
+            "route_id": 2,
+            "latitude": -33.04544,
+            "longitude": -71.36241,
+            "distance_to_warehouse_km": 24.0095,
+            "distance_to_centroid_km": 13.5831
+        },
+        {
+            "delivery_id": 60,
+            "route_id": 2,
+            "latitude": -33.0465,
+            "longitude": -71.3636,
+            "distance_to_warehouse_km": 23.899,
+            "distance_to_centroid_km": 13.5099
+        },
+        {
+            "delivery_id": 61,
+            "route_id": 3,
+            "latitude": -33.02594,
+            "longitude": -71.55895,
+            "distance_to_warehouse_km": 6.0728,
+            "distance_to_centroid_km": 1.9185
+        },
+        {
+            "delivery_id": 62,
+            "route_id": 3,
+            "latitude": -33.02559,
+            "longitude": -71.5194,
+            "distance_to_warehouse_km": 9.623,
+            "distance_to_centroid_km": 1.781
+        },
+        {
+            "delivery_id": 63,
+            "route_id": 3,
+            "latitude": -33.02174,
+            "longitude": -71.55709,
+            "distance_to_warehouse_km": 6.4095,
+            "distance_to_centroid_km": 1.763
+        },
+        {
+            "delivery_id": 64,
+            "route_id": 3,
+            "latitude": -33.0262,
+            "longitude": -71.52549,
+            "distance_to_warehouse_km": 9.0547,
+            "distance_to_centroid_km": 1.2246
+        },
+        {
+            "delivery_id": 65,
+            "route_id": 3,
+            "latitude": -33.02767,
+            "longitude": -71.5549,
+            "distance_to_warehouse_km": 6.3671,
+            "distance_to_centroid_km": 1.5754
+        },
+        {
+            "delivery_id": 66,
+            "route_id": 3,
+            "latitude": -33.02745,
+            "longitude": -71.51874,
+            "distance_to_warehouse_km": 9.6388,
+            "distance_to_centroid_km": 1.8684
+        },
+        {
+            "delivery_id": 67,
+            "route_id": 3,
+            "latitude": -33.01929,
+            "longitude": -71.55846,
+            "distance_to_warehouse_km": 6.4097,
+            "distance_to_centroid_km": 1.9506
+        },
+        {
+            "delivery_id": 68,
+            "route_id": 3,
+            "latitude": -33.02229,
+            "longitude": -71.52111,
+            "distance_to_warehouse_km": 9.5582,
+            "distance_to_centroid_km": 1.6341
+        },
+        {
+            "delivery_id": 69,
+            "route_id": 3,
+            "latitude": -33.02485,
+            "longitude": -71.5528,
+            "distance_to_warehouse_km": 6.653,
+            "distance_to_centroid_km": 1.3385
+        },
+        {
+            "delivery_id": 70,
+            "route_id": 3,
+            "latitude": -33.02708,
+            "longitude": -71.51782,
+            "distance_to_warehouse_km": 9.7312,
+            "distance_to_centroid_km": 1.9462
+        },
+        {
+            "delivery_id": 71,
+            "route_id": 3,
+            "latitude": -33.02438,
+            "longitude": -71.55015,
+            "distance_to_warehouse_km": 6.9033,
+            "distance_to_centroid_km": 1.0906
+        },
+        {
+            "delivery_id": 72,
+            "route_id": 3,
+            "latitude": -33.02307,
+            "longitude": -71.52582,
+            "distance_to_warehouse_km": 9.1118,
+            "distance_to_centroid_km": 1.1872
+        },
+        {
+            "delivery_id": 73,
+            "route_id": 3,
+            "latitude": -33.0214,
+            "longitude": -71.55488,
+            "distance_to_warehouse_km": 6.6135,
+            "distance_to_centroid_km": 1.5679
+        },
+        {
+            "delivery_id": 74,
+            "route_id": 3,
+            "latitude": -33.02401,
+            "longitude": -71.51718,
+            "distance_to_warehouse_km": 9.8649,
+            "distance_to_centroid_km": 1.9837
+        },
+        {
+            "delivery_id": 75,
+            "route_id": 3,
+            "latitude": -33.02238,
+            "longitude": -71.55962,
+            "distance_to_warehouse_km": 6.1651,
+            "distance_to_centroid_km": 1.9865
+        },
+        {
+            "delivery_id": 76,
+            "route_id": 3,
+            "latitude": -33.02256,
+            "longitude": -71.52465,
+            "distance_to_warehouse_km": 9.2321,
+            "distance_to_centroid_km": 1.3033
+        },
+        {
+            "delivery_id": 77,
+            "route_id": 3,
+            "latitude": -33.02355,
+            "longitude": -71.55955,
+            "distance_to_warehouse_km": 6.1191,
+            "distance_to_centroid_km": 1.9693
+        },
+        {
+            "delivery_id": 78,
+            "route_id": 3,
+            "latitude": -33.02507,
+            "longitude": -71.52396,
+            "distance_to_warehouse_km": 9.2229,
+            "distance_to_centroid_km": 1.3531
+        },
+        {
+            "delivery_id": 79,
+            "route_id": 3,
+            "latitude": -33.02379,
+            "longitude": -71.55892,
+            "distance_to_warehouse_km": 6.163,
+            "distance_to_centroid_km": 1.9095
+        },
+        {
+            "delivery_id": 80,
+            "route_id": 3,
+            "latitude": -33.02221,
+            "longitude": -71.52033,
+            "distance_to_warehouse_km": 9.6307,
+            "distance_to_centroid_km": 1.7073
+        },
+        {
+            "delivery_id": 81,
+            "route_id": 3,
+            "latitude": -33.02702,
+            "longitude": -71.55167,
+            "distance_to_warehouse_km": 6.676,
+            "distance_to_centroid_km": 1.2658
+        },
+        {
+            "delivery_id": 82,
+            "route_id": 3,
+            "latitude": -33.02854,
+            "longitude": -71.5188,
+            "distance_to_warehouse_km": 9.6095,
+            "distance_to_centroid_km": 1.8886
+        },
+        {
+            "delivery_id": 83,
+            "route_id": 3,
+            "latitude": -33.02382,
+            "longitude": -71.55147,
+            "distance_to_warehouse_km": 6.8086,
+            "distance_to_centroid_km": 1.2155
+        },
+        {
+            "delivery_id": 84,
+            "route_id": 3,
+            "latitude": -33.02055,
+            "longitude": -71.52105,
+            "distance_to_warehouse_km": 9.6166,
+            "distance_to_centroid_km": 1.6785
+        },
+        {
+            "delivery_id": 85,
+            "route_id": 3,
+            "latitude": -33.02522,
+            "longitude": -71.55827,
+            "distance_to_warehouse_km": 6.1604,
+            "distance_to_centroid_km": 1.8497
+        },
+        {
+            "delivery_id": 86,
+            "route_id": 3,
+            "latitude": -33.02628,
+            "longitude": -71.52675,
+            "distance_to_warehouse_km": 8.9384,
+            "distance_to_centroid_km": 1.1105
+        },
+        {
+            "delivery_id": 87,
+            "route_id": 3,
+            "latitude": -33.02789,
+            "longitude": -71.55287,
+            "distance_to_warehouse_km": 6.5405,
+            "distance_to_centroid_km": 1.3985
+        },
+        {
+            "delivery_id": 88,
+            "route_id": 3,
+            "latitude": -33.02065,
+            "longitude": -71.51887,
+            "distance_to_warehouse_km": 9.8086,
+            "distance_to_centroid_km": 1.8732
+        },
+        {
+            "delivery_id": 89,
+            "route_id": 3,
+            "latitude": -33.02714,
+            "longitude": -71.55124,
+            "distance_to_warehouse_km": 6.7103,
+            "distance_to_centroid_km": 1.23
+        },
+        {
+            "delivery_id": 90,
+            "route_id": 3,
+            "latitude": -33.02493,
+            "longitude": -71.52276,
+            "distance_to_warehouse_km": 9.3353,
+            "distance_to_centroid_km": 1.4641
+        },
+        {
+            "delivery_id": 91,
+            "route_id": 4,
+            "latitude": -32.92775,
+            "longitude": -71.52154,
+            "distance_to_warehouse_km": 15.9472,
+            "distance_to_centroid_km": 3.4145
+        },
+        {
+            "delivery_id": 92,
+            "route_id": 4,
+            "latitude": -32.93055,
+            "longitude": -71.52214,
+            "distance_to_warehouse_km": 15.6609,
+            "distance_to_centroid_km": 3.1376
+        },
+        {
+            "delivery_id": 93,
+            "route_id": 4,
+            "latitude": -32.93174,
+            "longitude": -71.52066,
+            "distance_to_warehouse_km": 15.635,
+            "distance_to_centroid_km": 2.9671
+        },
+        {
+            "delivery_id": 94,
+            "route_id": 4,
+            "latitude": -32.93356,
+            "longitude": -71.51893,
+            "distance_to_warehouse_km": 15.5695,
+            "distance_to_centroid_km": 2.7255
+        },
+        {
+            "delivery_id": 95,
+            "route_id": 4,
+            "latitude": -32.93672,
+            "longitude": -71.51962,
+            "distance_to_warehouse_km": 15.2517,
+            "distance_to_centroid_km": 2.4126
+        },
+        {
+            "delivery_id": 96,
+            "route_id": 4,
+            "latitude": -32.9378,
+            "longitude": -71.51753,
+            "distance_to_warehouse_km": 15.2782,
+            "distance_to_centroid_km": 2.2363
+        },
+        {
+            "delivery_id": 97,
+            "route_id": 4,
+            "latitude": -32.93947,
+            "longitude": -71.51735,
+            "distance_to_warehouse_km": 15.1443,
+            "distance_to_centroid_km": 2.0541
+        },
+        {
+            "delivery_id": 98,
+            "route_id": 4,
+            "latitude": -32.94281,
+            "longitude": -71.51687,
+            "distance_to_warehouse_km": 14.8871,
+            "distance_to_centroid_km": 1.6884
+        },
+        {
+            "delivery_id": 99,
+            "route_id": 4,
+            "latitude": -32.9438,
+            "longitude": -71.5148,
+            "distance_to_warehouse_km": 14.9294,
+            "distance_to_centroid_km": 1.5248
+        },
+        {
+            "delivery_id": 100,
+            "route_id": 4,
+            "latitude": -32.94687,
+            "longitude": -71.51577,
+            "distance_to_warehouse_km": 14.6134,
+            "distance_to_centroid_km": 1.2309
+        },
+        {
+            "delivery_id": 101,
+            "route_id": 4,
+            "latitude": -32.94743,
+            "longitude": -71.51384,
+            "distance_to_warehouse_km": 14.6876,
+            "distance_to_centroid_km": 1.1119
+        },
+        {
+            "delivery_id": 102,
+            "route_id": 4,
+            "latitude": -32.95012,
+            "longitude": -71.51387,
+            "distance_to_warehouse_km": 14.4661,
+            "distance_to_centroid_km": 0.8292
+        },
+        {
+            "delivery_id": 103,
+            "route_id": 4,
+            "latitude": -32.95283,
+            "longitude": -71.51242,
+            "distance_to_warehouse_km": 14.342,
+            "distance_to_centroid_km": 0.4994
+        },
+        {
+            "delivery_id": 104,
+            "route_id": 4,
+            "latitude": -32.95343,
+            "longitude": -71.51244,
+            "distance_to_warehouse_km": 14.293,
+            "distance_to_centroid_km": 0.438
+        },
+        {
+            "delivery_id": 105,
+            "route_id": 4,
+            "latitude": -32.95578,
+            "longitude": -71.5116,
+            "distance_to_warehouse_km": 14.1638,
+            "distance_to_centroid_km": 0.1699
+        },
+        {
+            "delivery_id": 106,
+            "route_id": 4,
+            "latitude": -32.95786,
+            "longitude": -71.51069,
+            "distance_to_warehouse_km": 14.064,
+            "distance_to_centroid_km": 0.0907
+        },
+        {
+            "delivery_id": 107,
+            "route_id": 4,
+            "latitude": -32.96075,
+            "longitude": -71.50928,
+            "distance_to_warehouse_km": 13.9416,
+            "distance_to_centroid_km": 0.4292
+        },
+        {
+            "delivery_id": 108,
+            "route_id": 4,
+            "latitude": -32.96193,
+            "longitude": -71.50763,
+            "distance_to_warehouse_km": 13.9687,
+            "distance_to_centroid_km": 0.6088
+        },
+        {
+            "delivery_id": 109,
+            "route_id": 4,
+            "latitude": -32.96474,
+            "longitude": -71.50847,
+            "distance_to_warehouse_km": 13.7045,
+            "distance_to_centroid_km": 0.8777
+        },
+        {
+            "delivery_id": 110,
+            "route_id": 4,
+            "latitude": -32.96664,
+            "longitude": -71.50753,
+            "distance_to_warehouse_km": 13.635,
+            "distance_to_centroid_km": 1.1039
+        },
+        {
+            "delivery_id": 111,
+            "route_id": 4,
+            "latitude": -32.96843,
+            "longitude": -71.50525,
+            "distance_to_warehouse_km": 13.6744,
+            "distance_to_centroid_km": 1.3599
+        },
+        {
+            "delivery_id": 112,
+            "route_id": 4,
+            "latitude": -32.96916,
+            "longitude": -71.50521,
+            "distance_to_warehouse_km": 13.6269,
+            "distance_to_centroid_km": 1.437
+        },
+        {
+            "delivery_id": 113,
+            "route_id": 4,
+            "latitude": -32.97162,
+            "longitude": -71.50413,
+            "distance_to_warehouse_km": 13.5394,
+            "distance_to_centroid_km": 1.7285
+        },
+        {
+            "delivery_id": 114,
+            "route_id": 4,
+            "latitude": -32.97354,
+            "longitude": -71.50417,
+            "distance_to_warehouse_km": 13.4087,
+            "distance_to_centroid_km": 1.9289
+        },
+        {
+            "delivery_id": 115,
+            "route_id": 4,
+            "latitude": -32.97607,
+            "longitude": -71.5021,
+            "distance_to_warehouse_km": 13.4017,
+            "distance_to_centroid_km": 2.2583
+        },
+        {
+            "delivery_id": 116,
+            "route_id": 4,
+            "latitude": -32.97815,
+            "longitude": -71.50269,
+            "distance_to_warehouse_km": 13.2251,
+            "distance_to_centroid_km": 2.4592
+        },
+        {
+            "delivery_id": 117,
+            "route_id": 4,
+            "latitude": -32.98014,
+            "longitude": -71.5019,
+            "distance_to_warehouse_km": 13.1635,
+            "distance_to_centroid_km": 2.6924
+        },
+        {
+            "delivery_id": 118,
+            "route_id": 4,
+            "latitude": -32.98217,
+            "longitude": -71.50044,
+            "distance_to_warehouse_km": 13.1562,
+            "distance_to_centroid_km": 2.9493
+        },
+        {
+            "delivery_id": 119,
+            "route_id": 4,
+            "latitude": -32.98336,
+            "longitude": -71.49924,
+            "distance_to_warehouse_km": 13.1818,
+            "distance_to_centroid_km": 3.1112
+        },
+        {
+            "delivery_id": 120,
+            "route_id": 4,
+            "latitude": -32.98625,
+            "longitude": -71.49945,
+            "distance_to_warehouse_km": 13.0005,
+            "distance_to_centroid_km": 3.4091
+        },
+        {
+            "delivery_id": 121,
+            "route_id": 5,
+            "latitude": -32.92592,
+            "longitude": -71.51922,
+            "distance_to_warehouse_km": 16.2384,
+            "distance_to_centroid_km": 2.3778
+        },
+        {
+            "delivery_id": 122,
+            "route_id": 5,
+            "latitude": -32.93131,
+            "longitude": -71.51764,
+            "distance_to_warehouse_km": 15.8417,
+            "distance_to_centroid_km": 1.7812
+        },
+        {
+            "delivery_id": 123,
+            "route_id": 5,
+            "latitude": -32.92667,
+            "longitude": -71.52231,
+            "distance_to_warehouse_km": 16.0046,
+            "distance_to_centroid_km": 2.4504
+        },
+        {
+            "delivery_id": 124,
+            "route_id": 5,
+            "latitude": -32.9263,
+            "longitude": -71.52049,
+            "distance_to_warehouse_km": 16.1355,
+            "distance_to_centroid_km": 2.3964
+        },
+        {
+            "delivery_id": 125,
+            "route_id": 5,
+            "latitude": -32.92867,
+            "longitude": -71.5243,
+            "distance_to_warehouse_km": 15.716,
+            "distance_to_centroid_km": 2.3839
+        },
+        {
+            "delivery_id": 126,
+            "route_id": 5,
+            "latitude": -32.9255,
+            "longitude": -71.52577,
+            "distance_to_warehouse_km": 15.9315,
+            "distance_to_centroid_km": 2.7444
+        },
+        {
+            "delivery_id": 127,
+            "route_id": 5,
+            "latitude": -32.92903,
+            "longitude": -71.52681,
+            "distance_to_warehouse_km": 15.5511,
+            "distance_to_centroid_km": 2.5131
+        },
+        {
+            "delivery_id": 128,
+            "route_id": 5,
+            "latitude": -32.9252,
+            "longitude": -71.52627,
+            "distance_to_warehouse_km": 15.9337,
+            "distance_to_centroid_km": 2.7994
+        },
+        {
+            "delivery_id": 129,
+            "route_id": 5,
+            "latitude": -32.9286,
+            "longitude": -71.52688,
+            "distance_to_warehouse_km": 15.5871,
+            "distance_to_centroid_km": 2.5517
+        },
+        {
+            "delivery_id": 130,
+            "route_id": 5,
+            "latitude": -32.9233,
+            "longitude": -71.51946,
+            "distance_to_warehouse_km": 16.4641,
+            "distance_to_centroid_km": 2.6505
+        },
+        {
+            "delivery_id": 131,
+            "route_id": 5,
+            "latitude": -32.93121,
+            "longitude": -71.51906,
+            "distance_to_warehouse_km": 15.7711,
+            "distance_to_centroid_km": 1.8622
+        },
+        {
+            "delivery_id": 132,
+            "route_id": 5,
+            "latitude": -32.93196,
+            "longitude": -71.52253,
+            "distance_to_warehouse_km": 15.5124,
+            "distance_to_centroid_km": 2.001
+        },
+        {
+            "delivery_id": 133,
+            "route_id": 5,
+            "latitude": -32.92528,
+            "longitude": -71.52526,
+            "distance_to_warehouse_km": 15.9781,
+            "distance_to_centroid_km": 2.7352
+        },
+        {
+            "delivery_id": 134,
+            "route_id": 5,
+            "latitude": -32.93072,
+            "longitude": -71.5251,
+            "distance_to_warehouse_km": 15.4861,
+            "distance_to_centroid_km": 2.2674
+        },
+        {
+            "delivery_id": 135,
+            "route_id": 5,
+            "latitude": -32.93154,
+            "longitude": -71.51738,
+            "distance_to_warehouse_km": 15.8359,
+            "distance_to_centroid_km": 1.7468
+        },
+        {
+            "delivery_id": 136,
+            "route_id": 5,
+            "latitude": -32.93105,
+            "longitude": -71.5186,
+            "distance_to_warehouse_km": 15.811,
+            "distance_to_centroid_km": 1.8532
+        },
+        {
+            "delivery_id": 137,
+            "route_id": 5,
+            "latitude": -32.92305,
+            "longitude": -71.52693,
+            "distance_to_warehouse_km": 16.1009,
+            "distance_to_centroid_km": 3.0273
+        },
+        {
+            "delivery_id": 138,
+            "route_id": 5,
+            "latitude": -32.93253,
+            "longitude": -71.52526,
+            "distance_to_warehouse_km": 15.3128,
+            "distance_to_centroid_km": 2.1423
+        },
+        {
+            "delivery_id": 139,
+            "route_id": 5,
+            "latitude": -32.92731,
+            "longitude": -71.51876,
+            "distance_to_warehouse_km": 16.1376,
+            "distance_to_centroid_km": 2.2206
+        },
+        {
+            "delivery_id": 140,
+            "route_id": 5,
+            "latitude": -32.9282,
+            "longitude": -71.51806,
+            "distance_to_warehouse_km": 16.0959,
+            "distance_to_centroid_km": 2.1027
+        },
+        {
+            "delivery_id": 141,
+            "route_id": 5,
+            "latitude": -32.92844,
+            "longitude": -71.51996,
+            "distance_to_warehouse_km": 15.9702,
+            "distance_to_centroid_km": 2.1664
+        },
+        {
+            "delivery_id": 142,
+            "route_id": 5,
+            "latitude": -32.92496,
+            "longitude": -71.51804,
+            "distance_to_warehouse_km": 16.3892,
+            "distance_to_centroid_km": 2.4282
+        },
+        {
+            "delivery_id": 143,
+            "route_id": 5,
+            "latitude": -32.92341,
+            "longitude": -71.52554,
+            "distance_to_warehouse_km": 16.1376,
+            "distance_to_centroid_km": 2.9196
+        },
+        {
+            "delivery_id": 144,
+            "route_id": 5,
+            "latitude": -32.93034,
+            "longitude": -71.52587,
+            "distance_to_warehouse_km": 15.48,
+            "distance_to_centroid_km": 2.3483
+        },
+        {
+            "delivery_id": 145,
+            "route_id": 5,
+            "latitude": -32.92985,
+            "longitude": -71.52149,
+            "distance_to_warehouse_km": 15.7595,
+            "distance_to_centroid_km": 2.1175
+        },
+        {
+            "delivery_id": 146,
+            "route_id": 5,
+            "latitude": -32.92792,
+            "longitude": -71.52545,
+            "distance_to_warehouse_km": 15.7244,
+            "distance_to_centroid_km": 2.5171
+        },
+        {
+            "delivery_id": 147,
+            "route_id": 5,
+            "latitude": -33.05483,
+            "longitude": -71.41123,
+            "distance_to_warehouse_km": 19.4887,
+            "distance_to_centroid_km": 15.1707
+        },
+        {
+            "delivery_id": 148,
+            "route_id": 5,
+            "latitude": -33.05517,
+            "longitude": -71.41463,
+            "distance_to_warehouse_km": 19.1745,
+            "distance_to_centroid_km": 15.0155
+        },
+        {
+            "delivery_id": 149,
+            "route_id": 5,
+            "latitude": -33.05599,
+            "longitude": -71.41379,
+            "distance_to_warehouse_km": 19.2581,
+            "distance_to_centroid_km": 15.1351
+        },
+        {
+            "delivery_id": 150,
+            "route_id": 5,
+            "latitude": -33.05675,
+            "longitude": -71.41177,
+            "distance_to_warehouse_km": 19.4514,
+            "distance_to_centroid_km": 15.3135
+        },
+        {
+            "delivery_id": 151,
+            "route_id": 6,
+            "latitude": -32.929,
+            "longitude": -71.52197,
+            "distance_to_warehouse_km": 15.8105,
+            "distance_to_centroid_km": 0.0446
+        },
+        {
+            "delivery_id": 152,
+            "route_id": 6,
+            "latitude": -32.92846,
+            "longitude": -71.52212,
+            "distance_to_warehouse_km": 15.8515,
+            "distance_to_centroid_km": 0.0425
+        },
+        {
+            "delivery_id": 153,
+            "route_id": 6,
+            "latitude": -32.92817,
+            "longitude": -71.52174,
+            "distance_to_warehouse_km": 15.8983,
+            "distance_to_centroid_km": 0.0539
+        },
+        {
+            "delivery_id": 154,
+            "route_id": 6,
+            "latitude": -32.92919,
+            "longitude": -71.52149,
+            "distance_to_warehouse_km": 15.8192,
+            "distance_to_centroid_km": 0.0636
+        },
+        {
+            "delivery_id": 155,
+            "route_id": 6,
+            "latitude": -32.92852,
+            "longitude": -71.5211,
+            "distance_to_warehouse_km": 15.901,
+            "distance_to_centroid_km": 0.0604
+        },
+        {
+            "delivery_id": 156,
+            "route_id": 6,
+            "latitude": -32.92945,
+            "longitude": -71.52149,
+            "distance_to_warehouse_km": 15.7957,
+            "distance_to_centroid_km": 0.0912
+        },
+        {
+            "delivery_id": 157,
+            "route_id": 6,
+            "latitude": -32.92781,
+            "longitude": -71.52233,
+            "distance_to_warehouse_km": 15.8994,
+            "distance_to_centroid_km": 0.1094
+        },
+        {
+            "delivery_id": 158,
+            "route_id": 6,
+            "latitude": -32.92897,
+            "longitude": -71.52283,
+            "distance_to_warehouse_km": 15.767,
+            "distance_to_centroid_km": 0.1087
+        },
+        {
+            "delivery_id": 159,
+            "route_id": 6,
+            "latitude": -32.92996,
+            "longitude": -71.52166,
+            "distance_to_warehouse_km": 15.7404,
+            "distance_to_centroid_km": 0.1453
+        },
+        {
+            "delivery_id": 160,
+            "route_id": 6,
+            "latitude": -32.9296,
+            "longitude": -71.52294,
+            "distance_to_warehouse_km": 15.7038,
+            "distance_to_centroid_km": 0.1545
+        },
+        {
+            "delivery_id": 161,
+            "route_id": 6,
+            "latitude": -32.92774,
+            "longitude": -71.52045,
+            "distance_to_warehouse_km": 16.0069,
+            "distance_to_centroid_km": 0.1567
+        },
+        {
+            "delivery_id": 162,
+            "route_id": 6,
+            "latitude": -32.92725,
+            "longitude": -71.52059,
+            "distance_to_warehouse_km": 16.0438,
+            "distance_to_centroid_km": 0.1888
+        },
+        {
+            "delivery_id": 163,
+            "route_id": 6,
+            "latitude": -32.92679,
+            "longitude": -71.52182,
+            "distance_to_warehouse_km": 16.0197,
+            "distance_to_centroid_km": 0.2075
+        },
+        {
+            "delivery_id": 164,
+            "route_id": 6,
+            "latitude": -32.92685,
+            "longitude": -71.5212,
+            "distance_to_warehouse_km": 16.0474,
+            "distance_to_centroid_km": 0.2066
+        },
+        {
+            "delivery_id": 165,
+            "route_id": 6,
+            "latitude": -32.92699,
+            "longitude": -71.52066,
+            "distance_to_warehouse_km": 16.0636,
+            "distance_to_centroid_km": 0.2102
+        },
+        {
+            "delivery_id": 166,
+            "route_id": 6,
+            "latitude": -32.93055,
+            "longitude": -71.52116,
+            "distance_to_warehouse_km": 15.7144,
+            "distance_to_centroid_km": 0.2173
+        },
+        {
+            "delivery_id": 167,
+            "route_id": 6,
+            "latitude": -32.92721,
+            "longitude": -71.52026,
+            "distance_to_warehouse_km": 16.0652,
+            "distance_to_centroid_km": 0.2111
+        },
+        {
+            "delivery_id": 168,
+            "route_id": 6,
+            "latitude": -32.92929,
+            "longitude": -71.52374,
+            "distance_to_warehouse_km": 15.6892,
+            "distance_to_centroid_km": 0.2007
+        },
+        {
+            "delivery_id": 169,
+            "route_id": 6,
+            "latitude": -32.92651,
+            "longitude": -71.52205,
+            "distance_to_warehouse_km": 16.033,
+            "distance_to_centroid_km": 0.2403
+        },
+        {
+            "delivery_id": 170,
+            "route_id": 6,
+            "latitude": -32.93082,
+            "longitude": -71.52185,
+            "distance_to_warehouse_km": 15.6523,
+            "distance_to_centroid_km": 0.2411
+        },
+        {
+            "delivery_id": 171,
+            "route_id": 6,
+            "latitude": -32.92901,
+            "longitude": -71.51958,
+            "distance_to_warehouse_km": 15.9396,
+            "distance_to_centroid_km": 0.2043
+        },
+        {
+            "delivery_id": 172,
+            "route_id": 6,
+            "latitude": -32.92747,
+            "longitude": -71.52363,
+            "distance_to_warehouse_km": 15.8614,
+            "distance_to_centroid_km": 0.2211
+        },
+        {
+            "delivery_id": 173,
+            "route_id": 6,
+            "latitude": -32.93092,
+            "longitude": -71.52121,
+            "distance_to_warehouse_km": 15.6783,
+            "distance_to_centroid_km": 0.2565
+        },
+        {
+            "delivery_id": 174,
+            "route_id": 6,
+            "latitude": -32.92746,
+            "longitude": -71.51968,
+            "distance_to_warehouse_km": 16.074,
+            "distance_to_centroid_km": 0.2327
+        },
+        {
+            "delivery_id": 175,
+            "route_id": 6,
+            "latitude": -32.93034,
+            "longitude": -71.52341,
+            "distance_to_warehouse_km": 15.6113,
+            "distance_to_centroid_km": 0.2445
+        },
+        {
+            "delivery_id": 176,
+            "route_id": 6,
+            "latitude": -32.93081,
+            "longitude": -71.52298,
+            "distance_to_warehouse_km": 15.5918,
+            "distance_to_centroid_km": 0.2667
+        },
+        {
+            "delivery_id": 177,
+            "route_id": 6,
+            "latitude": -32.92671,
+            "longitude": -71.51971,
+            "distance_to_warehouse_km": 16.1403,
+            "distance_to_centroid_km": 0.2867
+        },
+        {
+            "delivery_id": 178,
+            "route_id": 6,
+            "latitude": -32.9299,
+            "longitude": -71.52431,
+            "distance_to_warehouse_km": 15.6031,
+            "distance_to_centroid_km": 0.278
+        },
+        {
+            "delivery_id": 179,
+            "route_id": 6,
+            "latitude": -32.92669,
+            "longitude": -71.52418,
+            "distance_to_warehouse_km": 15.9041,
+            "distance_to_centroid_km": 0.3164
+        },
+        {
+            "delivery_id": 180,
+            "route_id": 6,
+            "latitude": -32.93119,
+            "longitude": -71.51968,
+            "distance_to_warehouse_km": 15.7385,
+            "distance_to_centroid_km": 0.3406
+        },
+        {
+            "delivery_id": 181,
+            "route_id": 7,
+            "latitude": -32.92838,
+            "longitude": -71.51844,
+            "distance_to_warehouse_km": 16.0588,
+            "distance_to_centroid_km": 9.4132
+        },
+        {
+            "delivery_id": 182,
+            "route_id": 7,
+            "latitude": -32.92654,
+            "longitude": -71.52592,
+            "distance_to_warehouse_km": 15.8273,
+            "distance_to_centroid_km": 9.7509
+        },
+        {
+            "delivery_id": 183,
+            "route_id": 7,
+            "latitude": -32.9248,
+            "longitude": -71.52417,
+            "distance_to_warehouse_km": 16.0789,
+            "distance_to_centroid_km": 9.9039
+        },
+        {
+            "delivery_id": 184,
+            "route_id": 7,
+            "latitude": -32.92958,
+            "longitude": -71.52416,
+            "distance_to_warehouse_km": 15.6403,
+            "distance_to_centroid_km": 9.3846
+        },
+        {
+            "delivery_id": 185,
+            "route_id": 7,
+            "latitude": -32.93094,
+            "longitude": -71.52143,
+            "distance_to_warehouse_km": 15.6645,
+            "distance_to_centroid_km": 9.1835
+        },
+        {
+            "delivery_id": 186,
+            "route_id": 7,
+            "latitude": -32.97052,
+            "longitude": -71.53893,
+            "distance_to_warehouse_km": 11.2132,
+            "distance_to_centroid_km": 5.7487
+        },
+        {
+            "delivery_id": 187,
+            "route_id": 7,
+            "latitude": -32.96948,
+            "longitude": -71.53782,
+            "distance_to_warehouse_km": 11.3684,
+            "distance_to_centroid_km": 5.7812
+        },
+        {
+            "delivery_id": 188,
+            "route_id": 7,
+            "latitude": -32.97142,
+            "longitude": -71.54385,
+            "distance_to_warehouse_km": 10.8334,
+            "distance_to_centroid_km": 5.959
+        },
+        {
+            "delivery_id": 189,
+            "route_id": 7,
+            "latitude": -32.97153,
+            "longitude": -71.53719,
+            "distance_to_warehouse_km": 11.2413,
+            "distance_to_centroid_km": 5.5619
+        },
+        {
+            "delivery_id": 190,
+            "route_id": 7,
+            "latitude": -32.97217,
+            "longitude": -71.54162,
+            "distance_to_warehouse_km": 10.9087,
+            "distance_to_centroid_km": 5.7606
+        },
+        {
+            "delivery_id": 191,
+            "route_id": 7,
+            "latitude": -33.02366,
+            "longitude": -71.55157,
+            "distance_to_warehouse_km": 6.8061,
+            "distance_to_centroid_km": 4.8048
+        },
+        {
+            "delivery_id": 192,
+            "route_id": 7,
+            "latitude": -33.02514,
+            "longitude": -71.54674,
+            "distance_to_warehouse_km": 7.1774,
+            "distance_to_centroid_km": 4.4251
+        },
+        {
+            "delivery_id": 193,
+            "route_id": 7,
+            "latitude": -33.0289,
+            "longitude": -71.54429,
+            "distance_to_warehouse_km": 7.281,
+            "distance_to_centroid_km": 4.374
+        },
+        {
+            "delivery_id": 194,
+            "route_id": 7,
+            "latitude": -33.02287,
+            "longitude": -71.54803,
+            "distance_to_warehouse_km": 7.1461,
+            "distance_to_centroid_km": 4.4633
+        },
+        {
+            "delivery_id": 195,
+            "route_id": 7,
+            "latitude": -33.02142,
+            "longitude": -71.54423,
+            "distance_to_warehouse_km": 7.5343,
+            "distance_to_centroid_km": 4.0789
+        },
+        {
+            "delivery_id": 196,
+            "route_id": 7,
+            "latitude": -33.04511,
+            "longitude": -71.62349,
+            "distance_to_warehouse_km": 0.3255,
+            "distance_to_centroid_km": 11.9144
+        },
+        {
+            "delivery_id": 197,
+            "route_id": 7,
+            "latitude": -33.04444,
+            "longitude": -71.62316,
+            "distance_to_warehouse_km": 0.301,
+            "distance_to_centroid_km": 11.8622
+        },
+        {
+            "delivery_id": 198,
+            "route_id": 7,
+            "latitude": -33.04699,
+            "longitude": -71.63036,
+            "distance_to_warehouse_km": 0.9907,
+            "distance_to_centroid_km": 12.5879
+        },
+        {
+            "delivery_id": 199,
+            "route_id": 7,
+            "latitude": -33.046,
+            "longitude": -71.62559,
+            "distance_to_warehouse_km": 0.5328,
+            "distance_to_centroid_km": 12.1312
+        },
+        {
+            "delivery_id": 200,
+            "route_id": 7,
+            "latitude": -33.04453,
+            "longitude": -71.62319,
+            "distance_to_warehouse_km": 0.3019,
+            "distance_to_centroid_km": 11.8679
+        },
+        {
+            "delivery_id": 201,
+            "route_id": 7,
+            "latitude": -33.05674,
+            "longitude": -71.41398,
+            "distance_to_warehouse_km": 19.2458,
+            "distance_to_centroid_km": 9.5998
+        },
+        {
+            "delivery_id": 202,
+            "route_id": 7,
+            "latitude": -33.05444,
+            "longitude": -71.4123,
+            "distance_to_warehouse_km": 19.3868,
+            "distance_to_centroid_km": 9.6056
+        },
+        {
+            "delivery_id": 203,
+            "route_id": 7,
+            "latitude": -33.05637,
+            "longitude": -71.41159,
+            "distance_to_warehouse_km": 19.4654,
+            "distance_to_centroid_km": 9.77
+        },
+        {
+            "delivery_id": 204,
+            "route_id": 7,
+            "latitude": -33.05793,
+            "longitude": -71.41524,
+            "distance_to_warehouse_km": 19.138,
+            "distance_to_centroid_km": 9.5697
+        },
+        {
+            "delivery_id": 205,
+            "route_id": 7,
+            "latitude": -33.0556,
+            "longitude": -71.41563,
+            "distance_to_warehouse_km": 19.0843,
+            "distance_to_centroid_km": 9.4026
+        },
+        {
+            "delivery_id": 206,
+            "route_id": 7,
+            "latitude": -33.0444,
+            "longitude": -71.36208,
+            "distance_to_warehouse_km": 24.0405,
+            "distance_to_centroid_km": 13.5339
+        },
+        {
+            "delivery_id": 207,
+            "route_id": 7,
+            "latitude": -33.0487,
+            "longitude": -71.3608,
+            "distance_to_warehouse_km": 24.1626,
+            "distance_to_centroid_km": 13.7829
+        },
+        {
+            "delivery_id": 208,
+            "route_id": 7,
+            "latitude": -33.04567,
+            "longitude": -71.36788,
+            "distance_to_warehouse_km": 23.4997,
+            "distance_to_centroid_km": 13.0534
+        },
+        {
+            "delivery_id": 209,
+            "route_id": 7,
+            "latitude": -33.04289,
+            "longitude": -71.36566,
+            "distance_to_warehouse_km": 23.708,
+            "distance_to_centroid_km": 13.1677
+        },
+        {
+            "delivery_id": 210,
+            "route_id": 7,
+            "latitude": -33.04988,
+            "longitude": -71.36012,
+            "distance_to_warehouse_km": 24.2284,
+            "distance_to_centroid_km": 13.8827
+        },
+        {
+            "delivery_id": 211,
+            "route_id": 8,
+            "latitude": -33.02332,
+            "longitude": -71.55379,
+            "distance_to_warehouse_km": 6.6262,
+            "distance_to_centroid_km": 1.3572
+        },
+        {
+            "delivery_id": 212,
+            "route_id": 8,
+            "latitude": -33.02316,
+            "longitude": -71.51722,
+            "distance_to_warehouse_km": 9.8841,
+            "distance_to_centroid_km": 2.0588
+        },
+        {
+            "delivery_id": 213,
+            "route_id": 8,
+            "latitude": -33.02438,
+            "longitude": -71.55652,
+            "distance_to_warehouse_km": 6.3462,
+            "distance_to_centroid_km": 1.6084
+        },
+        {
+            "delivery_id": 214,
+            "route_id": 8,
+            "latitude": -33.02797,
+            "longitude": -71.52626,
+            "distance_to_warehouse_km": 8.941,
+            "distance_to_centroid_km": 1.2838
+        },
+        {
+            "delivery_id": 215,
+            "route_id": 8,
+            "latitude": -33.01968,
+            "longitude": -71.55692,
+            "distance_to_warehouse_km": 6.5197,
+            "distance_to_centroid_km": 1.7201
+        },
+        {
+            "delivery_id": 216,
+            "route_id": 8,
+            "latitude": -33.02278,
+            "longitude": -71.52201,
+            "distance_to_warehouse_km": 9.4629,
+            "distance_to_centroid_km": 1.6167
+        },
+        {
+            "delivery_id": 217,
+            "route_id": 8,
+            "latitude": -33.0234,
+            "longitude": -71.55982,
+            "distance_to_warehouse_km": 6.1025,
+            "distance_to_centroid_km": 1.9179
+        },
+        {
+            "delivery_id": 218,
+            "route_id": 8,
+            "latitude": -33.02773,
+            "longitude": -71.52398,
+            "distance_to_warehouse_km": 9.1544,
+            "distance_to_centroid_km": 1.4789
+        },
+        {
+            "delivery_id": 219,
+            "route_id": 8,
+            "latitude": -33.02775,
+            "longitude": -71.5561,
+            "distance_to_warehouse_km": 6.2578,
+            "distance_to_centroid_km": 1.6184
+        },
+        {
+            "delivery_id": 220,
+            "route_id": 8,
+            "latitude": -33.0234,
+            "longitude": -71.5229,
+            "distance_to_warehouse_km": 9.3649,
+            "distance_to_centroid_km": 1.5286
+        },
+        {
+            "delivery_id": 221,
+            "route_id": 8,
+            "latitude": -33.01979,
+            "longitude": -71.55504,
+            "distance_to_warehouse_km": 6.673,
+            "distance_to_centroid_km": 1.5494
+        },
+        {
+            "delivery_id": 222,
+            "route_id": 8,
+            "latitude": -33.02771,
+            "longitude": -71.51762,
+            "distance_to_warehouse_km": 9.7353,
+            "distance_to_centroid_km": 2.0561
+        },
+        {
+            "delivery_id": 223,
+            "route_id": 8,
+            "latitude": -33.02875,
+            "longitude": -71.55429,
+            "distance_to_warehouse_km": 6.3862,
+            "distance_to_centroid_km": 1.4896
+        },
+        {
+            "delivery_id": 224,
+            "route_id": 8,
+            "latitude": -33.02778,
+            "longitude": -71.52011,
+            "distance_to_warehouse_km": 9.5063,
+            "distance_to_centroid_km": 1.8304
+        },
+        {
+            "delivery_id": 225,
+            "route_id": 8,
+            "latitude": -33.02384,
+            "longitude": -71.55197,
+            "distance_to_warehouse_km": 6.7641,
+            "distance_to_centroid_km": 1.1847
+        },
+        {
+            "delivery_id": 226,
+            "route_id": 8,
+            "latitude": -33.02373,
+            "longitude": -71.5236,
+            "distance_to_warehouse_km": 9.2924,
+            "distance_to_centroid_km": 1.4617
+        },
+        {
+            "delivery_id": 227,
+            "route_id": 8,
+            "latitude": -33.02674,
+            "longitude": -71.5562,
+            "distance_to_warehouse_km": 6.2844,
+            "distance_to_centroid_km": 1.6038
+        },
+        {
+            "delivery_id": 228,
+            "route_id": 8,
+            "latitude": -33.02639,
+            "longitude": -71.52125,
+            "distance_to_warehouse_km": 9.435,
+            "distance_to_centroid_km": 1.6977
+        },
+        {
+            "delivery_id": 229,
+            "route_id": 8,
+            "latitude": -33.0252,
+            "longitude": -71.5571,
+            "distance_to_warehouse_km": 6.2632,
+            "distance_to_centroid_km": 1.6662
+        },
+        {
+            "delivery_id": 230,
+            "route_id": 8,
+            "latitude": -33.02023,
+            "longitude": -71.52553,
+            "distance_to_warehouse_km": 9.2273,
+            "distance_to_centroid_km": 1.3543
+        },
+        {
+            "delivery_id": 231,
+            "route_id": 8,
+            "latitude": -33.0276,
+            "longitude": -71.55278,
+            "distance_to_warehouse_km": 6.558,
+            "distance_to_centroid_km": 1.3156
+        },
+        {
+            "delivery_id": 232,
+            "route_id": 8,
+            "latitude": -33.02022,
+            "longitude": -71.52068,
+            "distance_to_warehouse_km": 9.6601,
+            "distance_to_centroid_km": 1.7883
+        },
+        {
+            "delivery_id": 233,
+            "route_id": 8,
+            "latitude": -33.02514,
+            "longitude": -71.5598,
+            "distance_to_warehouse_km": 6.0306,
+            "distance_to_centroid_km": 1.917
+        },
+        {
+            "delivery_id": 234,
+            "route_id": 8,
+            "latitude": -33.01931,
+            "longitude": -71.5187,
+            "distance_to_warehouse_km": 9.866,
+            "distance_to_centroid_km": 1.9928
+        },
+        {
+            "delivery_id": 235,
+            "route_id": 8,
+            "latitude": -33.02005,
+            "longitude": -71.55933,
+            "distance_to_warehouse_km": 6.2995,
+            "distance_to_centroid_km": 1.926
+        },
+        {
+            "delivery_id": 236,
+            "route_id": 8,
+            "latitude": -33.02649,
+            "longitude": -71.52553,
+            "distance_to_warehouse_km": 9.0436,
+            "distance_to_centroid_km": 1.3063
+        },
+        {
+            "delivery_id": 237,
+            "route_id": 8,
+            "latitude": -33.02407,
+            "longitude": -71.55619,
+            "distance_to_warehouse_km": 6.3874,
+            "distance_to_centroid_km": 1.5776
+        },
+        {
+            "delivery_id": 238,
+            "route_id": 8,
+            "latitude": -33.0232,
+            "longitude": -71.52343,
+            "distance_to_warehouse_km": 9.3229,
+            "distance_to_centroid_km": 1.4808
+        },
+        {
+            "delivery_id": 239,
+            "route_id": 8,
+            "latitude": -33.02158,
+            "longitude": -71.55698,
+            "distance_to_warehouse_km": 6.4261,
+            "distance_to_centroid_km": 1.6764
+        },
+        {
+            "delivery_id": 240,
+            "route_id": 8,
+            "latitude": -33.02411,
+            "longitude": -71.52643,
+            "distance_to_warehouse_km": 9.0265,
+            "distance_to_centroid_km": 1.197
+        },
+        {
+            "delivery_id": 241,
+            "route_id": 9,
+            "latitude": -32.92727,
+            "longitude": -71.52241,
+            "distance_to_warehouse_km": 15.9444,
+            "distance_to_centroid_km": 3.4877
+        },
+        {
+            "delivery_id": 242,
+            "route_id": 9,
+            "latitude": -32.93056,
+            "longitude": -71.52164,
+            "distance_to_warehouse_km": 15.6873,
+            "distance_to_centroid_km": 3.1184
+        },
+        {
+            "delivery_id": 243,
+            "route_id": 9,
+            "latitude": -32.93262,
+            "longitude": -71.52109,
+            "distance_to_warehouse_km": 15.5324,
+            "distance_to_centroid_km": 2.8854
+        },
+        {
+            "delivery_id": 244,
+            "route_id": 9,
+            "latitude": -32.93417,
+            "longitude": -71.51877,
+            "distance_to_warehouse_km": 15.5246,
+            "distance_to_centroid_km": 2.6535
+        },
+        {
+            "delivery_id": 245,
+            "route_id": 9,
+            "latitude": -32.93504,
+            "longitude": -71.51919,
+            "distance_to_warehouse_km": 15.424,
+            "distance_to_centroid_km": 2.573
+        },
+        {
+            "delivery_id": 246,
+            "route_id": 9,
+            "latitude": -32.93807,
+            "longitude": -71.51883,
+            "distance_to_warehouse_km": 15.1791,
+            "distance_to_centroid_km": 2.2438
+        },
+        {
+            "delivery_id": 247,
+            "route_id": 9,
+            "latitude": -32.93965,
+            "longitude": -71.51687,
+            "distance_to_warehouse_km": 15.1571,
+            "distance_to_centroid_km": 2.0189
+        },
+        {
+            "delivery_id": 248,
+            "route_id": 9,
+            "latitude": -32.94154,
+            "longitude": -71.5169,
+            "distance_to_warehouse_km": 14.9934,
+            "distance_to_centroid_km": 1.8199
+        },
+        {
+            "delivery_id": 249,
+            "route_id": 9,
+            "latitude": -32.94482,
+            "longitude": -71.51632,
+            "distance_to_warehouse_km": 14.7507,
+            "distance_to_centroid_km": 1.459
+        },
+        {
+            "delivery_id": 250,
+            "route_id": 9,
+            "latitude": -32.94625,
+            "longitude": -71.51444,
+            "distance_to_warehouse_km": 14.7474,
+            "distance_to_centroid_km": 1.2508
+        },
+        {
+            "delivery_id": 251,
+            "route_id": 9,
+            "latitude": -32.94702,
+            "longitude": -71.5136,
+            "distance_to_warehouse_km": 14.7364,
+            "distance_to_centroid_km": 1.1472
+        },
+        {
+            "delivery_id": 252,
+            "route_id": 9,
+            "latitude": -32.9505,
+            "longitude": -71.51336,
+            "distance_to_warehouse_km": 14.4679,
+            "distance_to_centroid_km": 0.7704
+        },
+        {
+            "delivery_id": 253,
+            "route_id": 9,
+            "latitude": -32.95255,
+            "longitude": -71.5129,
+            "distance_to_warehouse_km": 14.333,
+            "distance_to_centroid_km": 0.5428
+        },
+        {
+            "delivery_id": 254,
+            "route_id": 9,
+            "latitude": -32.95321,
+            "longitude": -71.51172,
+            "distance_to_warehouse_km": 14.3576,
+            "distance_to_centroid_km": 0.4369
+        },
+        {
+            "delivery_id": 255,
+            "route_id": 9,
+            "latitude": -32.95605,
+            "longitude": -71.5117,
+            "distance_to_warehouse_km": 14.1361,
+            "distance_to_centroid_km": 0.1519
+        },
+        {
+            "delivery_id": 256,
+            "route_id": 9,
+            "latitude": -32.95849,
+            "longitude": -71.5105,
+            "distance_to_warehouse_km": 14.0287,
+            "distance_to_centroid_km": 0.1643
+        },
+        {
+            "delivery_id": 257,
+            "route_id": 9,
+            "latitude": -32.95997,
+            "longitude": -71.50847,
+            "distance_to_warehouse_km": 14.0558,
+            "distance_to_centroid_km": 0.3815
+        },
+        {
+            "delivery_id": 258,
+            "route_id": 9,
+            "latitude": -32.96202,
+            "longitude": -71.50844,
+            "distance_to_warehouse_km": 13.9055,
+            "distance_to_centroid_km": 0.5903
+        },
+        {
+            "delivery_id": 259,
+            "route_id": 9,
+            "latitude": -32.9632,
+            "longitude": -71.50725,
+            "distance_to_warehouse_km": 13.9025,
+            "distance_to_centroid_km": 0.7535
+        },
+        {
+            "delivery_id": 260,
+            "route_id": 9,
+            "latitude": -32.96651,
+            "longitude": -71.50777,
+            "distance_to_warehouse_km": 13.6271,
+            "distance_to_centroid_km": 1.0873
+        },
+        {
+            "delivery_id": 261,
+            "route_id": 9,
+            "latitude": -32.96788,
+            "longitude": -71.50527,
+            "distance_to_warehouse_km": 13.7111,
+            "distance_to_centroid_km": 1.3047
+        },
+        {
+            "delivery_id": 262,
+            "route_id": 9,
+            "latitude": -32.96921,
+            "longitude": -71.50439,
+            "distance_to_warehouse_km": 13.6836,
+            "distance_to_centroid_km": 1.4728
+        },
+        {
+            "delivery_id": 263,
+            "route_id": 9,
+            "latitude": -32.97181,
+            "longitude": -71.50374,
+            "distance_to_warehouse_km": 13.5557,
+            "distance_to_centroid_km": 1.7636
+        },
+        {
+            "delivery_id": 264,
+            "route_id": 9,
+            "latitude": -32.97328,
+            "longitude": -71.50422,
+            "distance_to_warehouse_km": 13.4221,
+            "distance_to_centroid_km": 1.9026
+        },
+        {
+            "delivery_id": 265,
+            "route_id": 9,
+            "latitude": -32.97575,
+            "longitude": -71.50241,
+            "distance_to_warehouse_km": 13.3984,
+            "distance_to_centroid_km": 2.2173
+        },
+        {
+            "delivery_id": 266,
+            "route_id": 9,
+            "latitude": -32.97857,
+            "longitude": -71.50249,
+            "distance_to_warehouse_km": 13.2144,
+            "distance_to_centroid_km": 2.512
+        },
+        {
+            "delivery_id": 267,
+            "route_id": 9,
+            "latitude": -32.98081,
+            "longitude": -71.50133,
+            "distance_to_warehouse_km": 13.1674,
+            "distance_to_centroid_km": 2.7822
+        },
+        {
+            "delivery_id": 268,
+            "route_id": 9,
+            "latitude": -32.9828,
+            "longitude": -71.50101,
+            "distance_to_warehouse_km": 13.074,
+            "distance_to_centroid_km": 3.0021
+        },
+        {
+            "delivery_id": 269,
+            "route_id": 9,
+            "latitude": -32.98483,
+            "longitude": -71.50022,
+            "distance_to_warehouse_km": 13.019,
+            "distance_to_centroid_km": 3.2396
+        },
+        {
+            "delivery_id": 270,
+            "route_id": 9,
+            "latitude": -32.98595,
+            "longitude": -71.4991,
+            "distance_to_warehouse_km": 13.0455,
+            "distance_to_centroid_km": 3.3901
+        },
+        {
+            "delivery_id": 271,
+            "route_id": 10,
+            "latitude": -32.92406,
+            "longitude": -71.51833,
+            "distance_to_warehouse_km": 16.4552,
+            "distance_to_centroid_km": 2.5943
+        },
+        {
+            "delivery_id": 272,
+            "route_id": 10,
+            "latitude": -32.93022,
+            "longitude": -71.52449,
+            "distance_to_warehouse_km": 15.5643,
+            "distance_to_centroid_km": 2.3319
+        },
+        {
+            "delivery_id": 273,
+            "route_id": 10,
+            "latitude": -32.92753,
+            "longitude": -71.52657,
+            "distance_to_warehouse_km": 15.7021,
+            "distance_to_centroid_km": 2.6835
+        },
+        {
+            "delivery_id": 274,
+            "route_id": 10,
+            "latitude": -32.93249,
+            "longitude": -71.52204,
+            "distance_to_warehouse_km": 15.4916,
+            "distance_to_centroid_km": 1.9913
+        },
+        {
+            "delivery_id": 275,
+            "route_id": 10,
+            "latitude": -32.92797,
+            "longitude": -71.52086,
+            "distance_to_warehouse_km": 15.9639,
+            "distance_to_centroid_km": 2.3203
+        },
+        {
+            "delivery_id": 276,
+            "route_id": 10,
+            "latitude": -32.92805,
+            "longitude": -71.52174,
+            "distance_to_warehouse_km": 15.9092,
+            "distance_to_centroid_km": 2.3585
+        },
+        {
+            "delivery_id": 277,
+            "route_id": 10,
+            "latitude": -32.93068,
+            "longitude": -71.51879,
+            "distance_to_warehouse_km": 15.8335,
+            "distance_to_centroid_km": 1.9623
+        },
+        {
+            "delivery_id": 278,
+            "route_id": 10,
+            "latitude": -32.93122,
+            "longitude": -71.52433,
+            "distance_to_warehouse_km": 15.4818,
+            "distance_to_centroid_km": 2.2415
+        },
+        {
+            "delivery_id": 279,
+            "route_id": 10,
+            "latitude": -32.93119,
+            "longitude": -71.52455,
+            "distance_to_warehouse_km": 15.4727,
+            "distance_to_centroid_km": 2.2584
+        },
+        {
+            "delivery_id": 280,
+            "route_id": 10,
+            "latitude": -32.92815,
+            "longitude": -71.51902,
+            "distance_to_warehouse_km": 16.0477,
+            "distance_to_centroid_km": 2.2144
+        },
+        {
+            "delivery_id": 281,
+            "route_id": 10,
+            "latitude": -32.9311,
+            "longitude": -71.52597,
+            "distance_to_warehouse_km": 15.4051,
+            "distance_to_centroid_km": 2.361
+        },
+        {
+            "delivery_id": 282,
+            "route_id": 10,
+            "latitude": -32.93018,
+            "longitude": -71.51835,
+            "distance_to_warehouse_km": 15.9026,
+            "distance_to_centroid_km": 1.9878
+        },
+        {
+            "delivery_id": 283,
+            "route_id": 10,
+            "latitude": -32.92846,
+            "longitude": -71.52247,
+            "distance_to_warehouse_km": 15.8327,
+            "distance_to_centroid_km": 2.3611
+        },
+        {
+            "delivery_id": 284,
+            "route_id": 10,
+            "latitude": -32.932,
+            "longitude": -71.52224,
+            "distance_to_warehouse_km": 15.5247,
+            "distance_to_centroid_km": 2.0439
+        },
+        {
+            "delivery_id": 285,
+            "route_id": 10,
+            "latitude": -32.92456,
+            "longitude": -71.5261,
+            "distance_to_warehouse_km": 16.0019,
+            "distance_to_centroid_km": 2.9113
+        },
+        {
+            "delivery_id": 286,
+            "route_id": 10,
+            "latitude": -32.92654,
+            "longitude": -71.52016,
+            "distance_to_warehouse_km": 16.1314,
+            "distance_to_centroid_km": 2.4226
+        },
+        {
+            "delivery_id": 287,
+            "route_id": 10,
+            "latitude": -32.9276,
+            "longitude": -71.5215,
+            "distance_to_warehouse_km": 15.963,
+            "distance_to_centroid_km": 2.3874
+        },
+        {
+            "delivery_id": 288,
+            "route_id": 10,
+            "latitude": -32.92586,
+            "longitude": -71.52105,
+            "distance_to_warehouse_km": 16.1456,
+            "distance_to_centroid_km": 2.5296
+        },
+        {
+            "delivery_id": 289,
+            "route_id": 10,
+            "latitude": -32.92518,
+            "longitude": -71.52238,
+            "distance_to_warehouse_km": 16.1374,
+            "distance_to_centroid_km": 2.6584
+        },
+        {
+            "delivery_id": 290,
+            "route_id": 10,
+            "latitude": -32.93157,
+            "longitude": -71.52008,
+            "distance_to_warehouse_km": 15.6823,
+            "distance_to_centroid_km": 1.9507
+        },
+        {
+            "delivery_id": 291,
+            "route_id": 10,
+            "latitude": -32.93005,
+            "longitude": -71.51923,
+            "distance_to_warehouse_km": 15.8654,
+            "distance_to_centroid_km": 2.0435
+        },
+        {
+            "delivery_id": 292,
+            "route_id": 10,
+            "latitude": -32.92383,
+            "longitude": -71.52148,
+            "distance_to_warehouse_km": 16.3088,
+            "distance_to_centroid_km": 2.7459
+        },
+        {
+            "delivery_id": 293,
+            "route_id": 10,
+            "latitude": -32.92926,
+            "longitude": -71.52589,
+            "distance_to_warehouse_km": 15.578,
+            "distance_to_centroid_km": 2.4992
+        },
+        {
+            "delivery_id": 294,
+            "route_id": 10,
+            "latitude": -32.92719,
+            "longitude": -71.51708,
+            "distance_to_warehouse_km": 16.2405,
+            "distance_to_centroid_km": 2.2286
+        },
+        {
+            "delivery_id": 295,
+            "route_id": 10,
+            "latitude": -32.92683,
+            "longitude": -71.52233,
+            "distance_to_warehouse_km": 15.9889,
+            "distance_to_centroid_km": 2.5016
+        },
+        {
+            "delivery_id": 296,
+            "route_id": 10,
+            "latitude": -32.93168,
+            "longitude": -71.5189,
+            "distance_to_warehouse_km": 15.7381,
+            "distance_to_centroid_km": 1.8758
+        },
+        {
+            "delivery_id": 297,
+            "route_id": 10,
+            "latitude": -33.05404,
+            "longitude": -71.41488,
+            "distance_to_warehouse_km": 19.1443,
+            "distance_to_centroid_km": 14.8346
+        },
+        {
+            "delivery_id": 298,
+            "route_id": 10,
+            "latitude": -33.05546,
+            "longitude": -71.41161,
+            "distance_to_warehouse_km": 19.4573,
+            "distance_to_centroid_km": 15.1411
+        },
+        {
+            "delivery_id": 299,
+            "route_id": 10,
+            "latitude": -33.05449,
+            "longitude": -71.41367,
+            "distance_to_warehouse_km": 19.2596,
+            "distance_to_centroid_km": 14.941
+        },
+        {
+            "delivery_id": 300,
+            "route_id": 10,
+            "latitude": -33.05772,
+            "longitude": -71.41539,
+            "distance_to_warehouse_km": 19.1224,
+            "distance_to_centroid_km": 15.1422
+        }
+    ],
+    "map_files": {
+        "overview": "map_overview.png",
+        "routes": [
+            "map_route_ruta-a.png",
+            "map_route_ruta-b.png",
+            "map_route_ruta-c.png",
+            "map_route_ruta-d.png",
+            "map_route_ruta-e.png",
+            "map_route_ruta-a.png",
+            "map_route_ruta-b.png",
+            "map_route_ruta-c.png",
+            "map_route_ruta-d.png",
+            "map_route_ruta-e.png"
+        ],
+        "anomalies": "map_anomalies.png"
+    },
+    "files": {
+        "json": "evaluations\/20260619_162157\/evaluation.json",
+        "csv": "evaluations\/20260619_162157\/evaluation.csv",
+        "deliveries_csv": "evaluations\/20260619_162157\/deliveries.csv",
+        "maps": {
+            "overview": "evaluations\/20260619_162157\/map_overview.png",
+            "routes": [
+                "evaluations\/20260619_162157\/map_route_ruta-a.png",
+                "evaluations\/20260619_162157\/map_route_ruta-b.png",
+                "evaluations\/20260619_162157\/map_route_ruta-c.png",
+                "evaluations\/20260619_162157\/map_route_ruta-d.png",
+                "evaluations\/20260619_162157\/map_route_ruta-e.png",
+                "evaluations\/20260619_162157\/map_route_ruta-a.png",
+                "evaluations\/20260619_162157\/map_route_ruta-b.png",
+                "evaluations\/20260619_162157\/map_route_ruta-c.png",
+                "evaluations\/20260619_162157\/map_route_ruta-d.png",
+                "evaluations\/20260619_162157\/map_route_ruta-e.png"
+            ],
+            "anomalies": "evaluations\/20260619_162157\/map_anomalies.png"
+        }
+    }
+}

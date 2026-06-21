@@ -76,10 +76,11 @@ class MeasurementService
 
         $mapFiles = [];
 
+        if ($mapOutputPath !== null && !is_dir($mapOutputPath)) {
+            mkdir($mapOutputPath, 0755, true);
+        }
+
         if ($this->mapRenderer !== null && $mapOutputPath !== null) {
-            if (!is_dir($mapOutputPath)) {
-                mkdir($mapOutputPath, 0755, true);
-            }
 
             $routeMapData = [];
             foreach ($routes as $route) {

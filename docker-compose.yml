@@ -68,15 +68,14 @@ services:
       - backend
 
   osrm-prepare:
-    image: ghcr.io/project-osrm/osrm-backend:v5.27.1
+    build:
+      context: ./backend/docker/osrm
+      dockerfile: Dockerfile.prepare
     container_name: lastmile-osrm-prepare
     profiles:
       - tools
     volumes:
       - osrm-data:/data
-      - ./backend/docker/osrm/scripts:/scripts
-      - ./backend/docker/osrm/profiles:/scripts/profiles
-    entrypoint: ["/bin/bash", "/scripts/download-osm.sh"]
 
   osrm:
     build:
@@ -84,15 +83,15 @@ services:
       dockerfile: Dockerfile
     container_name: lastmile-osrm
     ports:
-      - "5000:5000"
+      - "5001:5000"
     volumes:
       - osrm-data:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      test: ["CMD", "curl", "-sf", "http://localhost:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05?overview=false"]
       interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 10s
+      retries: 5
+      start_period: 15s
 
 volumes:
   pgdata:

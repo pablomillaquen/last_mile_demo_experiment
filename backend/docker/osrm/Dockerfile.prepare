@@ -1,0 +1,15 @@
+FROM ghcr.io/project-osrm/osrm-backend:v5.27.1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    wget \
+    osmium-tool \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY scripts/ /scripts/
+COPY profiles/car.lua /usr/local/share/osrm/profiles/car-lastmile.lua
+
+RUN chmod +x /scripts/download-osm.sh /scripts/preprocess.sh
+
+ENTRYPOINT ["/bin/bash"]

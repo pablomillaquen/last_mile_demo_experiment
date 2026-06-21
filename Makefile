@@ -14,11 +14,11 @@ prepare-osrm:
 	@echo "=== Paso 1/2: Descargar datos OSM y extraer bounding box Gran Valparaíso ==="
 	@echo "    Bounding box: -71.70,-33.15,-71.20,-32.90"
 	@echo "    Esto puede tomar unos minutos (dependiendo de la conexión)..."
-	docker compose run --rm osrm-prepare
+	docker compose run --rm osrm-prepare /scripts/download-osm.sh
 	@echo ""
 	@echo "=== Paso 2/2: Preprocesar grafo OSRM (osrm-extract, osrm-contract, osrm-partition, osrm-customize) ==="
 	@echo "    Tiempo estimado: ~7 minutos. RAM peak: ~1 GB."
-	docker compose run --rm osrm-prepare /bin/bash /scripts/preprocess.sh
+	docker compose run --rm osrm-prepare /scripts/preprocess.sh
 	@echo ""
 	@echo "=== OSRM listo! Inicia el servidor con: make up ==="
 	@echo "    docker compose up -d osrm"

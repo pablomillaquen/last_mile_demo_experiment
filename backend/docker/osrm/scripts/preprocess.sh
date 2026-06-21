@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PBF_FILE="/data/valparaiso.osm.pbf"
-PROFILE="${1:-/scripts/profiles/car.lua}"
+PROFILE="${1:-/usr/local/share/osrm/profiles/car-lastmile.lua}"
 DATA_DIR="/data"
 
 echo "[preprocess] Iniciando preprocesamiento de $PBF_FILE"

@@ -80,3 +80,70 @@ Cada hallazgo tiene:
 **Impacto**: Abre línea de investigación en micro-ruteo local como estrategia de optimización.
 
 **Preguntas que responde**: PI-005.
+
+---
+
+## H007
+
+**Enunciado**: Las distancias sobre red vial son sistemáticamente mayores que las geodésicas en un factor de 1.62 (M001) para Gran Valparaíso, con variación por ruta entre 1.42 y 2.49 (M002).
+
+**Evidencia**: SPEC-006, Exp002. 6 pares de evaluaciones (12 evaluaciones) comparando modo geodésico vs vial con OSRM.
+
+**Impacto**: El uso de distancia geodésica subestima sistemáticamente los costos operacionales reales. Para planificación operativa se debe usar modo vial. Modo geodésico es aceptable solo para prototipado rápido.
+
+**Preguntas que responde**: PI-006, PI-007, PI-008.
+
+---
+
+## H008
+
+**Enunciado**: Las rutas que cruzan la bahía de Valparaíso presentan distorsión territorial crítica (TDI > 2.0, M006). En línea recta son ~23 km pero por carretera deben rodear toda la bahía (~58 km), más del doble.
+
+**Evidencia**: SPEC-006, Exp002. Ruta D en ambas réplicas muestra TDI de 2.485 y 2.475.
+
+**Impacto**: La geografía de Valparaíso (bahía, cerros, quebradas) genera distorsiones extremas que deben considerarse en el diseño de rutas. Las asignaciones geodésicas para sectores al otro lado de la bahía son inviables en la práctica.
+
+**Preguntas que responde**: PI-007, PI-011.
+
+---
+
+## H009
+
+**Enunciado**: En Gran Valparaíso, el 100% de las rutas tienen distorsión territorial anormal (TDI > 1.2). El 60% presenta distorsión alta o crítica.
+
+**Evidencia**: SPEC-006, Exp002. M006: 0% normal, 40% elevada, 40% alta, 20% crítica.
+
+**Impacto**: Ninguna ruta en Valparaíso puede considerarse libre de distorsión vial. La red vial afecta significativamente a todas las zonas del área metropolitana.
+
+**Preguntas que responde**: PI-011.
+
+---
+
+## H010
+
+**Enunciado**: El modo vial es ~330x más lento que el geodésico (~82s vs ~0.25s por evaluación) debido a ~1500 llamadas HTTP a OSRM.
+
+**Evidencia**: SPEC-006, Exp002. Tiempos de ejecución registrados en evaluaciones 24–35.
+
+**Impacto**: Para uso interactivo, se necesita optimización (caching, consultas por lote, o pre-cálculo). El modo geodésico es preferible para exploración iterativa.
+
+**Preguntas que responde**: PI-012.
+
+---
+
+## V001–V006: Validaciones de Hallazgos Baseline con Red Vial
+
+Todos los hallazgos H001–H006 del baseline (modo geodésico) fueron re-evaluados con modo vial. Ninguno se invalida.
+
+| ID | Hallazgo Original | Estado | Evidencia |
+|----|-------------------|--------|-----------|
+| V001 | H001 (Balance) | **Válido** — balance_index = 1.0 en ambos modos | Exp002, Evaluaciones 24–35 |
+| V002 | H002 (CV) | **Válido** — CV < 0.1 en modo vial | Exp002, Evaluaciones 24–35 |
+| V003 | H003 (Invarianza) | **Válido** — cobertura territorial idéntica | Exp002, Evaluaciones 24–35 |
+| V004 | H004 (Threshold) | **Válido** — detección de anomalías no afectada | Exp002, Evaluaciones 24–35 |
+| V005 | H005 (Dispersión) | **Válido** — estructura de clusters idéntica | Exp002, Evaluaciones 24–35 |
+| V006 | H006 (Micro-ruteo) | **Válido** — entregas cercanas en sector B | Exp002, Evaluaciones 24–35 |
+
+**Implicancia**: Las conclusiones cualitativas del baseline (balance, invarianza, dispersión, anomalías) son robustas al cambio de modo de distancia. La estructura de hallazgos del sistema es estable.
+
+**Preguntas que responde**: PI-010.

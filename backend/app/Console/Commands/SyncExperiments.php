@@ -61,8 +61,14 @@ class SyncExperiments extends Command
                 'author' => $json['author'] ?? null,
             ];
 
+            $immutable = $json['immutable'] ?? false;
+
             $experiment = Experiment::where('identifier', $identifier)->first();
             if ($experiment) {
+                if ($immutable) {
+                    $warnings[] = "Experiment '{$identifier}' is immutable — skipping update";
+                    continue;
+                }
                 $experiment->update($data);
                 $updated++;
             } else {

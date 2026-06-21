@@ -125,3 +125,21 @@ Formato basado en ADR (Architecture Decision Records).
 **Impacto**: Las evaluaciones ya no dependen de IDs específicos de Exp001. Cualquier par de evaluaciones con mismos parámetros (excepto distance_mode) se emparejará automáticamente. La trazabilidad hacia Exp001 es informativa mediante `baseline_reference`, no funcional.
 
 **Fecha**: 2026-06-20
+
+---
+
+## D009
+
+**Decisión**: Preservar artefactos experimentales como fuente primaria de evidencia, versionados en git junto al experimento.
+
+**Contexto**: BUG-001 evidenció que los experimentos pueden quedar huérfanos si solo existen en BD y esta se reconstruye. Las evaluaciones históricas de Exp001 sobrevivieron como JSON en el contenedor Docker, pero no estaban protegidas contra pérdida.
+
+**Razón**:
+- Los artefactos (evaluation.json, deliveries.csv, route_metrics) se almacenan ahora en `experiments/<experimento>/artifacts/eval-<id>/`.
+- El comando `evaluations:import` puede reconstruir registros en BD desde estos JSON.
+- El flag `"immutable": true` en experiment.json evita que `experiments:sync` modifique experimentos históricos.
+- Los experimentos históricos pueden reconstruirse incluso después de migraciones o pérdida de BD.
+
+**Impacto**: Los experimentos son ahora auto-contenidos (JSON + CSV + reporte + experiment.json en un mismo directorio). La BD es un caché de lectura; el filesystem es la fuente de verdad. Cada evaluación ocupa ~100 KB en el repositorio (aceptable para el volumen actual).
+
+**Fecha**: 2026-06-21

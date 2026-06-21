@@ -31,6 +31,14 @@ class DistanceService
 
         $result = $this->osrm->route($lng1, $lat1, $lng2, $lat2);
 
+        if ($result['distance_km'] === null) {
+            return [
+                'distance_km' => HaversineService::calculate($lat1, $lng1, $lat2, $lng2),
+                'duration_min' => null,
+                'mode' => 'geodesic',
+            ];
+        }
+
         return [
             'distance_km' => $result['distance_km'],
             'duration_min' => $result['duration_min'],

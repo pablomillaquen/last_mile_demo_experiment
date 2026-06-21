@@ -3,7 +3,7 @@ Active spec: specs/006-road-network-integration/ (SPEC-006)
 Completed specs: specs/003-results-measurement/ (SPEC-003), specs/004-experiment-reporting/ (SPEC-004), specs/005-research-publication/ (SPEC-005)
 Experiments: experiments/001-baseline-comparison/ (baseline analysis), experiments/002-road-network/ (geodesic vs vial)
 Research: research/ (hallazgos, preguntas, decisiones, contribuciones, evidence-matrix — cross-spec)
-Current state: T001–T023 implementados (Docker OSRM, DistanceService, MeasurementService raw metrics, EvaluationController, Exp002 skeleton). Pendientes: T024–T031 (requieren ejecución real de Exp002 con OSRM funcionando), T037–T040 (verificación final).
+Current state: T001–T035 completados. Exp002 ejecutado y reportado (M001–M006 calculados). H007–H010 y V001–V006 documentados en research/. Bugs corregidos: GD library en backend Docker, DistanceService singleton, output directory creation. Pendientes: T037–T040 (verificación final: edge cases, map rendering, quickstart scenarios 1–8, merge to main).
 
 Stack: Laravel 12 (PHP 8.2) + NextJS 14 (TypeScript) + PostgreSQL 16 + Leaflet + OpenStreetMap + OSRM
 Orquestación: Docker Compose

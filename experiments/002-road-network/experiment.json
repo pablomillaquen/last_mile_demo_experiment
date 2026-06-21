@@ -1,12 +1,20 @@
 {
     "identifier": "002-road-network",
-    "name": "Comparación Geodésica vs Vial",
-    "objective": "Cuantificar el impacto de reemplazar distancias geodésicas por distancias sobre red vial real en las métricas operacionales del sistema.",
-    "hypothesis": "H1: La red vial modifica significativamente las métricas operacionales.",
+    "name": "Comparaci\u00f3n Geod\u00e9sica vs Vial",
+    "objective": "Cuantificar el impacto de reemplazar distancias geod\u00e9sicas por distancias sobre red vial real en las m\u00e9tricas operacionales del sistema.",
+    "hypothesis": "H1: La red vial modifica significativamente las m\u00e9tricas operacionales.",
     "baseline_reference": {
         "experiment_id": 1,
-        "description": "Evaluaciones originales del experimento baseline (modo geodésico)"
+        "description": "Evaluaciones originales del experimento baseline (modo geod\u00e9sico)"
     },
-    "evaluation_pairs": [],
+    "evaluation_ids": [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+    "evaluation_pairs": [
+        {"geodesic_id": 2, "vial_id": 8,  "parameters_hash": "34153b966cc585620f77bc849bf05a2b"},
+        {"geodesic_id": 3, "vial_id": 9,  "parameters_hash": "5b9037ee23c8b3f4a89dc94ae27e30b3"},
+        {"geodesic_id": 4, "vial_id": 10, "parameters_hash": "a7e3176d43ad0e0b5c36b0c2c42fbf57"},
+        {"geodesic_id": 5, "vial_id": 11, "parameters_hash": "b44f5b990712ff0f91e661467dce108e"},
+        {"geodesic_id": 6, "vial_id": 12, "parameters_hash": "3ff8904479d7969feb68834c75f40a85"},
+        {"geodesic_id": 7, "vial_id": 13, "parameters_hash": "917b8a66a8b41cce3fe963965aef907f"}
+    ],
     "author": "Sistema"
 }

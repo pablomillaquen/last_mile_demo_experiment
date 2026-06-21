@@ -12,10 +12,16 @@
 | H004 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 (Evaluación 5) |
 | H005 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 |
 | H006 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 (Evaluación 2) |
-| H007 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
-| H008 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
-| H009 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
-| H010 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
+| H007 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 (M001 = 1.62) |
+| H008 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 (M006, Ruta D crítica 2.49) |
+| H009 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 (0% rutas con TDI normal) |
+| H010 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 (modo vial 330x más lento) |
+| V001 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H001 persiste) |
+| V002 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H002 persiste) |
+| V003 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H003 persiste) |
+| V004 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H004 persiste) |
+| V005 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H005 persiste) |
+| V006 | Validación | `research/hallazgos.md` | SPEC-006, Exp002 (H006 persiste) |
 | PI-001 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H001, H005 |
 | PI-002 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H004 |
 | PI-003 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H003 |
@@ -38,6 +44,9 @@
 | D006 | Decisión | `research/decisiones.md` | SPEC-006 — Gran Valparaíso coverage |
 | D007 | Decisión | `research/decisiones.md` | SPEC-006 — DistanceService Strategy Pattern |
 | D008 | Decisión | `research/decisiones.md` | SPEC-006 — parameters_hash linking |
+| BUG-001 | Bug | `research/bugs.md` | Exp001 modificado por `experiments:sync` — inmutable agregado |
+| BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — visualización incompleta |
+| BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial en UI |
 | C001 | Contribución | `research/contribuciones.md` | SPEC-001, SPEC-002, SPEC-003, SPEC-004 |
 | C002 | Contribución | `research/contribuciones.md` | SPEC-003, SPEC-004 |
 | C003 | Contribución | `research/contribuciones.md` | SPEC-004, data-model.md |
@@ -54,6 +63,11 @@
 | H004 | SPEC-004: Exp001 — Eval 5 (ratio 1.5) detecta 4 anomalías; Eval 2 (ratio 2) detecta 10 |
 | H005 | SPEC-004: Exp001 — Rutas A (0.3 km radio) vs E (15.3 km radio) en misma operación |
 | H006 | SPEC-004: Exp001 — Anomalías: 10 entregas < 1 km de bodega, todas en sector B |
+| H007 | SPEC-006: Exp002 — M001 = 1.6248, distancias viales 62.5% mayores que geodésicas |
+| H008 | SPEC-006: Exp002 — Rutas que cruzan bahía de Valparaíso (Ruta D) tienen TDI crítico > 2.0 |
+| H009 | SPEC-006: Exp002 — 0% de rutas con TDI normal (≤1.2); 60% alta o crítica |
+| H010 | SPEC-006: Exp002 — Modo vial ~82s vs geodésico ~0.25s (330x más lento) |
+| V001–V006 | SPEC-006: Exp002 — Todos los hallazgos H001–H006 persisten al usar red vial (categoría V) |
 
 ## Matriz Pregunta → Hallazgos → Contribución
 
@@ -64,13 +78,13 @@
 | PI-003 | H003 | C003 |
 | PI-004 | H004 | C002 |
 | PI-005 | H006 | C001, C002 |
-| PI-006 | pendiente | C004 |
-| PI-007 | pendiente | C005 |
-| PI-008 | pendiente | C004 |
-| PI-009 | pendiente | C004 |
+| PI-006 | H007, M001 | C004 |
+| PI-007 | H007, H008, M002 | C005 |
+| PI-008 | H007, M003 | C004 |
+| PI-009 | M004 | C004 |
 | PI-010 | V001–V006 | C004 |
-| PI-011 | H008, M006 | C005 |
-| PI-012 | pendiente | C004 |
+| PI-011 | H008, H009, M006 | C005 |
+| PI-012 | H010 | C004 |
 | PI-013 | pendiente | C005 |
 | PI-014 | pendiente | C004 |
 
@@ -78,8 +92,9 @@
 
 | Tipo | Total | Pendientes |
 |------|-------|------------|
-| Hallazgos | 10 (H001–H010) | H007+ pendientes de Exp002 |
-| Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 futuras |
+| Hallazgos | 10 (H001–H010) | — |
+| Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 investigación futura |
 | Decisiones | 8 (D001–D008) | — |
 | Contribuciones | 5 (C001–C005) | — |
-| Validaciones | 6 (V001–V006) | Pendientes de Exp002 |
+| Validaciones | 6 (V001–V006) | — |
+| Bugs | 3 (BUG-001—BUG-003) | BUG-002, BUG-003 abiertos |
