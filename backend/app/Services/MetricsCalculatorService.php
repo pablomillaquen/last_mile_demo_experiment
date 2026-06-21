@@ -10,6 +10,11 @@ class MetricsCalculatorService
         private DistanceService $distanceService
     ) {}
 
+    public function setDistanceMode(string $mode): void
+    {
+        $this->distanceService->setMode($mode);
+    }
+
     public function calculateRouteMetrics(Route $route, float $warehouseLat, float $warehouseLng): array
     {
         $route->loadMissing('routePackages.package');
@@ -125,6 +130,12 @@ class MetricsCalculatorService
             }
             $prevLat = $lat;
             $prevLng = $lng;
+        }
+
+        $returnLeg = $this->distanceService->calculate($prevLat, $prevLng, $warehouseLat, $warehouseLng);
+        $totalDistance += $returnLeg['distance_km'];
+        if ($returnLeg['duration_min'] !== null) {
+            $totalDuration += $returnLeg['duration_min'];
         }
 
         return [

@@ -45,8 +45,8 @@
 | D007 | Decisión | `research/decisiones.md` | SPEC-006 — DistanceService Strategy Pattern |
 | D008 | Decisión | `research/decisiones.md` | SPEC-006 — parameters_hash linking |
 | BUG-001 | Bug | `research/bugs.md` | Exp001 modificado por `experiments:sync` — inmutable agregado |
-| BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — visualización incompleta |
-| BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial en UI |
+| BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — RESUELTO (SPEC-007) |
+| BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial — RESUELTO (SPEC-007) |
 | C001 | Contribución | `research/contribuciones.md` | SPEC-001, SPEC-002, SPEC-003, SPEC-004 |
 | C002 | Contribución | `research/contribuciones.md` | SPEC-003, SPEC-004 |
 | C003 | Contribución | `research/contribuciones.md` | SPEC-004, data-model.md |
@@ -67,7 +67,8 @@
 | H008 | SPEC-006: Exp002 — Rutas que cruzan bahía de Valparaíso (Ruta D) tienen TDI crítico > 2.0 |
 | H009 | SPEC-006: Exp002 — 0% de rutas con TDI normal (≤1.2); 60% alta o crítica |
 | H010 | SPEC-006: Exp002 — Modo vial ~82s vs geodésico ~0.25s (330x más lento) |
-| V001–V006 | SPEC-006: Exp002 — Todos los hallazgos H001–H006 persisten al usar red vial (categoría V) |
+| H011 | SPEC-006A: evaluation.json 84KB→132KB (geo route_legs) → 2.3MB (vial route_legs, +2640%) |
+| H012 | SPEC-006A: Eval #18 (geodésico 339 km) vs Eval #19 (vial 523 km), +54.3%. Ruta D 2.00×. |
 
 ## Matriz Pregunta → Hallazgos → Contribución
 
@@ -85,16 +86,16 @@
 | PI-010 | V001–V006 | C004 |
 | PI-011 | H008, H009, M006 | C005 |
 | PI-012 | H010 | C004 |
-| PI-013 | pendiente | C005 |
+| PI-013 | H012 | C005 |
 | PI-014 | pendiente | C004 |
 
 ## Estado de IDs
 
 | Tipo | Total | Pendientes |
 |------|-------|------------|
-| Hallazgos | 10 (H001–H010) | — |
+| Hallazgos | 12 (H001–H012) | — |
 | Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 investigación futura |
 | Decisiones | 8 (D001–D008) | — |
 | Contribuciones | 5 (C001–C005) | — |
 | Validaciones | 6 (V001–V006) | — |
-| Bugs | 3 (BUG-001—BUG-003) | BUG-002, BUG-003 abiertos |
+| Bugs | 3 (BUG-001—BUG-003) | Todos resueltos |

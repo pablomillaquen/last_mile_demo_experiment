@@ -176,3 +176,15 @@ Cada pregunta tiene:
 **Hallazgos relacionados**: D006.
 
 **Fase objetivo**: SPEC-008+.
+
+---
+
+## PI-015
+
+**Pregunta**: ¿El tamaño de `evaluation.json` con geometría vial (~2.3 MB para 150 entregas, 5 rutas) escala linealmente con el tamaño del dataset y requiere optimización (compresión, paginación, geometría simplificada) para datasets >1000 entregas?
+
+**Estado**: Abierta.
+
+**Hallazgos relacionados**: H011.
+
+**Fase objetivo**: SPEC-008+.

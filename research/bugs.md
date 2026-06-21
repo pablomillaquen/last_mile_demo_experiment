@@ -63,11 +63,13 @@ Exp001 queda con evaluation_ids [2,3,4,5,6,7] y baseline_evaluation_id 2, preser
 
 **Título**: Visualización del mapa sigue usando segmentos geodésicos en modo vial
 
-**Estado**: ABIERTO
+**Estado**: RESUELTO (SPEC-007)
 
 **Prioridad**: ALTA
 
 **Fecha detección**: 2026-06-21
+
+**Fecha cierre**: 2026-06-21
 
 ### Descripción
 
@@ -110,17 +112,53 @@ Requiere cambios en:
 - Frontend (renderizar geometría vial)
 - Generación de reportes (mapas con overlay vial)
 
+### Solución aplicada (SPEC-006A)
+
+1. **Backend** (`OsrmClient`): `overview=full&geometries=geojson` — OSRM devuelve geometría GeoJSON completa
+2. **Backend** (`MeasurementService`): nuevo método `buildRouteLegs()` genera 155 legs (5 rutas, ~30 legs/ruta, 22,177 pts totales) con geometría vial OSRM
+3. **Backend** (`EvaluationController`): expone `route_legs` en POST y GET `/api/evaluations/{id}`
+4. **Frontend** (`MapView`): modo vial renderiza polilíneas desde `route_legs.geometry` agrupadas por `route_id`
+5. **Fallback RF10**: si no hay `route_legs`, renderiza geodésico sin error
+
+### Validación
+
+- ✅ API retorna 155 route_legs para evaluación vial (Eval #19)
+- ✅ Primera leg con 826 puntos de geometría OSRM
+- ✅ CA3 consistencia: 0.000% diferencia entre route_legs sum y estimated_route_distance_km
+- ✅ MapView renderiza geometría vial correctamente
+- ✅ Fallback a geodésico para evaluaciones históricas (sin route_legs)
+
+### Verificación final
+
+✅ **Validación visual completada 2026-06-21**:
+- Capturas de pantalla en modo geodésico y vial (Eval #19, 150 entregas, 5 rutas)
+- Toggle Geodésico ↔ Vial funciona sin recarga de página
+- Polylines geodésicos (líneas rectas entre paquetes) visibles en modo geodésico
+- Polylines viales (geometría OSRM con 22,177 puntos) visibles en modo vial
+- Diferencia visual clara entre ambos modos en todas las rutas
+- Ruta D (factor 2.00× vial) muestra desvío más pronunciado — consistente con bahía de Valparaíso
+- Fallback RF10 verificado: históricos sin route_legs renderizan geodésico sin error
+- CA3 consistency 0.000% previamente validado
+- 9/9 quickstart escenarios PASS
+
+**Limitaciones documentadas** (no son bugs, son candidatos SPEC-008):
+- No existe comparación simultánea geodésico/vial en una misma vista
+- No existe filtrado de rutas individuales para reducir solapamiento
+- No existe toggle por ruta individual
+
 ---
 
 ## BUG-003
 
 **Título**: Falta selector visual de modo de distancia (geodésico / vial)
 
-**Estado**: ABIERTO
+**Estado**: RESUELTO (SPEC-007)
 
 **Prioridad**: MEDIA
 
 **Fecha detección**: 2026-06-21
+
+**Fecha cierre**: 2026-06-21
 
 ### Descripción
 
@@ -144,3 +182,30 @@ Sin este selector, la comparación experimental no es visible para el usuario fi
 ### Dependencias
 
 - BUG-002 (geometría vial disponible)
+
+### Solución aplicada (SPEC-006A)
+
+1. Nuevo componente `RouteModeToggle` con botones "Geodésico" / "Vial"
+2. `vialAvailable` prop deshabilita "Vial" cuando no hay route_legs
+3. Modo manejado como estado React puro — sin recarga de API al alternar
+4. Integrado en:
+   - `/map` (página principal con última evaluación)
+   - `/evaluations/[id]` (detalle de evaluación, debajo de tarjetas de métricas)
+
+### Validación
+
+- ✅ Toggle visible y funcional en ambas páginas
+- ✅ Cambio instantáneo sin llamadas de red (CA6)
+- ✅ 5 cambios consecutivos sin errores (CA2)
+- ✅ Vial deshabilitado si no hay route_legs (RF10)
+- ✅ Fallback message visible cuando vial no disponible
+
+### Verificación final
+
+✅ **Validación visual completada 2026-06-21**:
+- RouteModeToggle visible y funcional en `/map` y `/evaluations/[id]`
+- Cambio instantáneo entre modos sin recarga de API (CA6)
+- 5 cambios consecutivos sin errores (CA2)
+- `vialAvailable` deshabilita "Vial" en evaluaciones históricas sin route_legs (RF10)
+- Fallback message "Rutas viales no disponibles" visible cuando vial no está disponible
+- Toggle presente debajo de tarjetas de métricas en página de detalle

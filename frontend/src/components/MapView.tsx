@@ -2,9 +2,9 @@
 
 import { MapContainer, TileLayer, Marker, Popup, Tooltip, Polyline } from 'react-leaflet';
 import L from 'leaflet';
-import { Package } from '@/lib/api';
+import { Package, RouteLeg } from '@/lib/api';
 import { settingsApi, Settings } from '@/lib/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import 'leaflet/dist/leaflet.css';
 
 interface PolylineData {
@@ -18,6 +18,10 @@ interface MapViewProps {
   getRouteColor?: (pkg: Package) => string;
   getSequence?: (pkg: Package) => number | null;
   polylines?: PolylineData[];
+  routeLegs?: RouteLeg[];
+  mode?: 'geodesic' | 'vial';
+  routeColorById?: Record<number, string>;
+  routeNameById?: Record<number, string>;
 }
 
 // Fix default marker icons
@@ -53,7 +57,10 @@ function createColoredIcon(color: string, sequence?: number) {
 
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
-export default function MapView({ packages, getRouteColor, getSequence, polylines }: MapViewProps) {
+export default function MapView({
+  packages, getRouteColor, getSequence, polylines,
+  routeLegs, mode = 'geodesic', routeColorById, routeNameById,
+}: MapViewProps) {
   const center: [number, number] = [-33.045, -71.55];
   const defaultColor = '#3b82f6';
   const [settings, setSettings] = useState<Settings | null>(null);
@@ -66,17 +73,46 @@ export default function MapView({ packages, getRouteColor, getSequence, polyline
     ? [parseFloat(settings.warehouse_lat), parseFloat(settings.warehouse_lng)]
     : null;
 
+  const vialPolylines = useMemo(() => {
+    if (!routeLegs || routeLegs.length === 0) return [];
+    const grouped = new Map<number, RouteLeg[]>();
+    routeLegs.forEach(leg => {
+      const existing = grouped.get(leg.route_id) || [];
+      existing.push(leg);
+      grouped.set(leg.route_id, existing);
+    });
+    const result: PolylineData[] = [];
+    grouped.forEach((legs, routeId) => {
+      const color = routeColorById?.[routeId] || defaultColor;
+      const name = routeNameById?.[routeId] || `Route ${routeId}`;
+      const positions: [number, number][] = [];
+      legs.forEach((leg, i) => {
+        if (leg.geometry) {
+          if (i === 0) {
+            positions.push(...leg.geometry);
+          } else {
+            positions.push(...leg.geometry.slice(1));
+          }
+        }
+      });
+      result.push({ positions, color, name });
+    });
+    return result;
+  }, [routeLegs, routeColorById, routeNameById]);
+
+  const activePolylines = mode === 'vial' && vialPolylines.length > 0 ? vialPolylines : polylines;
+
   return (
     <MapContainer center={center} zoom={12} className="w-full h-[600px] rounded border" scrollWheelZoom={true}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {polylines?.map((pl, i) => (
+      {activePolylines?.filter(pl => pl.positions.length > 1).map((pl, i) => (
         <Polyline
           key={i}
           positions={pl.positions}
-          pathOptions={{ color: pl.color, weight: 3, opacity: 0.7 }}
+          pathOptions={{ color: pl.color, weight: mode === 'vial' ? 2.5 : 3, opacity: mode === 'vial' ? 0.85 : 0.7 }}
         >
           <Tooltip sticky direction="top">{pl.name}</Tooltip>
         </Polyline>

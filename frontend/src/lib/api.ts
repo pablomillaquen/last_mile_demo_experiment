@@ -171,6 +171,20 @@ export interface Parameters {
   dataset: string;
 }
 
+export interface RouteLeg {
+  route_id: number;
+  from_delivery_id: number | null;
+  to_delivery_id: number | null;
+  from_lat: number;
+  from_lng: number;
+  to_lat: number;
+  to_lng: number;
+  distance_km: number;
+  duration_min: number | null;
+  geometry: [number, number][] | null;
+  mode: 'geodesic' | 'vial';
+}
+
 export interface Evaluation {
   id: number;
   executed_at: string;
@@ -182,6 +196,7 @@ export interface Evaluation {
   route_metrics?: RouteMetric[];
   anomalies?: Anomaly[];
   ranking?: RankingItem[];
+  route_legs?: RouteLeg[];
   files?: EvaluationFiles;
   experiment?: {
     id: number;

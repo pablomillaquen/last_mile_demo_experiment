@@ -1,9 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
-import { evaluationsApi, Evaluation, RouteMetric, Anomaly } from '@/lib/api';
+import { evaluationsApi, Evaluation, RouteMetric, Anomaly, RouteLeg } from '@/lib/api';
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+const MapView = dynamic(() => import('@/components/MapView'), { ssr: false });
+const RouteModeToggle = dynamic(() => import('@/components/RouteModeToggle'), { ssr: false });
+
+const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
 function n(v: number | undefined | null, decimals = 2): string {
   if (v === undefined || v === null) return '-';
@@ -241,11 +247,63 @@ function DownloadsSection({ evaluation }: { evaluation: Evaluation }) {
   );
 }
 
+interface PolylineData {
+  positions: [number, number][];
+  color: string;
+  name: string;
+}
+
 export default function EvaluationDetailPage() {
   const params = useParams();
   const [evaluation, setEvaluation] = useState<Evaluation | null>(null);
   const [loading, setLoading] = useState(true);
   const [showParams, setShowParams] = useState(false);
+  const [mode, setMode] = useState<'geodesic' | 'vial'>('geodesic');
+
+  const routeLegs = evaluation?.route_legs;
+  const routeMetrics = evaluation?.route_metrics;
+
+  const routeColorById = useMemo(() => {
+    const map: Record<number, string> = {};
+    (routeMetrics || []).forEach((rm, i) => {
+      map[rm.route_id] = COLORS[i % COLORS.length];
+    });
+    return map;
+  }, [routeMetrics]);
+
+  const routeNameById = useMemo(() => {
+    const map: Record<number, string> = {};
+    (routeMetrics || []).forEach(rm => {
+      map[rm.route_id] = rm.route_name;
+    });
+    return map;
+  }, [routeMetrics]);
+
+  const geodesicPolylines: PolylineData[] = useMemo(() => {
+    if (!routeLegs || routeLegs.length === 0) return [];
+    const grouped = new Map<number, RouteLeg[]>();
+    routeLegs.forEach(leg => {
+      const existing = grouped.get(leg.route_id) || [];
+      existing.push(leg);
+      grouped.set(leg.route_id, existing);
+    });
+    const result: PolylineData[] = [];
+    grouped.forEach((legs, routeId) => {
+      const color = routeColorById[routeId] || '#6b7280';
+      const name = routeNameById[routeId] || `Route ${routeId}`;
+      const positions: [number, number][] = [];
+      legs.forEach((leg, i) => {
+        if (i === 0) {
+          positions.push([leg.from_lat, leg.from_lng]);
+        }
+        positions.push([leg.to_lat, leg.to_lng]);
+      });
+      result.push({ positions, color, name });
+    });
+    return result;
+  }, [routeLegs, routeColorById, routeNameById]);
+
+  const vialAvailable = routeLegs !== undefined && routeLegs.length > 0;
 
   useEffect(() => {
     const id = Number(params.id);
@@ -312,6 +370,28 @@ export default function EvaluationDetailPage() {
           {showParams ? '▼' : '▶'} Parámetros de la evaluación
         </button>
         {showParams && <div className="mt-2"><ParametersCard params={evaluation.parameters} /></div>}
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Mapa Interactivo</h2>
+          <RouteModeToggle mode={mode} onModeChange={setMode} vialAvailable={vialAvailable} />
+        </div>
+        <div className="bg-white rounded border shadow-sm">
+          <MapView
+            packages={[]}
+            polylines={geodesicPolylines}
+            routeLegs={routeLegs}
+            mode={mode}
+            routeColorById={routeColorById}
+            routeNameById={routeNameById}
+          />
+        </div>
+        {!vialAvailable && mode === 'vial' && (
+          <p className="text-xs text-amber-600">
+            No hay geometría vial disponible para esta evaluación.
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

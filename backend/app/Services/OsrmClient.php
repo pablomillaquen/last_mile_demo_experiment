@@ -25,7 +25,7 @@ class OsrmClient
     public function route(float $lng1, float $lat1, float $lng2, float $lat2): array
     {
         $url = sprintf(
-            '/route/v1/driving/%s,%s;%s,%s?overview=false&steps=false&alternatives=false',
+            '/route/v1/driving/%s,%s;%s,%s?overview=full&steps=false&alternatives=false&geometries=geojson',
             $lng1, $lat1, $lng2, $lat2
         );
 
@@ -37,6 +37,7 @@ class OsrmClient
                 return [
                     'distance_km' => null,
                     'duration_min' => null,
+                    'geometry' => null,
                     'code' => 'UnknownResponse',
                 ];
             }
@@ -45,6 +46,7 @@ class OsrmClient
                 return [
                     'distance_km' => null,
                     'duration_min' => null,
+                    'geometry' => null,
                     'code' => $data['code'],
                 ];
             }
@@ -53,19 +55,33 @@ class OsrmClient
                 return [
                     'distance_km' => null,
                     'duration_min' => null,
+                    'geometry' => null,
                     'code' => 'NoRoutesFound',
                 ];
             }
 
+            $route = $data['routes'][0];
+            $geometry = $route['geometry']['coordinates'] ?? null;
+            $decodedGeometry = null;
+
+            if ($geometry !== null) {
+                $decodedGeometry = array_map(
+                    fn($coord) => [(float) $coord[1], (float) $coord[0]],
+                    $geometry
+                );
+            }
+
             return [
-                'distance_km' => $data['routes'][0]['distance'] / 1000,
-                'duration_min' => $data['routes'][0]['duration'] / 60,
+                'distance_km' => $route['distance'] / 1000,
+                'duration_min' => $route['duration'] / 60,
+                'geometry' => $decodedGeometry,
                 'code' => self::OSRM_OK,
             ];
         } catch (GuzzleException $e) {
             return [
                 'distance_km' => null,
                 'duration_min' => null,
+                'geometry' => null,
                 'code' => 'ConnectionError',
                 'error' => $e->getMessage(),
             ];

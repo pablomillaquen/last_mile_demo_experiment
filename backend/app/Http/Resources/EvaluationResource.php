@@ -20,8 +20,9 @@ class EvaluationResource extends JsonResource
         if ($this->relationLoaded('detailedMetrics')) {
             $detailed = $this->detailedMetrics;
             $data['route_metrics'] = $detailed['route_metrics'] ?? [];
-            $data['anomalies'] = $detailed['anomalies'] ?? [];
-            $data['ranking'] = $detailed['ranking'] ?? [];
+            $data['anomalies']     = $detailed['anomalies']  ?? [];
+            $data['ranking']       = $detailed['ranking']    ?? [];
+            $data['route_legs']    = $detailed['route_legs'] ?? [];
             $raw = $detailed['files'] ?? null;
             $data['files'] = is_array($raw) && !empty($raw) ? $raw : null;
         }

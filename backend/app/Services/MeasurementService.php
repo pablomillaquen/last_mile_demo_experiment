@@ -30,6 +30,7 @@ class MeasurementService
 
         $mode = $parameters['distance_mode'] ?? 'geodesic';
         $this->distanceService->setMode($mode);
+        $this->metricsCalculator->setDistanceMode($mode);
 
         $warehouse = $this->loadWarehouse();
 
@@ -136,6 +137,8 @@ class MeasurementService
             }
         }
 
+        $routeLegs = $this->buildRouteLegs($routes, $warehouse);
+
         return [
             'parameters' => $parameters,
             'total_deliveries' => $allDeliveries->count(),
@@ -145,6 +148,7 @@ class MeasurementService
             'anomalies' => $anomalies,
             'ranking' => $ranking,
             'deliveries_flat' => $deliveriesFlat,
+            'route_legs' => $routeLegs,
             'map_files' => $mapFiles,
             'execution_time_sec' => round(microtime(true) - $startTime, 4),
         ];
@@ -159,6 +163,65 @@ class MeasurementService
             'lat' => (float) ($all['warehouse_lat'] ?? -33.045),
             'lng' => (float) ($all['warehouse_lng'] ?? -71.62),
         ];
+    }
+
+    private function buildRouteLegs($routes, array $warehouse): array
+    {
+        $legs = [];
+
+        foreach ($routes as $route) {
+            $packages = $route->routePackages->sortBy('sequence')->values();
+            if ($packages->isEmpty()) {
+                continue;
+            }
+
+            $prevLat = $warehouse['lat'];
+            $prevLng = $warehouse['lng'];
+            $prevPackageId = null;
+
+            foreach ($packages as $rp) {
+                $pkg = $rp->package;
+                $pkgLat = (float) $pkg->latitude;
+                $pkgLng = (float) $pkg->longitude;
+
+                $result = $this->distanceService->calculate($prevLat, $prevLng, $pkgLat, $pkgLng);
+
+                $legs[] = [
+                    'route_id' => $route->id,
+                    'from_delivery_id' => $prevPackageId,
+                    'to_delivery_id' => $pkg->id,
+                    'from_lat' => $prevLat,
+                    'from_lng' => $prevLng,
+                    'to_lat' => $pkgLat,
+                    'to_lng' => $pkgLng,
+                    'distance_km' => round($result['distance_km'], 4),
+                    'duration_min' => $result['duration_min'],
+                    'geometry' => $result['geometry'],
+                    'mode' => $result['mode'],
+                ];
+
+                $prevLat = $pkgLat;
+                $prevLng = $pkgLng;
+                $prevPackageId = $pkg->id;
+            }
+
+            $returnResult = $this->distanceService->calculate($prevLat, $prevLng, $warehouse['lat'], $warehouse['lng']);
+            $legs[] = [
+                'route_id' => $route->id,
+                'from_delivery_id' => $prevPackageId,
+                'to_delivery_id' => null,
+                'from_lat' => $prevLat,
+                'from_lng' => $prevLng,
+                'to_lat' => $warehouse['lat'],
+                'to_lng' => $warehouse['lng'],
+                'distance_km' => round($returnResult['distance_km'], 4),
+                'duration_min' => $returnResult['duration_min'],
+                'geometry' => $returnResult['geometry'],
+                'mode' => $returnResult['mode'],
+            ];
+        }
+
+        return $legs;
     }
 
     private function buildDeliveriesFlat($routes, array $routeMetrics, array $warehouse): array

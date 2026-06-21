@@ -131,6 +131,47 @@ Cada hallazgo tiene:
 
 ---
 
+## H011
+
+**Enunciado**: El almacenamiento de geometría vial OSRM incrementa el tamaño de `evaluation.json` de ~84 KB (sin route_legs) a ~132 KB (geodésico con route_legs, +57%) o ~2.3 MB (vial con route_legs, +2640%), debido a ~22,000 puntos de geometría para 155 legs.
+
+**Evidencia**: SPEC-006A. Mediciones directas: baseline (84 KB), geodésico con route_legs (132 KB, 155 legs, 2 pts/leg), vial con route_legs (2.3 MB, 155 legs, 22,177 pts totales, promedio 143 pts/leg).
+
+**Impacto**: 
+1. El tamaño vial (2.3 MB) está dentro de lo aceptable para una respuesta de API que se carga una vez por evaluación (2-3s en 10 Mbps). No impacta el endpoint de listado (no incluye route_legs).
+2. La estimación inicial de research.md (~200-300 KB) era precisa para modo geodésico pero subestima por ~10x el tamaño vial.
+3. Para experimentos con datasets más grandes, el tamaño podría escalar linealmente (~15 KB por ruta por 10 entregas). Monitorear si supera 10 MB en producción.
+4. No se requiere optimización inmediata, pero se registra para SPEC-008 (vista comparativa simultánea) donde podrían necesitarse ambas geometrías en una misma respuesta.
+
+**Preguntas que responde**: PI-013.
+
+## H012
+
+**Enunciado**: La distancia vial total para 150 entregas en Valparaíso (5 rutas, 30 entregas/ruta) es 523.11 km, un 54.3% mayor que la distancia geodésica equivalente de 339.06 km, con una diferencia absoluta de +184 km.
+
+**Evidencia**: SPEC-006A. Comparación directa Eval #18 (modo geodésico, 339.06 km) vs Eval #19 (mismo dataset, modo vial, 523.11 km). Mismo `parameters_hash`, único cambio `distance_mode`. Dataset Valparaíso Demo, 150 entregas, 5 rutas (A–E), 30 entregas/ruta.
+
+**Desglose por ruta**:
+
+| Ruta | Geodésico (km) | Vial (km) | Diferencia (km) | Factor |
+|------|:-:|:-:|:-:|:-:|
+| Ruta A | 37.87 | 53.78 | +15.91 | 1.42× |
+| Ruta B | 91.46 | 126.07 | +34.61 | 1.38× |
+| Ruta C | 107.09 | 176.05 | +68.96 | 1.64× |
+| Ruta D | 36.35 | 72.80 | +36.45 | **2.00×** |
+| Ruta E | 66.28 | 94.41 | +28.13 | 1.42× |
+| **Total** | **339.06** | **523.11** | **+184.06** | **1.54×** |
+
+**Impacto**:
+1. La hipótesis de SPEC-006 (distancias viales sistemáticamente mayores que geodésicas) se confirma cuantitativamente con datos del SPEC-006A.
+2. Ruta D duplica la distancia vial (factor 2.00×), consistente con el hallazgo H008 (Rutas que cruzan la bahía de Valparaíso tienen TDI crítico >2.0). Las 30 entregas de Ruta D generan 72.80 km viales vs solo 36.35 km geodésicos.
+3. El factor promedio 1.54× para este dataset específico difiere del factor M001=1.62× reportado en H007/SPEC-006, sugiriendo que el factor varía con la distribución geográfica y asignación de entregas, no solo con la zona geográfica.
+4. El impacto operacional es significativo: 184 km adicionales equivalen a ~3-4 horas de conducción extra por operación diaria.
+
+**Preguntas que responde**: PI-006, PI-007, PI-008.
+
+---
+
 ## V001–V006: Validaciones de Hallazgos Baseline con Red Vial
 
 Todos los hallazgos H001–H006 del baseline (modo geodésico) fueron re-evaluados con modo vial. Ninguno se invalida.

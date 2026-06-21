@@ -103,6 +103,7 @@ class EvaluationController extends Controller
                 'route_metrics' => $result['route_metrics'],
                 'anomalies' => $result['anomalies'],
                 'ranking' => $result['ranking'],
+                'route_legs' => $result['route_legs'],
                 'files' => $files,
             ]
         );

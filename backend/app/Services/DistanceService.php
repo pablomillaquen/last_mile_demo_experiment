@@ -25,6 +25,7 @@ class DistanceService
             return [
                 'distance_km' => HaversineService::calculate($lat1, $lng1, $lat2, $lng2),
                 'duration_min' => null,
+                'geometry' => [[$lat1, $lng1], [$lat2, $lng2]],
                 'mode' => 'geodesic',
             ];
         }
@@ -35,6 +36,7 @@ class DistanceService
             return [
                 'distance_km' => HaversineService::calculate($lat1, $lng1, $lat2, $lng2),
                 'duration_min' => null,
+                'geometry' => [[$lat1, $lng1], [$lat2, $lng2]],
                 'mode' => 'geodesic',
             ];
         }
@@ -42,6 +44,7 @@ class DistanceService
         return [
             'distance_km' => $result['distance_km'],
             'duration_min' => $result['duration_min'],
+            'geometry' => $result['geometry'],
             'mode' => 'vial',
         ];
     }
