@@ -143,3 +143,25 @@ Formato basado en ADR (Architecture Decision Records).
 **Impacto**: Los experimentos son ahora auto-contenidos (JSON + CSV + reporte + experiment.json en un mismo directorio). La BD es un caché de lectura; el filesystem es la fuente de verdad. Cada evaluación ocupa ~100 KB en el repositorio (aceptable para el volumen actual).
 
 **Fecha**: 2026-06-21
+
+---
+
+## D010
+
+**Decisión**: Versionado acumulativo de publicaciones — los hallazgos nuevos no sobrescriben publicaciones anteriores.
+
+**Contexto**: Con H012 se ha generado evidencia cuantitativa sobre la diferencia entre modelo geodésico y vial (+54.3%, 339→523 km). Esta evidencia tiene valor para publicaciones futuras. Sin embargo, las publicaciones existentes (basadas en Exp001, modelo geodésico) representan el estado del conocimiento al momento de su creación y no deben ser modificadas retroactivamente.
+
+**Razón**:
+- Las publicaciones son inmutables por definición — modificarlas con datos nuevos rompe la trazabilidad histórica del proyecto.
+- Nuevos hallazgos (H012, hallazgos futuros de SPEC-008) deben generar nuevas versiones o nuevas publicaciones.
+- Las capturas, métricas y resultados deben mantener trazabilidad hacia el SPEC y EXP que los originó.
+- Este principio extiende D009 (artefactos inmutables) al plano de las publicaciones académicas/técnicas.
+
+**Impacto**:
+- Publicaciones históricas (basadas en Exp001) se mantienen intactas.
+- Los resultados de EXP-002 y SPEC-008 se publicarán como nuevas versiones o documentos independientes.
+- Las capturas comparativas generadas por SPEC-008 deberán poder incorporarse a nuevas publicaciones sin alterar las previas.
+- La trazabilidad se mantiene: cada publicación referencia el SPEC y EXP que originó sus datos.
+
+**Fecha**: 2026-06-21

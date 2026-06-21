@@ -44,6 +44,8 @@
 | D006 | Decisión | `research/decisiones.md` | SPEC-006 — Gran Valparaíso coverage |
 | D007 | Decisión | `research/decisiones.md` | SPEC-006 — DistanceService Strategy Pattern |
 | D008 | Decisión | `research/decisiones.md` | SPEC-006 — parameters_hash linking |
+| D009 | Decisión | `research/decisiones.md` | SPEC-006 — Preservar artefactos experimentales (BUG-001) |
+| D010 | Decisión | `research/decisiones.md` | SPEC-007 — Versionado acumulativo de publicaciones |
 | BUG-001 | Bug | `research/bugs.md` | Exp001 modificado por `experiments:sync` — inmutable agregado |
 | BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — RESUELTO (SPEC-007) |
 | BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial — RESUELTO (SPEC-007) |
@@ -95,7 +97,7 @@
 |------|-------|------------|
 | Hallazgos | 12 (H001–H012) | — |
 | Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 investigación futura |
-| Decisiones | 8 (D001–D008) | — |
+| Decisiones | 10 (D001–D010) | — |
 | Contribuciones | 5 (C001–C005) | — |
 | Validaciones | 6 (V001–V006) | — |
 | Bugs | 3 (BUG-001—BUG-003) | Todos resueltos |
