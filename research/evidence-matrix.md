@@ -12,19 +12,37 @@
 | H004 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 (Evaluación 5) |
 | H005 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 |
 | H006 | Hallazgo | `research/hallazgos.md` | SPEC-004, Experimento 001 (Evaluación 2) |
+| H007 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
+| H008 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
+| H009 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
+| H010 | Hallazgo | `research/hallazgos.md` | SPEC-006, Exp002 |
 | PI-001 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H001, H005 |
 | PI-002 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H004 |
 | PI-003 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H003 |
 | PI-004 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H004 |
 | PI-005 | Pregunta | `research/preguntas-investigacion.md` | Problema inicial, H006 |
+| PI-006 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M001 |
+| PI-007 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M002 |
+| PI-008 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M003 |
+| PI-009 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M004 |
+| PI-010 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, V001–V006, M005 |
+| PI-011 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M006, H008 |
+| PI-012 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, RNF2, execution_time_sec |
+| PI-013 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M002, investigación futura |
+| PI-014 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, D006, investigación futura |
 | D001 | Decisión | `research/decisiones.md` | SPEC-001, Diseño metodológico |
 | D002 | Decisión | `research/decisiones.md` | SPEC-002, Motor de evaluación |
 | D003 | Decisión | `research/decisiones.md` | SPEC-004, ExperimentRepository |
 | D004 | Decisión | `research/decisiones.md` | SPEC-004, data-model.md |
 | D005 | Decisión | `research/decisiones.md` | SPEC-005, contracts/documento-tecnico.md |
+| D006 | Decisión | `research/decisiones.md` | SPEC-006 — Gran Valparaíso coverage |
+| D007 | Decisión | `research/decisiones.md` | SPEC-006 — DistanceService Strategy Pattern |
+| D008 | Decisión | `research/decisiones.md` | SPEC-006 — parameters_hash linking |
 | C001 | Contribución | `research/contribuciones.md` | SPEC-001, SPEC-002, SPEC-003, SPEC-004 |
 | C002 | Contribución | `research/contribuciones.md` | SPEC-003, SPEC-004 |
 | C003 | Contribución | `research/contribuciones.md` | SPEC-004, data-model.md |
+| C004 | Contribución | `research/contribuciones.md` | SPEC-006 — Revalidation framework (categoría V) |
+| C005 | Contribución | `research/contribuciones.md` | SPEC-006 — M006 Territorial Distortion Index |
 
 ## Matriz Hallazgo → Evidencia Específica
 
@@ -46,12 +64,22 @@
 | PI-003 | H003 | C003 |
 | PI-004 | H004 | C002 |
 | PI-005 | H006 | C001, C002 |
+| PI-006 | pendiente | C004 |
+| PI-007 | pendiente | C005 |
+| PI-008 | pendiente | C004 |
+| PI-009 | pendiente | C004 |
+| PI-010 | V001–V006 | C004 |
+| PI-011 | H008, M006 | C005 |
+| PI-012 | pendiente | C004 |
+| PI-013 | pendiente | C005 |
+| PI-014 | pendiente | C004 |
 
 ## Estado de IDs
 
 | Tipo | Total | Pendientes |
 |------|-------|------------|
-| Hallazgos | 6 (H001–H006) | H007+ abiertos para SPEC-006+ |
-| Preguntas | 5 (PI-001–PI-005) | PI-006+ abiertas para SPEC-006+ |
-| Decisiones | 5 (D001–D005) | D006+ abiertas para SPEC-006+ |
-| Contribuciones | 3 (C001–C003) | C004+ abiertas para SPEC-006+ |
+| Hallazgos | 10 (H001–H010) | H007+ pendientes de Exp002 |
+| Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 futuras |
+| Decisiones | 8 (D001–D008) | — |
+| Contribuciones | 5 (C001–C005) | — |
+| Validaciones | 6 (V001–V006) | Pendientes de Exp002 |

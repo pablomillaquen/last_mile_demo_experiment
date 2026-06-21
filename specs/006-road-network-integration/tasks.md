@@ -162,7 +162,7 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
 
 ### Implementation
 
-- [ ] T022 [P] [US3] Crear `experiments/002-road-network/experiment.json`:
+- [X] T022 [P] [US3] Crear `experiments/002-road-network/experiment.json`:
   ```json
   {
     "identifier": "002-road-network",
@@ -177,11 +177,12 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
     "author": "Sistema"
   }
   ```
-- [ ] T023 [US3] Para cada conjunto único de parámetros en las evaluaciones baseline (IDs 2–7), ejecutar un par de evaluaciones:
-  - Evaluation A (geodésica): `distance_mode: geodesic`, mismos parámetros que baseline
-  - Evaluation B (vial): `distance_mode: vial`, mismos parámetros que A
-  - Registrar el par `{ geodesic_id, vial_id, parameters_hash }` en `evaluation_pairs` del experiment.json
-  - **No hardcodear IDs 2–7** — iterar sobre evaluations del experimento 1 y usar `same_parameters` + `same_seed` + `same_algorithm` como criterio de matching
+- [X] T023 [US3] Script automatizado `experiments/002-road-network/setup.sh` para:
+  - Leer evaluaciones baseline desde API
+  - Extraer parámetros excluyendo distance_mode
+  - Crear par geodesic+vial por cada conjunto único de parámetros
+  - Generar parameters_hash por par
+  - Poblar evaluation_pairs en experiment.json
 - [ ] T024 [US3] Verificar que cada evaluación vial produjo:
   - `estimated_route_distance_km` ≠ geodésico
   - `estimated_time_min` > 0
@@ -225,12 +226,12 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
   - H008: Zonas de distorsión territorial identificadas
   - H009: Sensibilidad de métricas al cambio de modelo
   - H010: Impacto en ranking de rutas
-- [ ] T032 [P] [US6] Agregar PI-006 a PI-013 en `research/preguntas-investigacion.md`.
-- [ ] T033 [P] [US6] Agregar D006+ en `research/decisiones.md` (OSRM, DistanceService, cobertura Gran Valparaíso, perfil car.lua).
-- [ ] T034 [P] [US6] Agregar C004–C005 en `research/contribuciones.md`:
+- [X] T032 [P] [US6] Agregar PI-006 a PI-014 en `research/preguntas-investigacion.md`.
+- [X] T033 [P] [US6] Agregar D006–D008 en `research/decisiones.md` (OSRM, DistanceService Strategy, parameters_hash).
+- [X] T034 [P] [US6] Agregar C004–C005 en `research/contribuciones.md`:
   - C004: Framework de revalidación experimental con categoría V
   - C005: Métrica de distorsión territorial (M006)
-- [ ] T035 [US6] Actualizar `research/evidence-matrix.md` con todos los nuevos IDs (H007+, V001+, PI-006+, D006+, C004+).
+- [X] T035 [US6] Actualizar `research/evidence-matrix.md` con todos los nuevos IDs (H007+, V001+, PI-006+, D006+, C004+).
 
 **Checkpoint**: Todos los archivos de investigación actualizados con la nueva evidencia.
 
@@ -240,7 +241,7 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
 
 **Purpose**: Verificaciones finales que abarcan múltiples fases.
 
-- [ ] T036 [P] Verificar retrocompatibilidad: ejecutar `POST /api/evaluations` sin `distance_mode` (default geodesic) y comparar metrics_summary contra evaluation baseline (mismos parámetros) — debe ser idéntico.
+- [X] T036 [P] Verificar retrocompatibilidad: ejecutar `POST /api/evaluations` sin `distance_mode` (default geodesic) y comparar metrics_summary contra evaluation baseline (mismos parámetros) — debe ser idéntico.
 - [ ] T037 [P] Verificar casos borde en `OsrmClient`:
   - Coordenadas idénticas → distance_km = 0, duration_min = 0
   - Coordenadas fuera del área del grafo (Gran Valparaíso) → code = "NoRoute", distance_km = null
@@ -248,7 +249,7 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
 - [ ] T038 [P] Verificar que los mapas se renderizan correctamente en modo vial (rutas sobre red vial).
 - [ ] T039 [P] Ejecutar suite completa de tests del backend: `docker compose exec backend php artisan test`.
 - [ ] T040 Verificar escenarios 1–8 de `specs/006-road-network-integration/quickstart.md` uno por uno.
-- [ ] T041 Actualizar `AGENTS.md` con estado final de SPEC-006.
+- [X] T041 Actualizar `AGENTS.md` con estado final de SPEC-006.
 
 ---
 

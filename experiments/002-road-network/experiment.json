@@ -1,0 +1,12 @@
+{
+    "identifier": "002-road-network",
+    "name": "Comparación Geodésica vs Vial",
+    "objective": "Cuantificar el impacto de reemplazar distancias geodésicas por distancias sobre red vial real en las métricas operacionales del sistema.",
+    "hypothesis": "H1: La red vial modifica significativamente las métricas operacionales.",
+    "baseline_reference": {
+        "experiment_id": 1,
+        "description": "Evaluaciones originales del experimento baseline (modo geodésico)"
+    },
+    "evaluation_pairs": [],
+    "author": "Sistema"
+}

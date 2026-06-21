@@ -91,3 +91,37 @@ Formato basado en ADR (Architecture Decision Records).
 **Impacto**: Experimentos futuros en otras ciudades requerirán construir nuevos grafos OSRM. La decisión queda documentada para evitar reproducir el debate en SPEC-008+.
 
 **Fecha**: 2026-06-20
+
+---
+
+## D007
+
+**Decisión**: Implementar DistanceService con patrón Strategy (modo geodésico ↔ vial intercambiable en tiempo de ejecución).
+
+**Contexto**: SPEC-006 requiere que el sistema pueda calcular distancias tanto geodésicas como sobre red vial, y que todos los servicios downstream (MetricsCalculatorService, MeasurementService, buildDeliveriesFlat) funcionen con ambos modos sin duplicación de código.
+
+**Razón**:
+- Strategy pattern permitió reemplazar 13 llamadas estáticas a `HaversineService::calculate()` por un único `DistanceService::calculate()` inyectado.
+- `setMode()` permite cambiar entre modos sin reconstruir el container.
+- `OsrmClient` se aísla tras la interfaz de DistanceService; los servicios no saben si están usando Haversine u OSRM.
+
+**Impacto**: Cero cambios en la API pública de MeasurementService. Retrofitting completo con inyección de dependencias. Modo vial agrega ~2–5 s por evaluación local vs modo geodésico.
+
+**Fecha**: 2026-06-20
+
+---
+
+## D008
+
+**Decisión**: Vincular pares de evaluaciones geodésica↔vial mediante `parameters_hash` (md5 de 8 campos normalizados), no mediante IDs fijos.
+
+**Contexto**: SPEC-006 requiere comparar métricas entre modo geodésico y vial. El approach inicial usaba IDs fijos 2–7 del Exp001, lo que es frágil y no reproducible en otros entornos.
+
+**Razón**:
+- `parameters_hash` incluye 8 campos deterministas: random_seed, algorithm, algorithm_version, near_delivery_threshold_km, ignored_delivery_ratio, dataset, warehouse_lat, warehouse_lng.
+- Excluye distance_mode, timestamps, IDs — campos que varían entre la evaluación geodesic y vial.
+- md5 de JSON compacto (orden alfabético) es reproducible en cualquier lenguaje/entorno.
+
+**Impacto**: Las evaluaciones ya no dependen de IDs específicos de Exp001. Cualquier par de evaluaciones con mismos parámetros (excepto distance_mode) se emparejará automáticamente. La trazabilidad hacia Exp001 es informativa mediante `baseline_reference`, no funcional.
+
+**Fecha**: 2026-06-20
