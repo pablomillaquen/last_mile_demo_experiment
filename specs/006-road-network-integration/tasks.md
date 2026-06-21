@@ -132,20 +132,20 @@ MeasurementService produce métricas crudas (distancia, duración, ranking, bala
 
 ### Implementation
 
-- [ ] T018 [P] [US1] Crear `backend/config/evaluation.php`:
+- [X] T018 [P] [US1] Crear `backend/config/evaluation.php`:
   ```php
   <?php
   return [
       'distance_mode' => env('EVALUATION_DISTANCE_MODE', 'geodesic'),
   ];
   ```
-- [ ] T019 [US1] Modificar `EvaluationController::store()` en `backend/app/Http/Controllers/EvaluationController.php`:
+- [X] T019 [US1] Modificar `EvaluationController::store()` en `backend/app/Http/Controllers/EvaluationController.php`:
   - Agregar `distance_mode` a validación: `'distance_mode' => 'sometimes|in:geodesic,vial'`
   - Pasar `distance_mode` desde request a `$parameters['distance_mode']`
   - Cargar default desde `config('evaluation.distance_mode')`
   - Incluir `mode` en la respuesta JSON
-- [ ] T020 [US1] Incluir `execution_time_sec` en `metrics_summary` de la respuesta.
-- [ ] T021 [US2] Verificar que `GET /api/evaluations/{id}` incluye `mode` y `distance_mode` en los detalles. Verificar retrocompatibilidad: evaluaciones existentes sin `distance_mode` no se rompen.
+- [X] T020 [US1] Incluir `execution_time_sec` en `metrics_summary` de la respuesta.
+- [X] T021 [US2] Verificar que `GET /api/evaluations/{id}` incluye `mode` y `distance_mode` en los detalles. Verificar retrocompatibilidad: evaluaciones existentes sin `distance_mode` no se rompen.
 
 **Checkpoint**: API acepta, valida y persiste modo de distancia.
 

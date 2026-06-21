@@ -31,6 +31,7 @@ class EvaluationController extends Controller
             'random_seed' => 'sometimes|integer|nullable',
             'algorithm' => 'sometimes|string|max:100',
             'algorithm_version' => 'sometimes|string|max:20',
+            'distance_mode' => 'sometimes|in:geodesic,vial',
         ]);
 
         $parameters = array_merge([
@@ -39,6 +40,7 @@ class EvaluationController extends Controller
             'random_seed' => null,
             'algorithm' => 'unknown',
             'algorithm_version' => '1.0',
+            'distance_mode' => config('evaluation.distance_mode'),
         ], $validated);
 
         $warehouse = $this->measurementService->loadWarehouse();
@@ -80,6 +82,8 @@ class EvaluationController extends Controller
         $this->metricsExporter->exportDeliveriesCsv($deliveriesFlat, $deliveriesPath);
         $files['deliveries_csv'] = $outputDir . '/deliveries.csv';
 
+        $result['metrics_summary']['execution_time_sec'] = $result['execution_time_sec'] ?? 0;
+        $result['metrics_summary']['mode'] = $parameters['distance_mode'];
         $metricsSummary = $result['metrics_summary'];
 
         $evaluation = Evaluation::create([
@@ -94,6 +98,8 @@ class EvaluationController extends Controller
         $response = array_merge(
             (new EvaluationResource($evaluation))->toArray($request),
             [
+                'mode' => $parameters['distance_mode'],
+                'execution_time_sec' => $result['execution_time_sec'],
                 'route_metrics' => $result['route_metrics'],
                 'anomalies' => $result['anomalies'],
                 'ranking' => $result['ranking'],
