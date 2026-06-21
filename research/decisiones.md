@@ -73,3 +73,21 @@ Formato basado en ADR (Architecture Decision Records).
 **Impacto**: Documento técnico más extenso pero metodológicamente más sólido.
 
 **Fecha**: 2026-06-19
+
+---
+
+## D006
+
+**Decisión**: La infraestructura OSRM de SPEC-006 utilizará exclusivamente un grafo del Gran Valparaíso generado mediante extracción regional desde OSM Chile, priorizando eficiencia experimental sobre cobertura nacional.
+
+**Contexto**: Se necesita una red vial real para revalidar hallazgos previos. El área experimental es el Gran Valparaíso (Valparaíso, Viña del Mar, Concón, Quilpué, Villa Alemana, Belloto, Limache).
+
+**Razón**:
+- Alineación directa con el área geográfica de Exp001 y Exp002.
+- Reducción de ~45 min a ~7 min de preprocesamiento y de 4 GB a 1 GB RAM.
+- La cobertura nacional es una línea de investigación separada (PI-013, PI-014).
+- El proceso es completamente reproducible (Makefile + bounding box script).
+
+**Impacto**: Experimentos futuros en otras ciudades requerirán construir nuevos grafos OSRM. La decisión queda documentada para evitar reproducir el debate en SPEC-008+.
+
+**Fecha**: 2026-06-20

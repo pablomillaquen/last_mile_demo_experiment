@@ -6,7 +6,7 @@
 
 ## Summary
 
-Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluación (MeasurementService) para soportar dos modos de distancia (geodésico/vial) mediante el patrón Strategy (DistanceService), reejecutar las evaluaciones IDs 2–7 sobre la red vial, calcular métricas de error M001–M006, generar reporte comparativo, y revalidar formalmente los hallazgos H001–H006 mediante la nueva categoría de evidencia V (Validaciones).
+Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluación (MeasurementService) para soportar dos modos de distancia (geodésico/vial) mediante el patrón Strategy (DistanceService), reejecutar evaluaciones baseline emparejadas por parámetros equivalentes sobre la red vial, calcular métricas de error M001–M006 desde pares experimentales en Exp002, generar reporte comparativo, y revalidar formalmente los hallazgos H001–H006 mediante la nueva categoría de evidencia V (Validaciones).
 
 ## Technical Context
 
@@ -16,7 +16,7 @@ Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluació
 
 **Storage**: PostgreSQL 16 — sin cambios estructurales (Evaluation.parameters JSONB existente almacena `distance_mode`). OSRM graph en volumen Docker persistente. Resultados de Exp002 en disco (`storage/app/evaluations/`).
 
-**Testing**: PHPUnit (backend — OsrmClient, DistanceService, MetricsCalculatorService modo vial, cálculo M001–M006)
+**Testing**: PHPUnit existente (no se desarrollan suites nuevas para SPEC-006). Validación manual y experimental siguiendo `quickstart.md`.
 
 **Target Platform**: Docker Compose (Linux containers), OSRM como servicio adicional
 
@@ -24,7 +24,7 @@ Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluació
 
 **Constraints**: Sin APIs externas (RNF1). Datos OSM de Gran Valparaíso (Chile PBF + bounding box) descargados y preprocesados. OSRM sin Internet en runtime.
 
-**Scale/Scope**: 1 bodega, ~300 entregas, 10 rutas, 6 evaluaciones (IDs 2–7), modo intercambiable
+**Scale/Scope**: 1 bodega, ~300 entregas, 10 rutas, 6 pares de evaluaciones (geodésica + vial por set de parámetros), modo intercambiable
 
 ## Constitution Check
 
@@ -77,13 +77,13 @@ backend/
 │       └── evaluation.php                    # NUEVO — config global
 ├── docker/
 │   └── osrm/
-│       ├── Dockerfile                        # NUEVO — OSM download + osrm-extract/contract
+│       ├── Dockerfile                        # NUEVO — servidor osrm-routed
+│       ├── scripts/
+│       │   ├── download-osm.sh               # NUEVO — descarga + bounding box GV
+│       │   └── preprocess.sh                 # NUEVO — osrm-extract/contract/partition/customize
 │       └── profiles/
 │           └── car.lua                       # NUEVO — perfil routing urbano
 ├── composer.json              # (+ guzzlehttp/guzzle)
-└── tests/
-    └── Feature/
-        └── RoadNetworkTest.php               # NUEVO — tests de ruteo vial
 
 docker-compose.yml            # MODIFICADO — + osrm service + volumen osrm-data
 
@@ -121,6 +121,7 @@ frontend/                     # Sin cambios
 6. Agregar servicios `osrm-prepare` y `osrm` en `docker-compose.yml`.
 7. Crear `Makefile` con target `prepare-osrm`.
 8. Verificar: `curl http://osrm:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05`
+9. **Validar bounding box**: confirmar que todas las coordenadas de entregas y bodega de Exp001 caen dentro de -71.70,-33.15,-71.20,-32.90. Si no, ajustar bounding box antes de continuar.
 
 **Checkpoint**: OSRM corriendo en Docker, responde a requests de ruteo.
 
@@ -142,25 +143,26 @@ frontend/                     # Sin cambios
 
 **Checkpoint**: `DistanceService::calculate()` retorna distancias según modo.
 
-### Phase 3: MeasurementService Adaptation
+### Phase 3: MeasurementService Adaptation (US1 + US2 + US4)
 
-**Purpose**: El orquestador de evaluaciones soporta modo vial sin romper modo geodésico.
+**Purpose**: El orquestador de evaluaciones soporta modo vial sin romper modo geodésico. Produce solo métricas crudas (distancia, duración, ranking, balance, cobertura, tiempo de ejecución). No realiza análisis comparativo — esa responsabilidad es de Exp002.
 
 **Tasks**:
 1. Modificar `MetricsCalculatorService`:
    - Constructor acepta `DistanceService` en lugar de llamar directamente a `HaversineService::calculate()`
    - Reemplazar todas las llamadas a `HaversineService::calculate()` por `$this->distanceService->calculate()`
-   - Incluir `estimated_time_min` en el resultado de route metrics
+   - Extraer `distance_km` y `duration_min` del resultado del DistanceService
+   - Incluir `estimated_time_min` en route metrics (solo modo vial)
 2. Modificar `MeasurementService`:
    - Constructor acepta `DistanceService`
    - `execute()` lee `distance_mode` de `$parameters`, llama a `setMode()` antes del pipeline
    - `buildDeliveriesFlat()` usa DistanceService
 3. Inyectar DistanceService a MetricsCalculatorService en MeasurementService.
-4. Calcular M001–M004 y M006 en modo vial: implementar lógica post-ejecución que compare resultados contra el baseline geodésico correspondiente (evaluaciones IDs 2–7). M005 se calcula a nivel de experimento.
-5. Registrar tiempo de ejecución (`microtime(true)` antes/después del pipeline) en `metrics_summary` para medir degradación computacional.
-6. Verificar que evaluaciones en modo geodésico producen resultados idénticos a los originales.
+4. Registrar tiempo de ejecución (`microtime(true)` antes/después del pipeline) como `execution_time_sec` en métricas crudas.
+5. Verificar retrocompatibilidad: modo geodésico produce resultados idénticos a los originales.
+6. Verificar que NO se calculan métricas comparativas (M001–M006) aquí.
 
-**Checkpoint**: MeasurementService ejecuta pipeline completo en ambos modos.
+**Checkpoint**: MeasurementService ejecuta pipeline completo en ambos modos, produce solo métricas crudas.
 
 ### Phase 4: EvaluationController & Config
 
@@ -177,27 +179,26 @@ frontend/                     # Sin cambios
 
 **Checkpoint**: API acepta, valida y persiste modo de distancia.
 
-### Phase 5: Experiment 002 — Geodésica vs Vial
+### Phase 5: Experiment 002 — Geodésica vs Vial (US3 + US5)
 
-**Purpose**: Reejecutar IDs 2–7 en modo vial y generar reporte comparativo.
+**Purpose**: Reejecutar evaluaciones baseline en modo vial y generar reporte comparativo. El experimento es responsable de TODO el análisis comparativo (M001–M006). Los pares se vinculan por `parameters_hash`, no por IDs fijos.
 
 **Tasks**:
-1. Crear `experiments/002-road-network/experiment.json`.
-2. Para cada evaluation ID (2–7), ejecutar POST /api/evaluations con:
-   - Mismos parámetros (seed, threshold, ratio, algorithm, version)
-   - `distance_mode: vial`
-   - Registrar IDs resultantes
-3. Comparar métricas por par (geodésico vs vial):
-   - Distancia total, promedio, penalidad, cobertura, balance, ranking
-   - Calcular M001–M004 y M006 para cada par
-   - Registrar tiempo de ejecución de cada evaluación (geodésica y vial) para medir degradación computacional
-4. Generar `experiments/002-road-network/report.md` con:
-   - Tablas comparativas por evaluación
-   - Factor de desvío promedio (M002) y distorsión territorial por zona (M006)
+1. Crear `experiments/002-road-network/experiment.json` con `baseline_reference` y `evaluation_pairs` vacío.
+2. Para cada conjunto único de parámetros en las evaluaciones baseline, ejecutar un par:
+   - Evaluation A: `distance_mode: geodesic`, mismos parámetros que baseline
+   - Evaluation B: `distance_mode: vial`, mismos parámetros que A
+   - Registrar `{ geodesic_id, vial_id, parameters_hash }` en `evaluation_pairs`
+   - Iterar sobre evaluaciones del experimento 1 sin hardcodear IDs 2–7
+3. Verificar que cada evaluación vial produce `estimated_route_distance_km` ≠ geodésico, `estimated_time_min` > 0, `execution_time_sec` registrado.
+4. Calcular por par: M001 (Error Geodésico Medio), M002 (Factor de Desvío), M003 (Error Máximo), M004 (Variación de Ranking), M006 (Distorsión Territorial).
+5. Generar `experiments/002-road-network/report.md` con:
+   - Tablas comparativas por par de evaluación
+   - Factor de desvío promedio general (M002 global)
+   - Análisis de distorsión territorial por zona (M006): normal ≤1.2, elevada ≤1.5, alta ≤2.0, crítica >2.0
    - Mapas de distorsión
-   - **M005** — Persistencia de Hallazgos: tabla de revalidación H001–H006 con estados Válido / Válido con ajustes / Revisado / Rechazado
-   - Tabla de tiempos de ejecución comparativos (geodésico vs vial) y factor de degradación observado
-5. Verificar con `experiments:sync`.
+   - Tabla de degradación computacional: tiempo_vial / tiempo_geodésico
+6. Verificar con `experiments:sync`.
 
 **Checkpoint**: Exp002 completo con reporte generado.
 
@@ -212,7 +213,7 @@ frontend/                     # Sin cambios
    V002 | H002 | Válido con ajustes | Exp002 | Magnitudes cambiaron +15%
    ```
 2. Documentar H007–H010 en `research/hallazgos.md`.
-3. Agregar PI-006 a PI-012 en `research/preguntas-investigacion.md`.
+3. Agregar PI-006 a PI-014 en `research/preguntas-investigacion.md`.
 4. Agregar D006+ en `research/decisiones.md` (OSRM, DistanceService, car.lua).
 5. Agregar C004–C005 en `research/contribuciones.md`.
 6. Actualizar `research/evidence-matrix.md` con todos los nuevos IDs.
@@ -224,7 +225,7 @@ frontend/                     # Sin cambios
 **Purpose**: Verificaciones finales.
 
 **Tasks**:
-1. Verificar retrocompatibilidad: evaluaciones geodésicas producen resultados idénticos a IDs 2–7.
+1. Verificar retrocompatibilidad: evaluaciones geodésicas producen resultados idénticos a las baseline con mismos parámetros.
 2. Casos borde en OsrmClient: coordenadas idénticas → 0, fuera de rango → null.
 3. Verificar que los mapas se renderizan correctamente en modo vial.
 4. Ejecutar suite completa de tests PHPUnit.
