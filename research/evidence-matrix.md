@@ -90,13 +90,15 @@
 | PI-012 | H010 | C004 |
 | PI-013 | H012 | C005 |
 | PI-014 | pendiente | C004 |
+| PI-015 | H011 | C005 |
+| PI-016 | H012 | — |
 
 ## Estado de IDs
 
 | Tipo | Total | Pendientes |
 |------|-------|------------|
 | Hallazgos | 12 (H001–H012) | — |
-| Preguntas | 14 (PI-001–PI-014) | PI-013, PI-014 investigación futura |
+| Preguntas | 16 (PI-001–PI-016) | PI-013, PI-014, PI-016 investigación futura |
 | Decisiones | 10 (D001–D010) | — |
 | Contribuciones | 5 (C001–C005) | — |
 | Validaciones | 6 (V001–V006) | — |

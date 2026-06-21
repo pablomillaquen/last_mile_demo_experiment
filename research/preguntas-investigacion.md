@@ -188,3 +188,15 @@ Cada pregunta tiene:
 **Hallazgos relacionados**: H011.
 
 **Fase objetivo**: SPEC-008+.
+
+---
+
+## PI-016
+
+**Pregunta**: ¿Qué mecanismos de visualización permiten comunicar con mayor claridad las diferencias entre modelos geodésicos y viales en escenarios de última milla?
+
+**Estado**: Abierta.
+
+**Hallazgos relacionados**: H012.
+
+**Fase objetivo**: SPEC-008.
