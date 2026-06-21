@@ -10,19 +10,27 @@ class MeasurementService
     private MetricsCalculatorService $metricsCalculator;
     private ?AnomalyDetector $anomalyDetector;
     private ?MapRendererService $mapRenderer;
+    private DistanceService $distanceService;
 
     public function __construct(
         MetricsCalculatorService $metricsCalculator,
+        DistanceService $distanceService,
         ?AnomalyDetector $anomalyDetector = null,
         ?MapRendererService $mapRenderer = null
     ) {
         $this->metricsCalculator = $metricsCalculator;
+        $this->distanceService = $distanceService;
         $this->anomalyDetector = $anomalyDetector;
         $this->mapRenderer = $mapRenderer;
     }
 
     public function execute(array $parameters, ?string $mapOutputPath = null): array
     {
+        $startTime = microtime(true);
+
+        $mode = $parameters['distance_mode'] ?? 'geodesic';
+        $this->distanceService->setMode($mode);
+
         $warehouse = $this->loadWarehouse();
 
         $routes = Route::with('routePackages.package')->get();
@@ -137,6 +145,7 @@ class MeasurementService
             'ranking' => $ranking,
             'deliveries_flat' => $deliveriesFlat,
             'map_files' => $mapFiles,
+            'execution_time_sec' => round(microtime(true) - $startTime, 4),
         ];
     }
 
@@ -161,14 +170,14 @@ class MeasurementService
 
             foreach ($route->routePackages as $rp) {
                 $pkg = $rp->package;
-                $distToWarehouse = HaversineService::calculate(
+                $distToWarehouse = $this->distanceService->calculate(
                     $warehouse['lat'], $warehouse['lng'],
                     (float) $pkg->latitude, (float) $pkg->longitude
-                );
-                $distToCentroid = HaversineService::calculate(
+                )['distance_km'];
+                $distToCentroid = $this->distanceService->calculate(
                     $centroidLat, $centroidLng,
                     (float) $pkg->latitude, (float) $pkg->longitude
-                );
+                )['distance_km'];
 
                 $flat[] = [
                     'delivery_id' => $pkg->id,

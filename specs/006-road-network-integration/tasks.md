@@ -99,22 +99,22 @@ MeasurementService produce métricas crudas (distancia, duración, ranking, bala
 
 ### Implementation
 
-- [ ] T013 [P] [US1] Modificar `MetricsCalculatorService` en `backend/app/Services/MetricsCalculatorService.php`:
+- [X] T013 [P] [US1] Modificar `MetricsCalculatorService` en `backend/app/Services/MetricsCalculatorService.php`:
   - Constructor acepta `DistanceService $distanceService`
   - Reemplazar todas las llamadas a `HaversineService::calculate()` por `$this->distanceService->calculate()`
   - Extraer `distance_km` y `duration_min` del resultado del DistanceService
   - En `calculateRouteMetrics()`: incluir `estimated_time_min` en el array de retorno (extraído de DurationResult, solo para modo vial)
-  - En `calculateRouteDistance()`: usar DistanceService para cada tramo de la ruta (warehouse→P1→P2→...→PN)
-- [ ] T014 [P] [US1] Modificar `MeasurementService` en `backend/app/Services/MeasurementService.php`:
+  - En `calculateRouteLeg()`: usar DistanceService para cada tramo de la ruta (warehouse→P1→P2→...→PN) y retornar `['distance_km' => float, 'duration_min' => float|null]`
+- [X] T014 [P] [US1] Modificar `MeasurementService` en `backend/app/Services/MeasurementService.php`:
   - Constructor acepta `DistanceService $distanceService`
   - `execute()` lee `distance_mode` de `$parameters`, llama a `$this->distanceService->setMode($mode)` al inicio del pipeline
   - `buildDeliveriesFlat()` usa `DistanceService` para distancias en lugar de `HaversineService::calculate()`
   - Inyectar `DistanceService` a `MetricsCalculatorService` en el constructor
-- [ ] T015 [P] [US1] Agregar registro de tiempo de ejecución en `MeasurementService::execute()`:
+- [X] T015 [P] [US1] Agregar registro de tiempo de ejecución en `MeasurementService::execute()`:
   - Capturar `microtime(true)` antes y después del pipeline completo
   - Incluir `execution_time_sec` en el array de retorno (para PI-012 y RNF2)
-- [ ] T016 [P] [US2] Verificar retrocompatibilidad en `MeasurementService::execute()`: con mode='geodesic', el resultado debe ser idéntico al actual (misma secuencia de cálculos Haversine).
-- [ ] T017 [US1] Verificar que MeasurementService produce, en ambos modos:
+- [X] T016 [P] [US2] Verificar retrocompatibilidad en `MeasurementService::execute()`: con mode='geodesic', el resultado debe ser idéntico al actual (misma secuencia de cálculos Haversine a través de DistanceService).
+- [X] T017 [US1] Verificar que MeasurementService produce, en ambos modos:
   - `route_distance_km`, `route_duration_min` (vial) o null (geodesic)
   - `route_ranking`, `balance_per_route`, `coverage_per_route`
   - `execution_time_sec`

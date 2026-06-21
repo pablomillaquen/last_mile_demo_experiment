@@ -6,6 +6,10 @@ use App\Models\Route;
 
 class MetricsCalculatorService
 {
+    public function __construct(
+        private DistanceService $distanceService
+    ) {}
+
     public function calculateRouteMetrics(Route $route, float $warehouseLat, float $warehouseLng): array
     {
         $route->loadMissing('routePackages.package');
@@ -32,10 +36,10 @@ class MetricsCalculatorService
 
         $distances = [];
         foreach ($packages as $pkg) {
-            $distances[] = HaversineService::calculate(
+            $distances[] = $this->distanceService->calculate(
                 $warehouseLat, $warehouseLng,
                 (float) $pkg->latitude, (float) $pkg->longitude
-            );
+            )['distance_km'];
         }
 
         $minDist = min($distances);
@@ -44,22 +48,22 @@ class MetricsCalculatorService
 
         $centroid = $this->calculateCentroid($packages);
 
-        $centroidToWarehouse = HaversineService::calculate(
+        $centroidToWarehouse = $this->distanceService->calculate(
             $centroid['lat'], $centroid['lng'],
             $warehouseLat, $warehouseLng
-        );
+        )['distance_km'];
 
         $distsToCentroid = [];
         foreach ($packages as $pkg) {
-            $distsToCentroid[] = HaversineService::calculate(
+            $distsToCentroid[] = $this->distanceService->calculate(
                 $centroid['lat'], $centroid['lng'],
                 (float) $pkg->latitude, (float) $pkg->longitude
-            );
+            )['distance_km'];
         }
         $clusterRadius = max($distsToCentroid);
         $avgDistToCentroid = array_sum($distsToCentroid) / $count;
 
-        $estimatedDistance = $this->calculateRouteDistance($routePackages, $warehouseLat, $warehouseLng);
+        $routeLeg = $this->calculateRouteLeg($routePackages, $warehouseLat, $warehouseLng);
 
         return [
             'route_id' => $route->id,
@@ -73,7 +77,8 @@ class MetricsCalculatorService
             'centroid_to_warehouse_km' => round($centroidToWarehouse, 4),
             'cluster_radius_km' => round($clusterRadius, 4),
             'avg_distance_to_centroid_km' => round($avgDistToCentroid, 4),
-            'estimated_route_distance_km' => round($estimatedDistance, 4),
+            'estimated_route_distance_km' => round($routeLeg['distance_km'], 4),
+            'estimated_time_min' => $routeLeg['duration_min'] !== null ? round($routeLeg['duration_min'], 2) : null,
         ];
     }
 
@@ -99,22 +104,33 @@ class MetricsCalculatorService
         ];
     }
 
-    public function calculateRouteDistance(iterable $routePackages, float $warehouseLat, float $warehouseLng): float
+    public function calculateRouteLeg(iterable $routePackages, float $warehouseLat, float $warehouseLng): array
     {
         $sorted = collect($routePackages)->sortBy('sequence');
-        $total = 0.0;
+        $totalDistance = 0.0;
+        $totalDuration = 0.0;
+        $hasDuration = true;
         $prevLat = $warehouseLat;
         $prevLng = $warehouseLng;
 
         foreach ($sorted as $rp) {
             $lat = (float) $rp->package->latitude;
             $lng = (float) $rp->package->longitude;
-            $total += HaversineService::calculate($prevLat, $prevLng, $lat, $lng);
+            $leg = $this->distanceService->calculate($prevLat, $prevLng, $lat, $lng);
+            $totalDistance += $leg['distance_km'];
+            if ($leg['duration_min'] === null) {
+                $hasDuration = false;
+            } else {
+                $totalDuration += $leg['duration_min'];
+            }
             $prevLat = $lat;
             $prevLng = $lng;
         }
 
-        return $total;
+        return [
+            'distance_km' => $totalDistance,
+            'duration_min' => $hasDuration ? $totalDuration : null,
+        ];
     }
 
     public function calculateGlobalIndicators(array $allRouteMetrics, iterable $allDeliveries, float $warehouseLat, float $warehouseLng): array
@@ -123,10 +139,10 @@ class MetricsCalculatorService
         $allDistances = [];
 
         foreach ($allDeliveries as $pkg) {
-            $dist = HaversineService::calculate(
+            $dist = $this->distanceService->calculate(
                 $warehouseLat, $warehouseLng,
                 (float) $pkg->latitude, (float) $pkg->longitude
-            );
+            )['distance_km'];
             $allDistances[] = $dist;
             if ($dist > $coverage) {
                 $coverage = $dist;
@@ -165,12 +181,12 @@ class MetricsCalculatorService
         $minClusterDist = PHP_FLOAT_MAX;
         for ($i = 0; $i < $routeCount; $i++) {
             for ($j = $i + 1; $j < $routeCount; $j++) {
-                $dist = HaversineService::calculate(
+                $dist = $this->distanceService->calculate(
                     $allRouteMetrics[$i]['centroid_lat'],
                     $allRouteMetrics[$i]['centroid_lng'],
                     $allRouteMetrics[$j]['centroid_lat'],
                     $allRouteMetrics[$j]['centroid_lng']
-                );
+                )['distance_km'];
                 if ($dist < $minClusterDist) {
                     $minClusterDist = $dist;
                 }
