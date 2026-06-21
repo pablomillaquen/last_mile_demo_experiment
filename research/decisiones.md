@@ -188,3 +188,26 @@ Formato basado en ADR (Architecture Decision Records).
 - Las nuevas publicaciones derivadas (PUB-001, PUB-002, PUB-003) referenciarán la versión que corresponda.
 
 **Fecha**: 2026-06-21
+
+---
+
+## D012
+
+**Decisión**: Separación entre conocimiento acumulado (`documentacion/`) y comunicación publicada (`PUB-*/`). Los documentos técnicos representan el estado acumulado del conocimiento del proyecto en un momento determinado. Las publicaciones representan adaptaciones de dicho conocimiento para audiencias específicas.
+
+**Contexto**: La reorganización de `publications/` estableció dos líneas paralelas: `documentacion/` con versionado secuencial del documento técnico (v1, v2, v3...) y `PUB-*/` con publicaciones derivadas para audiencias específicas (LinkedIn, portafolio, resumen ejecutivo, artículo). Esta distinción no estaba formalizada como decisión de diseño, lo que podría generar ambigüedad en futuras iteraciones.
+
+**Razón**:
+- `documento-tecnico-v{N}.md` es la fuente de verdad del conocimiento acumulado hasta ese momento.
+- `PUB-{N}` es una adaptación para una audiencia específica, basada en una versión concreta del documento técnico.
+- Una publicación nunca modifica retrospectivamente el contenido de una publicación anterior.
+- Un nuevo hallazgo no cambia publicaciones pasadas, pero sí genera una nueva versión del documento técnico.
+- Esta separación permite que el documento técnico evolucione como línea de investigación mientras las publicaciones se mantienen como piezas de comunicación externa.
+
+**Impacto**:
+- `documentacion/` crece secuencialmente con cada nueva versión del conocimiento acumulado.
+- `PUB-*/` crece con cada nueva publicación, referenciando siempre una versión específica vía `source-version.txt`.
+- El white paper final (SPEC-009) seguirá el mismo patrón.
+- La trazabilidad se mantiene explícita entre conocimiento y comunicación.
+
+**Fecha**: 2026-06-21

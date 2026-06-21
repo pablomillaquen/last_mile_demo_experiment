@@ -47,6 +47,7 @@
 | D009 | Decisión | `research/decisiones.md` | SPEC-006 — Preservar artefactos experimentales (BUG-001) |
 | D010 | Decisión | `research/decisiones.md` | SPEC-007 — Versionado acumulativo de publicaciones |
 | D011 | Decisión | `research/decisiones.md` | SPEC-007 — Documento técnico como fuente de verdad |
+| D012 | Decisión | `research/decisiones.md` | SPEC-007 — Separación conocimiento acumulado vs comunicación publicada |
 | BUG-001 | Bug | `research/bugs.md` | Exp001 modificado por `experiments:sync` — inmutable agregado |
 | BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — RESUELTO (SPEC-007) |
 | BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial — RESUELTO (SPEC-007) |
@@ -100,7 +101,7 @@
 |------|-------|------------|
 | Hallazgos | 12 (H001–H012) | — |
 | Preguntas | 16 (PI-001–PI-016) | PI-013, PI-014, PI-016 investigación futura |
-| Decisiones | 11 (D001–D011) | — |
+| Decisiones | 12 (D001–D012) | — |
 | Contribuciones | 5 (C001–C005) | — |
 | Validaciones | 6 (V001–V006) | — |
 | Bugs | 3 (BUG-001—BUG-003) | Todos resueltos |
