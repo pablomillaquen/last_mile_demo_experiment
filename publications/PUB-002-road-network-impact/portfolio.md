@@ -1,9 +1,7 @@
-# PUB-002 — Impacto de Red Vial — Portfolio
+# PUB-002 — Portfolio
 
 **Estado**: Planeado
 
 **Documento fuente**: documento-tecnico-v2
 
-Basado en EXP-002, SPEC-006, SPEC-007. Hallazgos H007–H012.
-
-Incluye: comparación cuantitativa geodésico vs vial (+54.3%, 339→523 km), Territorial Distortion Index (M006), validación V001–V006, evidencia visual SPEC-007.
+Artículo de portafolio destacando la comparación cuantitativa entre modelo geodésico y vial (+54.3%, 339→523 km), el Territorial Distortion Index (M006) y la validación de hallazgos baseline.

@@ -1,7 +1,7 @@
-# PUB-003 — Comparación Visual Avanzada — LinkedIn
+# PUB-003 — LinkedIn
 
 **Estado**: Planeado
 
-**Documento fuente**: documento-tecnico-v3 (futuro)
+**Documento fuente**: documento-tecnico-v3
 
-Post sobre herramientas de visual analytics para análisis comparativo de rutas de última milla.
+Post sobre visualización comparativa de rutas geodésicas y viales para análisis de última milla.

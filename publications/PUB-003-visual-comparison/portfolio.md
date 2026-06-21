@@ -1,7 +1,7 @@
-# PUB-003 — Comparación Visual Avanzada — Portfolio
+# PUB-003 — Portfolio
 
 **Estado**: Planeado
 
-**Documento fuente**: documento-tecnico-v3 (futuro, basado en SPEC-008)
+**Documento fuente**: documento-tecnico-v3
 
-Visualización comparativa, filtrado de rutas, interpretabilidad. Evidencia visual reutilizable para publicaciones.
+Artículo de portafolio sobre herramientas de visual analytics para interpretación y comunicación de resultados de ruteo.
