@@ -37,7 +37,7 @@ Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluació
 | Complejidad Incremental | ✅ Pasa | Extiende MeasurementService existente con un nuevo modo; no toca frontend ni clustering. |
 | Optimizaciones Comparables | ✅ Pasa | Ambos modos coexisten; Exp002 compara directamente geodésico vs vial bajo parámetros idénticos. |
 | Visualización como Análisis | ✅ Pasa | Mapas sobre red vial; mapa de distorsión territorial (M006). |
-| Conocimiento Reutilizable | ✅ Pasa | Hallazgos H007+, validaciones V001+, PI-011 registrada para fases futuras. |
+| Conocimiento Reutilizable | ✅ Pasa | Hallazgos H007+, validaciones V001+, PI-011–PI-014 registradas para fases futuras. |
 | Docker First | ✅ Pasa | OSRM como contenedor Docker; datos OSM preprocesados; sin dependencia externa en runtime. |
 
 **Resultado**: GATE PASS — sin violaciones constitucionales.
@@ -94,7 +94,7 @@ experiments/
 
 research/                     # Actualizados al final
 ├── hallazgos.md              # + H007+
-├── preguntas-investigacion.md # + PI-006 a PI-011
+├── preguntas-investigacion.md # + PI-006 a PI-014
 ├── decisiones.md             # + D006+
 ├── contribuciones.md         # + C004+
 └── evidence-matrix.md        # + V001+
