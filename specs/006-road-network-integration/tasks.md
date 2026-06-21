@@ -38,10 +38,9 @@ El preprocesamiento se separa del servidor para evitar builds pesados: el grafo 
   - Expone puerto 5000
   - Sin preprocesamiento en el build — la imagen es liviana y reutilizable
 - [ ] T003 [P] Crear `backend/docker/osrm/scripts/download-osm.sh`:
-  - Descarga `chile-latest.osm.pbf` desde Geofabrik (~200 MB)
-  - Extrae bounding box Gran Valparaíso: `osmium extract -b -71.70,-33.15,-71.20,-32.90 chile-latest.osm.pbf -o valparaiso.osm.pbf`
-  - Ambos archivos se colocan en `/data` dentro del volumen persistente
-  - El Chile PBF se reutiliza (no se redescarga si ya existe)
+  - Descarga datos OSM del Gran Valparaíso (bounding box: -71.70,-33.15,-71.20,-32.90)
+  - Extrae el área con `osmium extract` y produce `/data/valparaiso.osm.pbf` (~30 MB)
+  - Implementa cacheo de la fuente OSM para evitar descargas redundantes
 - [ ] T004 [P] Crear `backend/docker/osrm/scripts/preprocess.sh`:
   - Ejecuta `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize` en secuencia sobre `valparaiso.osm.pbf`
   - Parámetro: ruta al perfil car.lua
@@ -59,10 +58,9 @@ El preprocesamiento se separa del servidor para evitar builds pesados: el grafo 
     - Puerto: 5000
     - Depende de: volumen `osrm-data` poblado (preprocesamiento completado)
 - [ ] T007 Crear `Makefile` en raíz del proyecto con target `prepare-osrm`:
-  - Descarga Chile PBF si no existe
-  - Extrae bounding box Gran Valparaíso
-  - Ejecuta preprocesamiento completo
-  - Documenta tiempo esperado (~7 min) y requisitos de RAM (~1 GB)
+  - Obtiene datos OSM del Gran Valparaíso
+  - Ejecuta preprocesamiento completo (~7 min, ~1 GB RAM)
+  - Documenta requisitos y tiempo esperado
 - [ ] T008 Verificar: `make prepare-osrm && docker compose up -d osrm` y confirmar que `curl http://localhost:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05` retorna `{"code":"Ok"}`. Confirmar también que coordenadas fuera del bounding box retornan `{"code":"NoRoute"}`.
 
 **Checkpoint**: OSRM corriendo en Docker, responde a requests de ruteo.
