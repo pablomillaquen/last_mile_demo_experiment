@@ -26,24 +26,26 @@
 
 ## Phase 1: OSRM Docker Infrastructure (Shared)
 
-**Purpose**: OSRM corriendo como contenedor Docker con datos de Chile completo preprocesados.
-El preprocesamiento se separa del servidor para evitar builds pesados: el grafo se genera una vez en un volumen persistente y se reutiliza.
+**Purpose**: OSRM corriendo como contenedor Docker con datos de Gran Valparaíso preprocesados.
+El preprocesamiento se separa del servidor para evitar builds pesados: el grafo se genera una vez en un volumen persistente y se reutiliza. El área cubierta incluye Valparaíso, Viña del Mar, Concón, Quilpué, Villa Alemana, Belloto y Limache (bounding box: -71.70,-33.15,-71.20,-32.90).
 
 **CRITICAL**: All subsequent phases depend on OSRM being available.
 
 - [ ] T001 Agregar volumen `osrm-data` en `docker-compose.yml` (raíz del proyecto) para persistencia del grafo OSRM.
 - [ ] T002 Crear `backend/docker/osrm/Dockerfile` para el servidor OSRM:
   - Usar `ghcr.io/project-osrm/osrm-backend` como imagen base
-  - Entrypoint: `osrm-routed --algorithm=mld /data/chile-latest.osrm`
+  - Entrypoint: `osrm-routed --algorithm=mld /data/valparaiso.osrm`
   - Expone puerto 5000
   - Sin preprocesamiento en el build — la imagen es liviana y reutilizable
 - [ ] T003 [P] Crear `backend/docker/osrm/scripts/download-osm.sh`:
-  - Descarga `chile-latest.osm.pbf` desde Geofabrik
-  - Lo coloca en `/data` dentro del volumen persistente
+  - Descarga `chile-latest.osm.pbf` desde Geofabrik (~200 MB)
+  - Extrae bounding box Gran Valparaíso: `osmium extract -b -71.70,-33.15,-71.20,-32.90 chile-latest.osm.pbf -o valparaiso.osm.pbf`
+  - Ambos archivos se colocan en `/data` dentro del volumen persistente
+  - El Chile PBF se reutiliza (no se redescarga si ya existe)
 - [ ] T004 [P] Crear `backend/docker/osrm/scripts/preprocess.sh`:
-  - Ejecuta `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize` en secuencia
-  - Parámetros: ruta al .pbf descargado y perfil car.lua
-  - Para Chile completo (~200 MB PBF, ~45 min, ~4 GB RAM, ~1.2 GB disco)
+  - Ejecuta `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize` en secuencia sobre `valparaiso.osm.pbf`
+  - Parámetro: ruta al perfil car.lua
+  - Para Gran Valparaíso (~30 MB PBF, ~7 min, ~1 GB RAM, ~250 MB disco)
 - [ ] T005 [P] Crear perfil de routing `backend/docker/osrm/profiles/car.lua` con velocidades adaptadas para última milla urbana (residential=30, living_street=15, tertiary=40).
 - [ ] T006 Agregar servicios `osrm-prepare` y `osrm` en `docker-compose.yml`:
   - `osrm-prepare`: servicio one-shot para preprocesamiento manual (`docker compose run --rm osrm-prepare`)
@@ -58,9 +60,10 @@ El preprocesamiento se separa del servidor para evitar builds pesados: el grafo 
     - Depende de: volumen `osrm-data` poblado (preprocesamiento completado)
 - [ ] T007 Crear `Makefile` en raíz del proyecto con target `prepare-osrm`:
   - Descarga Chile PBF si no existe
+  - Extrae bounding box Gran Valparaíso
   - Ejecuta preprocesamiento completo
-  - Documenta tiempo esperado y requisitos de RAM
-- [ ] T008 Verificar: `make prepare-osrm && docker compose up -d osrm` y confirmar que `curl http://localhost:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05` retorna `{"code":"Ok"}`.
+  - Documenta tiempo esperado (~7 min) y requisitos de RAM (~1 GB)
+- [ ] T008 Verificar: `make prepare-osrm && docker compose up -d osrm` y confirmar que `curl http://localhost:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05` retorna `{"code":"Ok"}`. Confirmar también que coordenadas fuera del bounding box retornan `{"code":"NoRoute"}`.
 
 **Checkpoint**: OSRM corriendo en Docker, responde a requests de ruteo.
 
@@ -225,7 +228,7 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
   - H009: Sensibilidad de métricas al cambio de modelo
   - H010: Impacto en ranking de rutas
 - [ ] T032 [P] [US6] Agregar PI-006 a PI-013 en `research/preguntas-investigacion.md`.
-- [ ] T033 [P] [US6] Agregar D006+ en `research/decisiones.md` (OSRM, DistanceService, cobertura Chile completo, perfil car.lua).
+- [ ] T033 [P] [US6] Agregar D006+ en `research/decisiones.md` (OSRM, DistanceService, cobertura Gran Valparaíso, perfil car.lua).
 - [ ] T034 [P] [US6] Agregar C004–C005 en `research/contribuciones.md`:
   - C004: Framework de revalidación experimental con categoría V
   - C005: Métrica de distorsión territorial (M006)
@@ -242,7 +245,7 @@ El experimento es el responsable de TODO el análisis comparativo: M001–M006 n
 - [ ] T036 [P] Verificar retrocompatibilidad: ejecutar `POST /api/evaluations` sin `distance_mode` (default geodesic) y comparar metrics_summary contra evaluation baseline (mismos parámetros) — debe ser idéntico.
 - [ ] T037 [P] Verificar casos borde en `OsrmClient`:
   - Coordenadas idénticas → distance_km = 0, duration_min = 0
-  - Coordenadas fuera de Chile → code = "NoRoute", distance_km = null
+  - Coordenadas fuera del área del grafo (Gran Valparaíso) → code = "NoRoute", distance_km = null
   - OSRM caído → error manejado sin crash
 - [ ] T038 [P] Verificar que los mapas se renderizan correctamente en modo vial (rutas sobre red vial).
 - [ ] T039 [P] Ejecutar suite completa de tests del backend: `docker compose exec backend php artisan test`.

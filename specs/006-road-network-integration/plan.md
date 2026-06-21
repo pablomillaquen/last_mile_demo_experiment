@@ -22,7 +22,7 @@ Integrar OpenStreetMap + OSRM en el stack Docker, adaptar el motor de evaluació
 
 **Performance Goals**: Cálculo vial para 300 entregas / 10 rutas ≤ 10× del geodésico actual (RNF2)
 
-**Constraints**: Sin APIs externas (RNF1). Datos OSM de Chile completo descargados y preprocesados en build. OSRM sin Internet en runtime.
+**Constraints**: Sin APIs externas (RNF1). Datos OSM de Gran Valparaíso (Chile PBF + bounding box) descargados y preprocesados. OSRM sin Internet en runtime.
 
 **Scale/Scope**: 1 bodega, ~300 entregas, 10 rutas, 6 evaluaciones (IDs 2–7), modo intercambiable
 
@@ -108,19 +108,19 @@ frontend/                     # Sin cambios
 
 ### Phase 1: OSRM Docker Infrastructure
 
-**Purpose**: OSRM corriendo como contenedor Docker con datos de Chile completo preprocesados.
+**Purpose**: OSRM corriendo como contenedor Docker con datos de Gran Valparaíso preprocesados.
 
 **CRITICAL**: All subsequent phases depend on OSRM being available.
 
 **Tasks**:
 1. Crear volumen `osrm-data` en `docker-compose.yml`.
-2. Crear `backend/docker/osrm/Dockerfile`:
-   - Base: `ghcr.io/project-osrm/osrm-backend`
-   - Descargar extracto OSM Chile completo desde GeoFabrik
-   - Ejecutar `osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize` sobre Chile completo (sin bounding box restrictivo — permite rutas en Valparaíso, Viña, Concón, Quilpué, Villa Alemana, Limache, y reproducibilidad futura en Santiago/Concepción)
-3. Crear `backend/docker/osrm/profiles/car.lua` con velocidades adaptadas (residential=30, living_street=15).
-4. Agregar servicio `osrm` en `docker-compose.yml` con healthcheck.
-5. Verificar: `curl http://osrm:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05`
+2. Crear `backend/docker/osrm/Dockerfile` liviano (solo `osrm-routed`, sin preprocesamiento en build).
+3. Crear scripts de descarga + extracción por bounding box (Gran Valparaíso: -71.70,-33.15,-71.20,-32.90).
+4. Crear script de preprocesamiento (`osrm-extract`, `osrm-contract`, `osrm-partition`, `osrm-customize`).
+5. Crear `backend/docker/osrm/profiles/car.lua` con velocidades adaptadas (residential=30, living_street=15).
+6. Agregar servicios `osrm-prepare` y `osrm` en `docker-compose.yml`.
+7. Crear `Makefile` con target `prepare-osrm`.
+8. Verificar: `curl http://osrm:5000/route/v1/driving/-71.62,-33.045;-71.61,-33.05`
 
 **Checkpoint**: OSRM corriendo en Docker, responde a requests de ruteo.
 

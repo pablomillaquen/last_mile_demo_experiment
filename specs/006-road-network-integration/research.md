@@ -105,46 +105,52 @@ services:
 
 ### Descarga de Datos
 
-Origen: GeoFabrik — extracto Chile completo (~200MB PBF).
+Origen: GeoFabrik — extracto Chile completo (~200MB PBF). Se descarga completo y luego se extrae el bounding box del Gran Valparaíso con `osmium extract`.
 ```
 https://download.geofabrik.de/south-america/chile-latest.osm.pbf
 ```
 
-Procesar con `osrm-extract` sobre Chile completo (sin subset por bounding box). Esto permite:
-- Rutas que abarcan toda la Región de Valparaíso (incluyendo Viña del Mar, Concón, Quilpué, Villa Alemana, Limache).
-- Posibilidad futura de evaluar en Santiago, Concepción y otras ciudades (reproducibilidad).
-- OSRM funciona de manera óptima con el extracto completo de Chile (~200MB PBF).
+Extraer bounding box del Gran Valparaíso (Valparaíso, Viña del Mar, Concón, Quilpué, Villa Alemana, Belloto, Limache):
+```
+osmium extract -b -71.70,-33.15,-71.20,-32.90 chile-latest.osm.pbf -o valparaiso.osm.pbf
+```
+
+Luego procesar con `osrm-extract` sobre el subconjunto regional. Esto reduce el grafo a ~30 MB PBF y ~7 min de preprocesamiento, enfocando los recursos en el área geográfica cubierta por Exp001 y Exp002.
 
 ```
-osrm-extract -p /opt/car.lua chile-latest.osm.pbf
+osrm-extract -p /opt/car.lua valparaiso.osm.pbf
 ```
 
 ### Pipeline de Preprocesado
 
 ```
-chile-latest.osm.pbf
+chile-latest.osm.pbf  (~200 MB, descarga única)
+    │ osmium extract -b (bounding box Gran Valparaíso)
+    ▼
+valparaiso.osm.pbf    (~30 MB)
     │ osrm-extract
     ▼
-chile-latest.osrm
+valparaiso.osrm
     │ osrm-contract
     ▼
-chile-latest.osrm (contracted)
+valparaiso.osrm (contracted)
     │ osrm-partition + osrm-customize
     ▼
 osrm-routed (servicio HTTP)
 ```
 
-### Estimación de Recursos
+### Estimación de Recursos (Grafo Gran Valparaíso)
 
 | Etapa | Tiempo Estimado | Disco | RAM Peak |
 |-------|-----------------|-------|----------|
-| osrm-extract | ~15 min | ~600MB | 2GB |
-| osrm-contract | ~20 min | ~400MB | 4GB |
-| osrm-partition | ~5 min | ~100MB | 1GB |
-| osrm-customize | ~5 min | ~100MB | 1GB |
-| Total | ~45 min | ~1.2GB | 4GB |
+| osmium extract | ~30 seg | ~30MB | <500MB |
+| osrm-extract | ~2 min | ~100MB | 500MB |
+| osrm-contract | ~3 min | ~80MB | 1GB |
+| osrm-partition | ~1 min | ~20MB | <500MB |
+| osrm-customize | ~1 min | ~20MB | <500MB |
+| Total | ~7 min | ~250MB | 1GB |
 
-Aceptable para desarrollo en máquina moderna. El volumen Docker persistente evita reprocesar en cada inicio.
+El volumen Docker persistente evita reprocesar en cada inicio. La descarga del PBF de Chile completo se hace una sola vez y se reutiliza.
 
 ## 5. Estrategia de Distancias
 
@@ -172,26 +178,30 @@ MeasurementService
 
 ### Decisión
 
-La infraestructura de ruteo utilizará el extracto nacional de Chile como fuente base de red vial. Los experimentos individuales definen su propio dataset (coordenadas de entregas), pero el grafo de OSRM cubre todo el territorio nacional.
+La infraestructura de ruteo utilizará un subconjunto del extracto de Chile limitado al Gran Valparaíso, extraído mediante bounding box. Esto alinea la cobertura del grafo OSRM con el área geográfica de los experimentos actuales (Exp001, Exp002), reduciendo tiempos de preprocesamiento y requisitos de recursos.
 
 ### Tres niveles diferenciados
 
 | Nivel | Ámbito | Qué es | Responsabilidad |
 |-------|--------|--------|-----------------|
 | 1 | Dataset experimental | Gran Valparaíso (coordenadas de entregas actuales) | Experimentos (Exp001, Exp002) |
-| 2 | Cobertura de infraestructura | Chile completo (grafo OSRM) | Docker / OSRM build |
+| 2 | Cobertura de infraestructura | Gran Valparaíso (grafo OSRM) | Docker / OSRM build |
 | 3 | Generalización futura | Santiago, Concepción, Antofagasta, Temuco | Investigación (SPEC-008+) |
 
 ### Rationale
 
-- **Reproducibilidad**: El mismo contenedor OSRM sirve para cualquier experimento futuro, sin reconstruir el grafo.
-- **Reutilización del conocimiento**: Un experimento en Santiago (SPEC-008) usaría exactamente el mismo stack, cambiando solo las coordenadas del dataset.
-- **Conexión con preguntas de investigación**: Esta decisión habilita una futura PI-013: *¿Varía el factor de desvío geodésico-vial según la morfología urbana?* Comparando Valparaíso (topografía compleja), Santiago (trama regular) y Concepción (estructura policéntrica) con idéntica infraestructura.
-- **Evolución del proyecto**: Consistente con los principios de Complejidad Incremental y Conocimiento Reutilizable de la Constitución.
+- **Alineación experimental**: El grafo cubre exactamente el área donde se realizan las evaluaciones. No tiene sentido procesar Chile completo si las entregas están en Valparaíso, Viña, Concón, Quilpué, Villa Alemana, Belloto y Limache.
+- **Eficiencia**: ~7 min y ~1 GB RAM vs ~45 min y ~4 GB RAM del Chile completo. Iteraciones más rápidas durante el desarrollo.
+- **Complejidad Incremental**: SPEC-006 estudia una hipótesis específica (¿cambian los hallazgos con red vial real?). La cobertura nacional es una línea de investigación separada.
+- **Conexión con preguntas de investigación**: La expansión a Santiago y Concepción (PI-013) será una futura spec, donde se abordará la generación automática de grafos multi-ciudad.
+- **Reproducibilidad**: El proceso de descarga + bounding box + preprocesamiento está completamente scriptado. Cualquier persona puede reproducir el mismo grafo ejecutando `make prepare-osrm`.
 
 ### Alternativa Rechazada
 
-**Subset regional por bounding box**: Rechazada porque acopla la infraestructura al experimento actual. Cualquier expansión geográfica futura requeriría reconstruir OSRM y modificar el stack Docker, rompiendo la reproducibilidad histórica.
+**Chile completo (grafo nacional)**: Rechazada por ahora porque:
+- Incrementa el tiempo de build ~6× sin beneficio para el experimento actual.
+- No mejora la reproducibilidad (el proceso scriptado es igual de reproducible).
+- El estudio de cobertura nacional o multi-ciudad corresponde a una spec futura (PI-013, PI-014, PI-015).
 
 ## 7. Evaluación de Dependencias PHP
 
