@@ -211,3 +211,44 @@ Formato basado en ADR (Architecture Decision Records).
 - La trazabilidad se mantiene explícita entre conocimiento y comunicación.
 
 **Fecha**: 2026-06-21
+
+---
+
+## D013
+
+**Decisión**: Las publicaciones derivadas deben completarse editorialmente antes de iniciar la siguiente publicación dependiente.
+
+**Contexto**: La transición de PUB-001 a PUB-002 reveló un desbalance crítico: PUB-001 contiene narrativa completa (contexto operacional, motivación, metodología, resultados, interpretación, discusión, aprendizajes) mientras PUB-002 quedó como un placeholder estructural con títulos, listas de hallazgos y referencias sin desarrollar. El proyecto cuenta con excelente arquitectura de investigación y trazabilidad, pero el contenido editorial de PUB-002 no está a la altura de la investigación realizada.
+
+**Razón**:
+- PUB-002 contiene hallazgos más potentes que PUB-001: H012 (+54.3%) es una invalidación parcial del supuesto geodésico original, no una optimización incremental.
+- Avanzar a PUB-003 con PUB-002 incompleta rompe la secuencia narrativa y la continuidad editorial.
+- documento-tecnico-v2 existe con todo el contenido técnico; el cuello de botella no es técnico ni experimental, sino editorial.
+- La historia científica entre SPEC-006 y SPEC-007 (el modelo vial cambió la interpretación completa de la operación logística) no está contada.
+
+**Impacto**:
+- PUB-002 debe reescribirse completamente antes de iniciar SPEC-008.
+- PUB-003 se beneficiará de tener una base editorial sólida.
+- El flujo editorial futuro será: cerrar PUB-N → avanzar investigación → cerrar PUB-(N+1).
+
+**Fecha**: 2026-06-22
+
+---
+
+## D014
+
+**Decisión**: PUB-001-geodesic-baseline es el estándar editorial y de formato para todas las publicaciones derivadas del proyecto. No puede modificarse retrospectivamente, pero debe usarse como referencia de calidad, profundidad narrativa y estructura para PUB-002 y posteriores.
+
+**Contexto**: PUB-001 contiene documentos completos con narrativa, contexto operacional, motivación, interpretación de resultados, discusión, aprendizajes y adaptación al público objetivo (portafolio, ejecutivo, LinkedIn). Las publicaciones posteriores deben igualar este nivel de profundidad y estructura.
+
+**Razón**:
+- PUB-001 demostró que el proyecto puede producir publicaciones profesionales y narrativamente sólidas.
+- Sin un estándar explícito, las publicaciones derivadas pueden degenerar en placeholders estructurales.
+- La consistencia editorial entre publicaciones es necesaria para la credibilidad del proyecto como caso de estudio profesional.
+
+**Impacto**:
+- PUB-002 debe reescribirse siguiendo la estructura y profundidad de PUB-001.
+- PUB-003 y siguientes deben cumplir el mismo estándar antes de ser marcadas como "publicadas".
+- assets/ (tablas, diagramas, mapas) debe mantenerse al mismo nivel que PUB-001.
+
+**Fecha**: 2026-06-22
