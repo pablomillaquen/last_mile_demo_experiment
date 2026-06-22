@@ -111,7 +111,8 @@ Este proyecto aborda el problema de la logística de última milla desde una per
 - PI-002 (Respondida): Las variables que explican anomalías son la distancia a bodega y la distancia al centroide.
 - PI-003 (Respondida): Las métricas invariantes son operacionales y de balance; las sensibles son de calidad.
 - PI-004 (Respondida): El ratio de severidad tiene mayor impacto que el umbral de proximidad.
-- PI-016 (Abierta): ¿Qué mecanismos de visualización permiten comunicar con mayor claridad las diferencias entre modelos geodésicos y viales?
+- PI-016 (En investigación): ¿Cómo influye la visualización selectiva y comparativa de rutas en la capacidad de interpretar diferencias entre métricas geodésicas y viales?
+- PI-017 (En investigación): ¿Qué nivel de detalle visual es necesario para comunicar eficazmente diferencias operacionales entre modelos geodésicos y viales sin introducir sobrecarga cognitiva?
 
 ## Cadena evolutiva del conocimiento
 

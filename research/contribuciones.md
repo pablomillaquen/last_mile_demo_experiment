@@ -51,3 +51,13 @@
 **Descripción**: M006 cuantifica la diferencia entre distancia vial real y distancia geodésica por punto y por ruta, clasificándola en rangos (normal ≤1.2, elevada ≤1.5, alta ≤2.0, crítica >2.0). Permite identificar zonas geográficas donde el modelo geodésico subestima sistemáticamente el esfuerzo operacional.
 
 **Evidencia**: SPEC-006, experiments/002-road-network/report.md.
+
+---
+
+## C006
+
+**Contribución**: Visual Analytics para interpretación de diferencias entre modelos de distancia geodésicos y viales.
+
+**Descripción**: Metodología de visualización comparativa sincronizada (split view) que permite a analistas logísticos identificar patrones de divergencia entre rutas geodésicas y viales. No introduce nuevas métricas ni algoritmos, sino que mejora la interpretabilidad de métricas existentes mediante análisis visual comparativo.
+
+**Evidencia**: SPEC-008, EXP-002, H012.

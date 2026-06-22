@@ -193,9 +193,21 @@ Cada pregunta tiene:
 
 ## PI-016
 
-**Pregunta**: ¿Qué mecanismos de visualización permiten comunicar con mayor claridad las diferencias entre modelos geodésicos y viales en escenarios de última milla?
+**Pregunta**: ¿Cómo influye la visualización selectiva y comparativa de rutas en la capacidad de interpretar diferencias entre métricas geodésicas y viales?
 
-**Estado**: Abierta.
+**Estado**: En investigación.
+
+**Hallazgos relacionados**: H012.
+
+**Fase objetivo**: SPEC-008.
+
+---
+
+## PI-017
+
+**Pregunta**: ¿Qué nivel de detalle visual es necesario para comunicar eficazmente diferencias operacionales entre modelos geodésicos y viales sin introducir sobrecarga cognitiva?
+
+**Estado**: En investigación.
 
 **Hallazgos relacionados**: H012.
 
