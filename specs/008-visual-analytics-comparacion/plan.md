@@ -5,6 +5,105 @@
 **Checklist**: `specs/008-visual-analytics-comparacion/checklists/requirements.md`
 **Created**: 2026-06-22
 
+## Technical Context
+
+### Stack
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| Frontend | NextJS (App Router) + TypeScript | 14 |
+| Mapas | Leaflet + react-leaflet | 1.9.x / 4.x |
+| UI | TailwindCSS | (configuración del proyecto) |
+| API | Laravel (backend Docker) | 12 |
+| Datos | PostgreSQL 16 + evaluation.json | — |
+
+### Arquitectura actual (SPEC-007)
+```
+evaluations/[id]/page.tsx
+├── RouteModeToggle          (geodésico ↔ vial, simple toggle)
+└── MapView                  (único mapa, recibe mode prop)
+    ├── TileLayer (OSM)
+    ├── Polyline[]           (rutas activas: geodésicas o viales)
+    ├── Marker (bodega)
+    └── Marker[]             (paquetes — vacío en vista evaluación)
+```
+
+### Flujo de datos
+1. `GET /api/evaluations/{id}` → `EvaluationResource` → `route_legs[]`, `route_metrics[]`
+2. `route_legs` contiene `mode: 'geodesic' | 'vial'` y `geometry: [lat,lng][] | null`
+3. `geodesicPolylines` se construyen a partir de `from_lat/from_lng/to_lat/to_lng`
+4. `vialPolylines` se construyen a partir de `geometry` concatenado por `route_id`
+5. `activePolylines = mode === 'vial' ? vialPolylines : polylines`
+6. `routeColorById` y `routeNameById` se derivan del índice en `routeMetrics`
+
+### API (`RouteLeg`)
+```typescript
+interface RouteLeg {
+  route_id: number;
+  from_delivery_id: number | null;
+  to_delivery_id: number | null;
+  from_lat: number;
+  from_lng: number;
+  to_lat: number;
+  to_lng: number;
+  distance_km: number;
+  duration_min: number | null;
+  geometry: [number, number][] | null;  // [[lat, lng], ...] — polyline points
+  mode: 'geodesic' | 'vial';
+}
+```
+
+### Dependencias externas
+- Leaflet (npm: `leaflet`, `react-leaflet`, `@types/leaflet`)
+- OSM tiles (CDN, sin API key)
+- No se requieren nuevas dependencias npm
+
+### Integraciones
+- **SplitMapView** → instancia dos `MapContainer` de react-leaflet
+- **Sincronización** → eventos `moveend`/`zoomend` de Leaflet, con flag `isSyncing`
+- **RoutePanel** → componente React puro, sin dependencias de mapa
+
+### Desconocidos
+No hay desconocidos técnicos. El stack, los componentes existentes y el modelo de datos están completamente especificados por SPEC-007 y explorados durante la fase de análisis.
+
+---
+
+## Constitution Check
+
+### I. Evidencia Antes de Solución
+**Cumple**: SPEC-007 ya generó evidencia visual de la divergencia geodésico/vial (H012, capturas lado a lado manuales). SPEC-008 sistematiza el análisis visual que SPEC-007 demostró que era posible. No se introduce optimización sin representación previa del problema.
+
+### II. Decisiones Medibles
+**Cumple**: La spec define 4 métricas cuantitativas (M1–M4):
+- M1: Tiempo de sincronización entre mapas (<200ms, medible)
+- M2: Precisión de sincronización (diferencia de centro/zoom, medible)
+- M3: Cobertura de rutas seleccionables (100%, verificable)
+- M4: Tiempo de identificación de divergencia (comparable SPEC-007 vs SPEC-008)
+
+### III. Complejidad Incremental
+**Cumple**: SPEC-008 extiende SPEC-007 sin modificar modelos subyacentes (no toca backend, no modifica DistanceService, MeasurementService ni OSRM). Todos los cambios son frontend. No introduce nuevas rutas API ni tablas.
+
+### IV. Modelado de Escenarios Reales
+**Cumple**: Las rutas visualizadas corresponden a entregas reales de Valparaíso (EXP-002). El split view permite inspeccionar el impacto de la red vial real sobre la operación, no una abstracción teórica.
+
+### V. Optimizaciones Comparables
+**Cumple**: El split view es inherentemente comparativo: mapa geodésico a la izquierda, mapa vial a la derecha, sincronizados. Permite al analista contrastar directamente ambos modelos de distancia sin alternancia manual.
+
+### VI. Visualización como Análisis
+**Cumple**: Es el principio central de SPEC-008. El split view, el filtrado de rutas y el aislamiento individual convierten el mapa en una herramienta analítica, no solo decorativa. PI-016 y PI-017 guían explícitamente esta dimensión.
+
+### VII. Conocimiento Reutilizable
+**Cumple**: SPEC-008 alimenta documento-tecnico-v3 y PUB-003 (publicación derivada con estándar editorial D014). La evidencia visual generada (capturas de split view, aislamiento, filtrado) es reutilizable en documentación técnica y portafolio.
+
+### VIII. Docker First
+**Cumple**: Los cambios son exclusivamente frontend (TypeScript/React). No se modifican servicios Docker, ni se requiere reconstruir contenedores. El entorno de desarrollo existente (`docker-compose up`) sigue funcionando sin cambios.
+
+### Resultado de Gates
+- **Violaciones**: 0
+- **Advertencias**: 0
+- **Estado**: APROBADO — la implementación es conforme a los 8 principios constitucionales.
+
+---
+
 ## Contexto científico
 
 SPEC-008 no es una mejora de UI. Es un **instrumento de investigación visual** para responder:
