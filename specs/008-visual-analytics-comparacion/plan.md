@@ -63,7 +63,15 @@ interface RouteLeg {
 - **RoutePanel** → componente React puro, sin dependencias de mapa
 
 ### Desconocidos
-No hay desconocidos técnicos. El stack, los componentes existentes y el modelo de datos están completamente especificados por SPEC-007 y explorados durante la fase de análisis.
+No existen unknowns técnicos relevantes. El stack, los componentes existentes y el modelo de datos están completamente especificados por SPEC-007.
+
+Persisten unknowns de investigación asociados a **PI-016** y **PI-017**, que constituyen el objetivo principal de SPEC-008:
+- ¿El split view realmente reduce el tiempo de identificación de divergencias?
+- ¿El filtrado de rutas realmente ayuda al análisis visual?
+- ¿La atenuación funciona mejor que ocultar rutas no seleccionadas?
+- ¿Cuál es el nivel óptimo de detalle visual sin sobrecarga cognitiva?
+
+Estos unknowns no son técnicos — son las preguntas de investigación que SPEC-008 debe responder mediante el instrumento visual.
 
 ---
 
@@ -77,7 +85,13 @@ No hay desconocidos técnicos. El stack, los componentes existentes y el modelo 
 - M1: Tiempo de sincronización entre mapas (<200ms, medible)
 - M2: Precisión de sincronización (diferencia de centro/zoom, medible)
 - M3: Cobertura de rutas seleccionables (100%, verificable)
-- M4: Tiempo de identificación de divergencia (comparable SPEC-007 vs SPEC-008)
+- M4: Tiempo de identificación de divergencia — tiempo requerido por un observador para identificar la ruta con mayor diferencia entre distancia geodésica y vial.
+  **Procedimiento**:
+  - Realizar 5 mediciones con vista simple (toggle SPEC-007)
+  - Realizar 5 mediciones con split view (SPEC-008)
+  - Registrar tiempo en segundos por medición
+  - Comparar promedios entre modos
+  - Criterio de éxito: split view debe reducir el tiempo promedio respecto a vista simple
 
 ### III. Complejidad Incremental
 **Cumple**: SPEC-008 extiende SPEC-007 sin modificar modelos subyacentes (no toca backend, no modifica DistanceService, MeasurementService ni OSRM). Todos los cambios son frontend. No introduce nuevas rutas API ni tablas.
@@ -92,7 +106,7 @@ No hay desconocidos técnicos. El stack, los componentes existentes y el modelo 
 **Cumple**: Es el principio central de SPEC-008. El split view, el filtrado de rutas y el aislamiento individual convierten el mapa en una herramienta analítica, no solo decorativa. PI-016 y PI-017 guían explícitamente esta dimensión.
 
 ### VII. Conocimiento Reutilizable
-**Cumple**: SPEC-008 alimenta documento-tecnico-v3 y PUB-003 (publicación derivada con estándar editorial D014). La evidencia visual generada (capturas de split view, aislamiento, filtrado) es reutilizable en documentación técnica y portafolio.
+**Cumple**: SPEC-008 genera evidencia experimental que alimentará documento-tecnico-v3 y eventualmente PUB-003 (ambos post-SPEC-008, con estándar editorial D014). Las capturas comparativas, mediciones M1–M4 y hallazgos son reutilizables en documentación técnica y portafolio.
 
 ### VIII. Docker First
 **Cumple**: Los cambios son exclusivamente frontend (TypeScript/React). No se modifican servicios Docker, ni se requiere reconstruir contenedores. El entorno de desarrollo existente (`docker-compose up`) sigue funcionando sin cambios.
@@ -115,6 +129,24 @@ SPEC-008 no es una mejora de UI. Es un **instrumento de investigación visual** 
 
 ---
 
+## Hipótesis
+
+### HYP-008-01 — Reducción de tiempo de identificación
+
+El modo SplitView reduce el tiempo necesario para identificar divergencias operacionales entre modelos geodésicos y viales respecto al modo de alternancia simple (toggle SPEC-007).
+
+**Métrica**: M4 (tiempo de identificación de divergencia, 5+5 mediciones).
+**Criterio**: El promedio en modo split debe ser menor que en modo simple.
+
+### HYP-008-02 — Reducción de carga cognitiva
+
+La visualización selectiva por ruta (RoutePanel + aislamiento) disminuye la carga cognitiva percibida durante el análisis de diferencias entre modelos de distancia, en comparación con la visualización simultánea de todas las rutas.
+
+**Métrica**: Evaluación cualitativa del observador (cuestionario post-prueba).
+**Criterio**: El observador reporta menor esfuerzo para identificar patrones usando filtrado de rutas.
+
+---
+
 ## Hitos
 
 | Hito | Descripción | Dependencias |
@@ -123,8 +155,8 @@ SPEC-008 no es una mejora de UI. Es un **instrumento de investigación visual** 
 | H2 | RoutePanel: listado interactivo de rutas con toggle on/off | H1 |
 | H3 | RouteIsolation: selección individual + atenuación de rutas | H2 |
 | H4 | Integration: toggle modo simple/split sin recarga | H1, H2, H3 |
-| H5 | Documentation: plan.md + assets + checklist | Ninguna |
-| H6 | Publication: documento-tecnico-v3 + PUB-003 | H1–H4 |
+| H5 | Evidencia experimental: mediciones M1–M4, capturas, hallazgos, evidence matrix | H1–H4 |
+| H6 | Trabajo derivado posterior: documento-tecnico-v3 (esbozo), PUB-003 (posterior) | H5 (depende de hallazgos) |
 
 ---
 
@@ -184,21 +216,23 @@ SPEC-008 no es una mejora de UI. Es un **instrumento de investigación visual** 
 | 4.7 | Si `vialAvailable === false`, el botón split se deshabilita con tooltip explicativo | `frontend/src/app/evaluations/[id]/page.tsx` | Mensaje claro para EXP-001 |
 | 4.8 | Agregar indicador visual de qué modo está activo (geodésico/vial o split) | `frontend/src/app/evaluations/[id]/page.tsx` | Claridad UX |
 
-### H5 — Documentation
+### H5 — Generación de evidencia experimental
 
 | # | Tarea | Archivo(s) | Aceptación |
 |---|-------|-----------|------------|
-| 5.1 | Documentar hallazgos de SPEC-008 en `research/hallazgos.md` (H013 en adelante) | `research/hallazgos.md` | Hallazgos de la implementación |
-| 5.2 | Actualizar `research/evidence-matrix.md` con validaciones de SPEC-008 | `research/evidence-matrix.md` | Trazabilidad completa |
-| 5.3 | Generar assets visuales para documentación (capturas de split view, aislamiento) | `specs/008-visual-analytics-comparacion/assets/` | Material para PUB-003 |
+| 5.1 | Ejecutar mediciones M1–M4 con el instrumento construido (5 mediciones por modo para M4) | `specs/008-visual-analytics-comparacion/assets/mediciones.md` | Datos crudos registrados |
+| 5.2 | Generar capturas comparativas: split view, ruta aislada, filtrado activo | `specs/008-visual-analytics-comparacion/assets/captures/` | Al menos 4 capturas representativas |
+| 5.3 | Documentar hallazgos de SPEC-008 en `research/hallazgos.md` (H013 en adelante) | `research/hallazgos.md` | Al menos un hallazgo por hipótesis evaluada |
+| 5.4 | Actualizar `research/evidence-matrix.md` con validaciones de SPEC-008 | `research/evidence-matrix.md` | Trazabilidad entre hipótesis, métricas y resultados |
 
-### H6 — Publication (PUB-003)
+### H6 — Trabajo derivado posterior (post-SPEC-008)
+
+PUB-003 queda fuera del alcance de SPEC-008. La publicación depende de los hallazgos que SPEC-008 produzca y se planificará después.
 
 | # | Tarea | Archivo(s) | Aceptación |
 |---|-------|-----------|------------|
-| 6.1 | documento-tecnico-v3: nueva sección de análisis visual comparativo | `publications/documentacion/documento-tecnico-v3.md` | Sección basada en evidencia de SPEC-008 |
-| 6.2 | PUB-003-visual-comparison/: estructura de publicación completa | `publications/PUB-003-visual-comparison/` | Sigue estándar editorial PUB-001 (D014) |
-| 6.3 | Assets visuales de split view, filtraje y aislamiento para PUB-003 | `publications/PUB-003-visual-comparison/assets/` | Capturas reproducibles |
+| 6.1 | documento-tecnico-v3: esbozo de sección de análisis visual (posterior a hallazgos) | `publications/documentacion/documento-tecnico-v3.md` | Sección basada en evidencia de SPEC-008 |
+| 6.2 | PUB-003-visual-comparison/: planificación separada, dependiente de hallazgos de SPEC-008 | *Pendiente* | Seguirá estándar editorial PUB-001 (D014) cuando se active |
 
 ---
 
@@ -238,21 +272,32 @@ evaluations/[id]/page.tsx
 1. **H1 primero** (SplitMapView): es la pieza central y más riesgosa (sincronización de mapas). Validar con cualquier evaluación que tenga datos viales (EXP-002).
 2. **H2 después** (RoutePanel): construye sobre SplitMapView. El panel no requiere sincronización, solo pasar el Set<number> como prop.
 3. **H3 después** (RouteIsolation): lógica de atenuación en SplitMapView + interacción en RoutePanel.
-4. **H4 al final** (Integration): una vez que SplitMapView + RoutePanel funcionan de forma independiente, integrarlos en la página.
+4. **H4 después** (Integration): una vez que SplitMapView + RoutePanel funcionan de forma independiente, integrarlos en la página.
+5. **H5 al final** (Evidencia): una vez que el instrumento visual funciona, usarlo para generar las mediciones experimentales.
 
 ---
 
 ## Validación
 
-Ejecutar en orden:
-
+### Técnica
 1. `npm run build` — Sin errores de compilación
-2. Verificación visual manual (cargar EXP-002 en evaluación):
-   - SplitView muestra dos mapas sincronizados
-   - RoutePanel permite ocultar/mostrar rutas
-   - Aislamiento atenúa rutas no seleccionadas
-   - Toggle simple/split preserva estado
-3. `npm run lint` — Sin errores de lint
+2. `npm run lint` — Sin errores de lint
+
+### Funcional (ejecutar en EXP-002)
+3. SplitView: dos mapas sincronizados, <200ms de retardo
+4. RoutePanel: toggle on/off oculta rutas en ambos mapas
+5. Aislamiento: atenuación opacity 0.2 en rutas no aisladas
+6. Toggle simple/split: preserva estado visibleRoutes e isolatedRoute (CA10)
+7. EXP-001: split view deshabilitado, mensaje claro
+
+### Experimental (H5)
+8. Ejecutar M4: 5 mediciones modo simple + 5 mediciones modo split
+9. Registrar resultados en `assets/mediciones.md`
+10. Evaluar HYP-008-01: ¿split view redujo el tiempo promedio?
+11. Evaluar HYP-008-02: ¿el observador reporta menor carga cognitiva con filtrado?
+
+### Editorial (D014)
+Cualquier publicación derivada (documento-tecnico-v3, PUB-003) debe pasar el checklist editorial antes de marcarse como publicada. Ver `publications/PUB-001-geodesic-baseline/` como referencia de formato y profundidad.
 
 ---
 
@@ -271,21 +316,28 @@ Ejecutar en orden:
 
 ## Entregables
 
+### Componentes (H1–H4)
 - `frontend/src/components/SplitMapView.tsx` — SplitView con sincronización
-- `frontend/src/components/RoutePanel.tsx` — Panel de rutas
+- `frontend/src/components/RoutePanel.tsx` — Panel de rutas con toggle y aislamiento
+- `frontend/src/components/ViewModeToggle.tsx` — Toggle simple/split
 - `frontend/src/app/evaluations/[id]/page.tsx` — Integración (modificado)
 - `frontend/src/components/MapView.tsx` — Sin cambios (reutilizado)
 - `frontend/src/components/RouteModeToggle.tsx` — Sin cambios (reutilizado)
-- `specs/008-visual-analytics-comparacion/plan.md` — Este plan
-- `publications/PUB-003-visual-comparison/` — Publicación derivada (H6)
+
+### Evidencia (H5)
+- `specs/008-visual-analytics-comparacion/assets/mediciones.md` — Mediciones M1–M4
+- `specs/008-visual-analytics-comparacion/assets/captures/` — Capturas comparativas
+- `research/hallazgos.md` — Hallazgos actualizados (H013+)
+- `research/evidence-matrix.md` — Matriz actualizada
 
 ---
 
 ## Referencias
 
-- PI-016: `research/preguntas-investigacion.md`
-- PI-017: `research/preguntas-investigacion.md`
+- PI-016, PI-017: `research/preguntas-investigacion.md`
 - H012: `research/hallazgos.md`
 - D014: `research/decisiones.md`
+- HYP-008-01, HYP-008-02: sección de hipótesis en este plan
 - SPEC-007 contracts: `specs/007-road-network-visualization/contracts/`
-- Estándar editorial: `publications/PUB-001-geodesic-baseline/` (D014)
+- Estándar editorial D014: `publications/PUB-001-geodesic-baseline/`
+- Checklist editorial D014: verificar contra PUB-001 antes de publicar cualquier derivado (documento-tecnico-v3, PUB-003)
