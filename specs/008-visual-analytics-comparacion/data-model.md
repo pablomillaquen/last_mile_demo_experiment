@@ -83,15 +83,19 @@ interface MapSyncControllerProps {
 }
 ```
 
-## 3. PolylineData (heredado, sin cambios)
+## 3. PolylineData (modificado — SPEC-008)
 
 ```typescript
 interface PolylineData {
   positions: [number, number][];  // [[lat, lng], ...]
   color: string;
   name: string;
+  routeId: number;                // agregado SPEC-008: identifica la ruta para filtrado
+  opacity?: number;               // agregado SPEC-008: atenuación en aislamiento (default 1.0)
 }
 ```
+
+**Cambio**: `routeId` es obligatorio. `opacity` es opcional; si no se especifica, `MapView` usa el valor por defecto (`1.0`).
 
 ## 4. Filtrado de polilíneas
 
@@ -99,7 +103,7 @@ En SplitMapView, antes de renderizar, las polilíneas se filtran:
 
 ```typescript
 // Paso 1: filtrar por visibleRoutes
-let filtered = allPolylines.filter(pl => visibleRoutes.has(/* routeId */));
+let filtered = allPolylines.filter(pl => visibleRoutes.has(pl.routeId));
 
 // Paso 2: aplicar atenuación si hay ruta aislada
 if (isolatedRoute !== null) {
@@ -108,9 +112,10 @@ if (isolatedRoute !== null) {
     opacity: pl.routeId === isolatedRoute ? 1.0 : 0.2
   }));
 }
-```
 
-**Nota**: `PolylineData` no incluye `routeId`. El filtrado requiere que las polilíneas incluyan el `routeId` o que se derive del orden. Ver implementación concreta en componentes.
+// Paso 3: pasar filteredPolylines a cada MapView (geodésico y vial)
+// MapView lee pathOptions.opacity de cada PolylineData
+```
 
 ## 5. Validación
 

@@ -118,6 +118,21 @@ Estos unknowns no son técnicos — son las preguntas de investigación que SPEC
 
 ---
 
+## Decisiones de diseño experimental
+
+### D015 — Split view, filtrado y aislamiento como intervenciones experimentales
+
+**Decisión**: Split view, filtrado de rutas y aislamiento se consideran **intervenciones experimentales** para evaluar PI-016 y PI-017, no decisiones definitivas de producto.
+
+**Impacto**:
+- Los hallazgos de SPEC-008 pueden validar, modificar o rechazar estas visualizaciones.
+- El éxito de la implementación técnica (SplitMapView funciona, se sincroniza) **no implica la validación de la hipótesis**.
+- La validación de HYP-008-01 y HYP-008-02 depende de las mediciones M4 y la evaluación cualitativa, no del hecho de que el componente renderice correctamente.
+
+**Relación con publicaciones**: Cualquier publicación derivada (documento-tecnico-v3, PUB-003) debe explicitar que estas visualizaciones son instrumentos experimentales, no necesariamente la solución final, y reportar si fueron validadas o refutadas por la evidencia.
+
+---
+
 ## Contexto científico
 
 SPEC-008 no es una mejora de UI. Es un **instrumento de investigación visual** para responder:
@@ -147,11 +162,41 @@ La visualización selectiva por ruta (RoutePanel + aislamiento) disminuye la car
 
 ---
 
+## Diseño Experimental
+
+### Tipo de evaluación
+
+Esta fase utiliza **evaluación exploratoria por observador único** (investigador principal). No se requiere reclutamiento de participantes externos. Los resultados son indicativos y servirán para formular estudios controlados en fases posteriores.
+
+### Protocolo M4 (tiempo de identificación de divergencia)
+
+**Estímulo**: Mapa de evaluación EXP-002 con 5 rutas (A–E) en Valparaíso, mostrando polilíneas geodésicas en un modo y viales en el otro.
+
+**Tarea del observador**: "Identifique la ruta con mayor diferencia entre distancia geodésica y distancia vial."
+
+**Secuencia**:
+1. El observador recibe la tarea por escrito.
+2. El cronómetro inicia cuando el observador hace clic en "Iniciar".
+3. El cronómetro se detiene cuando el observador dice verbalmente "Ruta [letra]".
+4. Se registra: ruta identificada, tiempo en segundos, acierto/error.
+
+**Mediciones**:
+- 5 intentos con vista simple (toggle SPEC-007)
+- 5 intentos con split view (SPEC-008)
+- Los intentos se alternan para evitar efecto de aprendizaje:
+  - Secuencia: simple, split, simple, split, simple, split, simple, split, simple, split
+- La ruta de mayor divergencia (Ruta D, factor 2.00×) se mantiene constante en todos los intentos.
+
+**Criterio de éxito**: El promedio de tiempo en modo split debe ser menor que en modo simple (HYP-008-01).
+
+---
+
 ## Hitos
 
 | Hito | Descripción | Dependencias |
 |------|-------------|-------------|
-| H1 | SplitView: dos mapas sincronizados (geodésico/vial) | Ninguna |
+| H0 | Preparación de contratos: routeId en PolylineData, limpieza de tipos | Ninguna |
+| H1 | SplitView: dos mapas sincronizados (geodésico/vial) | H0 |
 | H2 | RoutePanel: listado interactivo de rutas con toggle on/off | H1 |
 | H3 | RouteIsolation: selección individual + atenuación de rutas | H2 |
 | H4 | Integration: toggle modo simple/split sin recarga | H1, H2, H3 |
@@ -161,6 +206,19 @@ La visualización selectiva por ruta (RoutePanel + aislamiento) disminuye la car
 ---
 
 ## Tareas
+
+### H0 — Preparación de contratos (routeId en PolylineData)
+
+**Objetivo**: Habilitar el filtrado de rutas agregando `routeId` a `PolylineData` y elevando el tipo al ámbito compartido.
+
+**Problema identificado**: `PolylineData` (definido actualmente como tipo local en `MapView.tsx` y `evaluations/[id]/page.tsx`) no incluye `routeId`. Sin este campo, el filtrado por `visibleRoutes` no puede identificar qué polilínea pertenece a qué ruta.
+
+| # | Tarea | Archivo(s) | Aceptación |
+|---|-------|-----------|------------|
+| 0.1 | Agregar `routeId` a la interfaz `PolylineData` en ambos sitios donde está definida | `frontend/src/components/MapView.tsx`, `frontend/src/app/evaluations/[id]/page.tsx` | `PolylineData` incluye `routeId: number` |
+| 0.2 | Propagar `routeId` en la construcción de `geodesicPolylines` (evaluations page) y `vialPolylines` (MapView) | `frontend/src/app/evaluations/[id]/page.tsx`, `frontend/src/components/MapView.tsx` | Cada PolylineData construida incluye su `routeId` |
+| 0.3 | Extraer `PolylineData` a tipo compartido (opcional, si hay duplicación) | `frontend/src/lib/api.ts` o tipos locales | Sin duplicación de tipo |
+| 0.4 | Agregar `opacity?: number` a `PolylineData` para soportar atenuación en aislamiento | `frontend/src/components/MapView.tsx` | `PolylineData` soporta `opacity` |
 
 ### H1 — SplitView (dos mapas sincronizados)
 
@@ -187,7 +245,7 @@ La visualización selectiva por ruta (RoutePanel + aislamiento) disminuye la car
 | 2.3 | Checkbox o switch por ruta con el color asignado | `frontend/src/components/RoutePanel.tsx` | RF9: identificar ruta + estado activo |
 | 2.4 | Botón "Seleccionar todas" / "Deseleccionar todas" | `frontend/src/components/RoutePanel.tsx` | Bulk toggle |
 | 2.5 | Panel colapsable para no obstruir el mapa | `frontend/src/components/RoutePanel.tsx` | RNF2: colapsable |
-| 2.6 | SplitMapView filtra `activePolylines` por `visibleRoutes` antes de renderizar | `frontend/src/components/SplitMapView.tsx` | RF3: desactivar ruta la oculta |
+| 2.6 | SplitMapView filtra las polilíneas (geodésicas y viales) usando `pl.routeId` contra `visibleRoutes` antes de pasarlas a MapView | `frontend/src/components/SplitMapView.tsx` | RF3: desactivar ruta la oculta en ambos mapas simultáneamente |
 
 ### H3 — RouteIsolation (selección individual + atenuación)
 
@@ -197,7 +255,7 @@ La visualización selectiva por ruta (RoutePanel + aislamiento) disminuye la car
 |---|-------|-----------|------------|
 | 3.1 | Estado `isolatedRoute: number | null` en RoutePanel | `frontend/src/components/RoutePanel.tsx` | CA4: seleccionar ruta la aísla |
 | 3.2 | Al hacer clic en una ruta, establecer `isolatedRoute` y desactivar las demás no aisladas | `frontend/src/components/RoutePanel.tsx` | Una ruta visible, las demás atenuadas |
-| 3.3 | Las rutas no aisladas reciben `opacity: 0.2` en lugar de ocultarse (RF10) | `frontend/src/components/SplitMapView.tsx` | RF10: atenuación, no ocultación |
+| 3.3 | Las rutas no aisladas reciben `opacity: 0.2` (usando `pl.opacity`) en lugar de ocultarse (RF10) | `frontend/src/components/SplitMapView.tsx` + MapView lee `pathOptions.opacity` de cada PolylineData | RF10: atenuación, no ocultación |
 | 3.4 | Botón "Salir de aislamiento" o clic en la ruta aislada para restaurar todas | `frontend/src/components/RoutePanel.tsx` | Restaura visibilidad completa |
 | 3.5 | El estado de aislamiento se preserva al alternar entre split y modo simple | — | CA10: estado preservado |
 

@@ -24,8 +24,9 @@
 - Cada mapa recibe el mismo `routeColorById`, `routeNameById`, `visibleRoutes`, `isolatedRoute`
 
 ### Filtrado de polilíneas
-- Antes de pasar `polylines` a cada `MapView`, filtra por `visibleRoutes`
-- Asigna `opacity: 0.2` a rutas no aisladas cuando `isolatedRoute !== null`
+- Filtra polilíneas usando `pl.routeId` contra `visibleRoutes`
+- Asigna `opacity: 0.2` (vía `PolylineData.opacity`) a rutas no aisladas cuando `isolatedRoute !== null`
+- Pasa las polilíneas filtradas a cada `MapView` como `polylines` (geodésico) y como polilíneas construidas desde `routeLegs` (vial)
 
 ### Sincronización
 - Ambos mapas mantienen el mismo centro y zoom
