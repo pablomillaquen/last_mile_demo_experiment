@@ -24,7 +24,7 @@ description: "Task list for SPEC-008: Visual Analytics para Comparacion de Rutas
 - [ ] T002 Agregar `opacity?: number` a la interfaz `PolylineData` en `frontend/src/components/MapView.tsx`
 - [ ] T003 Agregar `routeId: number` a la interfaz `PolylineData` en `frontend/src/app/evaluations/[id]/page.tsx`
 - [ ] T004 [P] Propagar `routeId` en la construcción de `geodesicPolylines` en `frontend/src/app/evaluations/[id]/page.tsx` (extraer route_id del groupBy)
-- [ ] T005 [P] Propagar `routeId` en la construcción de `vialPolylines` en `frontend/src/components/MapView.tsx` (usar `routeColorById` keys)
+- [ ] T005 [P] Propagar `routeId` en la construcción de `vialPolylines` en `frontend/src/components/MapView.tsx` (usar `leg.route_id` de cada RouteLeg — disponible directamente en los datos, no derivar desde `routeColorById`)
 - [ ] T006 Leer `opacity` desde cada `PolylineData` en el renderizado de `<Polyline>` en `frontend/src/components/MapView.tsx` (pathOptions.opacity)
 
 **Checkpoint**: PolylineData incluye routeId y opacity. MapView respeta opacity individual por polilínea.
@@ -73,10 +73,10 @@ description: "Task list for SPEC-008: Visual Analytics para Comparacion de Rutas
 
 **Independent Test**: En split view, hacer clic en una ruta del RoutePanel → la ruta seleccionada queda con opacidad normal, las demás con opacity 0.2.
 
-- [ ] T021 [US3] Implementar estado `isolatedRoute: number | null` en RoutePanel
-- [ ] T022 [US3] Al hacer clic en el nombre de una ruta: si no está aislada, establecer `isolatedRoute`; si ya lo está, restaurar a `null`
-- [ ] T023 [US3] Agregar indicación visual en RoutePanel para la ruta aislada (fondo highlight, borde izquierdo coloreado)
-- [ ] T024 [US3] Implementar botón "Salir de aislamiento" en RoutePanel (alternativa al clic en nombre)
+- [ ] T021 [US3] RoutePanel recibe `isolatedRoute` como prop y llama a `onIsolateRoute(routeId | null)` — el estado vive en `evaluations/[id]/page.tsx` (T028), no en RoutePanel
+- [ ] T022 [US3] Al hacer clic en el nombre de una ruta en RoutePanel: si la ruta no está aislada, llamar `onIsolateRoute(routeId)`; si ya lo está, llamar `onIsolateRoute(null)`
+- [ ] T023 [US3] Agregar indicación visual en RoutePanel para la ruta aislada (fondo highlight, borde izquierdo coloreado, basado en prop `isolatedRoute`)
+- [ ] T024 [US3] Implementar botón "Salir de aislamiento" en RoutePanel que llama `onIsolateRoute(null)`
 - [ ] T025 [US3] Verificar que SplitMapView lee `pl.opacity` en el pathOptions de Polyline y aplica atenuación
 
 **Checkpoint**: Aislamiento funcional. Una ruta visible con opacidad completa, las demás atenuadas. Restauración funciona.
