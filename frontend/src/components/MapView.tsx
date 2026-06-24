@@ -113,7 +113,7 @@ export default function MapView({
       .filter(pl => !visibleRoutes || visibleRoutes.has(pl.routeId))
       .map(pl => ({
         ...pl,
-        opacity: isolatedRoute !== null
+        opacity: isolatedRoute != null
           ? (pl.routeId === isolatedRoute ? 1.0 : 0.2)
           : (pl.opacity ?? (mode === 'vial' ? 0.85 : 0.7)),
       }));
