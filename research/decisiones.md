@@ -252,3 +252,89 @@ Formato basado en ADR (Architecture Decision Records).
 - assets/ (tablas, diagramas, mapas) debe mantenerse al mismo nivel que PUB-001.
 
 **Fecha**: 2026-06-22
+
+---
+
+## D015 — Split view, filtrado y aislamiento como intervenciones experimentales
+
+**Decisión**: Split view, filtrado de rutas y aislamiento se consideran **intervenciones experimentales** para evaluar PI-016 y PI-017, no decisiones definitivas de producto.
+
+**Contexto**: SPEC-008 define un instrumento de investigación visual, no una funcionalidad de producto terminada. Las intervenciones pueden ser validadas, modificadas o rechazadas según los hallazgos experimentales.
+
+**Razón**:
+- El éxito técnico de la implementación (SplitMapView funciona, se sincroniza) no implica la validación de la hipótesis.
+- La validación de HYP-008-01 y HYP-008-02 depende de las mediciones M4 y evaluación cualitativa, no del hecho de que el componente renderice correctamente.
+
+**Impacto**:
+- Cualquier publicación derivada (documento-tecnico-v3, PUB-003) debe explicitar que estas visualizaciones son instrumentos experimentales.
+- Los hallazgos H014–H017 de SPEC-008 son evidencia exploratoria, no concluyente.
+
+**Fecha**: 2026-06-23
+
+---
+
+## D016 — M4 como evaluación exploratoria (no experimental controlada)
+
+**Decisión**: No se ejecuta el protocolo M4 como medición cuantitativa formal de HYP-008-01 debido a limitaciones metodológicas que invalidarían cualquier inferencia estadística. En su lugar, M4 se documenta como demostración exploratoria con amenazas a la validez explícitamente declaradas.
+
+**Contexto**: El protocolo M4 original (plan.md, tareas T034–T040) planteaba 5 mediciones en modo simple + 5 en modo split con una misma evaluación (EXP-002, Ruta D conocida). Después de la validación visual de H2–H4, se identificaron las siguientes amenazas:
+- n=1 observador (investigador principal, no ciego)
+- Conocimiento previo de la respuesta correcta (Ruta D, factor 2.00×)
+- Efecto de aprendizaje inevitable tras el primer intento
+- Misma evaluación repetida 10 veces
+- Imposibilidad de distinguir efecto de interfaz vs memoria vs aprendizaje
+
+**Razón**:
+- Ejecutar M4 en estas condiciones produciría datos numéricos que aparentan ser evidencia pero no lo son.
+- El principio constitucional "Evidencia Antes de Solución" exige registrar las limitaciones metodológicas, no ignorarlas.
+- Los hallazgos cualitativos H014–H017 constituyen evidencia más robusta y honesta que una tabla de 10 tiempos sesgados.
+
+**Impacto**:
+- HYP-008-01 queda sin evaluación cuantitativa en SPEC-008. La hipótesis sigue abierta para futuros estudios controlados (n>1, evaluaciones múltiples, observador ciego).
+- HYP-008-02 se considera respondida parcialmente por H016 (el observador reporta que los controles no aumentan la carga cognitiva).
+- Los hallazgos principales de SPEC-008 son H014–H017, no los resultados de M4.
+- Se recomienda que cualquier futura SPEC que busque validar HYP-008-01 diseñe un protocolo con múltiples evaluaciones, respuesta variable y observadores externos.
+
+**Fecha**: 2026-06-23
+
+---
+
+## D017 — Inmutabilidad de documentos técnicos publicados
+
+**Decisión**: Una vez emitida una versión de documento técnico (v1, v2, v3, ...), su contenido se considera congelado. Los resultados de nuevas SPEC deben incorporarse en una nueva versión o en un documento derivado, nunca modificando retrospectivamente una versión ya publicada.
+
+**Contexto**: Durante el cierre de SPEC-008, se modificó `documento-tecnico-v2.md` para incorporar los hallazgos de SPEC-008, sobrescribiendo el contenido original. Aunque la intención era mantener un solo documento actualizado, la modificación retrospectiva rompe la trazabilidad histórica: ya no es posible distinguir qué conclusiones pertenecían a v2 y cuáles fueron agregadas después durante SPEC-008.
+
+**Razón**:
+- La evidence matrix supone que los documentos son artefactos estables.
+- Una versión publicada no debe mutar para incorporar resultados posteriores.
+- PUB-003 necesita poder citar v2, SPEC-008 y v3 como artefactos separados.
+- La trazabilidad histórica es un requisito del modelo de investigación del proyecto.
+
+**Impacto**:
+- Los documentos técnicos se versionan exclusivamente mediante nuevos archivos: `documento-tecnico-v1.md`, `v2.md`, `v3.md`, etc.
+- Cada versión referencia explícitamente a la versión anterior como base.
+- La evidence matrix debe apuntar a la versión correcta para cada hallazgo.
+- Este incidente sirve como precedente: en el futuro, cualquier modificación a un documento publicado debe ocurrir solo si el documento estaba marcado como "borrador" o "esbozo", no como "publicado".
+
+**Fecha**: 2026-06-23
+
+---
+
+## D018 — Las mejoras de visualización deben formularse como intervenciones experimentales competidoras
+
+**Decisión**: Las futuras mejoras de visualización (dirección de recorrido, puntos numerados, flechas, etc.) deberán formularse como intervenciones experimentales competidoras y no como funcionalidades asumidas como correctas. No se implementará una solución sin evidencia de que es superior a las alternativas.
+
+**Contexto**: Tras SPEC-008, la pregunta abierta principal (PI-018) ya no es "cómo agregar flechas al mapa", sino "qué representación visual funciona mejor para comunicar secuencia y dirección". Este cambio de framing es coherente con la lección aprendida en D015 (intervenciones experimentales) y evita repetir el patrón de implementar una solución sin validación comparativa.
+
+**Razón**:
+- SPEC-008 demostró que implementar una solución técnica (SplitView, RoutePanel) no implica que sea la solución óptima.
+- PI-018 tiene múltiples soluciones posibles (puntos numerados, flechas, gradiente, animación, narrativa textual) sin una respuesta obvia.
+- Implementar una sola variante sin comparación experimental sería inconsistente con la metodología del proyecto.
+
+**Impacto**:
+- Cualquier futura SPEC derivada de PI-018 deberá diseñar un experimento donde al menos 2 variantes compitan (ej: puntos numerados vs flechas).
+- Las métricas de evaluación deben definirse antes de la implementación: tiempo de interpretación, tasa de error, carga cognitiva percibida.
+- No se aceptarán implementaciones de "sentido común" sin respaldo experimental.
+
+**Fecha**: 2026-06-23

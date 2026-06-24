@@ -11,6 +11,8 @@ interface PolylineData {
   positions: [number, number][];
   color: string;
   name: string;
+  routeId: number;
+  opacity?: number;
 }
 
 interface MapViewProps {
@@ -22,6 +24,8 @@ interface MapViewProps {
   mode?: 'geodesic' | 'vial';
   routeColorById?: Record<number, string>;
   routeNameById?: Record<number, string>;
+  visibleRoutes?: Set<number>;
+  isolatedRoute?: number | null;
 }
 
 // Fix default marker icons
@@ -60,6 +64,7 @@ const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'
 export default function MapView({
   packages, getRouteColor, getSequence, polylines,
   routeLegs, mode = 'geodesic', routeColorById, routeNameById,
+  visibleRoutes, isolatedRoute,
 }: MapViewProps) {
   const center: [number, number] = [-33.045, -71.55];
   const defaultColor = '#3b82f6';
@@ -95,12 +100,24 @@ export default function MapView({
           }
         }
       });
-      result.push({ positions, color, name });
+      result.push({ positions, color, name, routeId });
     });
     return result;
   }, [routeLegs, routeColorById, routeNameById]);
 
   const activePolylines = mode === 'vial' && vialPolylines.length > 0 ? vialPolylines : polylines;
+
+  const displayPolylines = useMemo(() => {
+    if (!activePolylines) return [];
+    return activePolylines
+      .filter(pl => !visibleRoutes || visibleRoutes.has(pl.routeId))
+      .map(pl => ({
+        ...pl,
+        opacity: isolatedRoute !== null
+          ? (pl.routeId === isolatedRoute ? 1.0 : 0.2)
+          : (pl.opacity ?? (mode === 'vial' ? 0.85 : 0.7)),
+      }));
+  }, [activePolylines, visibleRoutes, isolatedRoute, mode]);
 
   return (
     <MapContainer center={center} zoom={12} className="w-full h-[600px] rounded border" scrollWheelZoom={true}>
@@ -108,11 +125,11 @@ export default function MapView({
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {activePolylines?.filter(pl => pl.positions.length > 1).map((pl, i) => (
+      {displayPolylines.filter(pl => pl.positions.length > 1).map((pl, i) => (
         <Polyline
           key={i}
           positions={pl.positions}
-          pathOptions={{ color: pl.color, weight: mode === 'vial' ? 2.5 : 3, opacity: mode === 'vial' ? 0.85 : 0.7 }}
+          pathOptions={{ color: pl.color, weight: mode === 'vial' ? 2.5 : 3, opacity: pl.opacity }}
         >
           <Tooltip sticky direction="top">{pl.name}</Tooltip>
         </Polyline>

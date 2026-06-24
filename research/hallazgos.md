@@ -188,3 +188,79 @@ Todos los hallazgos H001–H006 del baseline (modo geodésico) fueron re-evaluad
 **Implicancia**: Las conclusiones cualitativas del baseline (balance, invarianza, dispersión, anomalías) son robustas al cambio de modo de distancia. La estructura de hallazgos del sistema es estable.
 
 **Preguntas que responde**: PI-010.
+
+---
+
+## H013
+
+**Enunciado**: La validación de H1 (SplitView, SPEC-008) demostró que una evaluación vial contiene información suficiente para representar simultáneamente trayectorias geodésicas y viales mediante distintas interpretaciones visuales de los mismos `route_legs`. Sin embargo, las métricas cuantitativas (route_metrics, metrics_summary) continúan representando únicamente el modo utilizado durante la ejecución de la evaluación. Por lo tanto, la comparación visual de trayectorias y la comparación cuantitativa entre modelos constituyen problemas distintos.
+
+**Evidencia**: SPEC-008 H1, Evaluation #14 (vial, 155 legs). `geodesicPolylines` se construyen desde `from_lat/lng → to_lat/lng` (disponible en todo leg), `vialPolylines` desde `geometry` OSRM (disponible en legs viales). Ambos paneles del SplitView muestran representaciones diferentes de los mismos datos. Las métricas de la tabla corresponden exclusivamente al modo vial (route_metrics de la evaluación, no del panel izquierdo).
+
+**Impacto**:
+1. SPEC-008 no necesita modificar su modelo de datos — el instrumento visual es válido con una sola evaluación vial.
+2. La comparación cuantitativa entre modelos geodésico y vial requiere cargar dos evaluaciones pares (vía `evaluation_pairs` de EXP-002) y es un problema de diseño separado.
+3. Las métricas mostradas bajo el mapa en modo split corresponden al modo de la evaluación, no al modo del panel. Esto debe documentarse explícitamente en el protocolo M4 para no confundir al observador.
+
+**Preguntas que responde**: PI-016, PI-017.
+
+---
+
+## H014
+
+**Enunciado**: La visualización comparativa simultánea (split view) reduce el esfuerzo de interpretación de diferencias entre modelos geodésico y vial, permitiendo al analista identificar rápidamente la ruta con mayor divergencia sin alternancia manual de modos.
+
+**Evidencia**: SPEC-008, validación visual H2–H4. Observación del investigador: "La diferencia entre un modo y otro se demuestra increíblemente bien" y "Ahora resulta más fácil encontrar qué ruta presenta la mayor diferencia visual."
+
+**Impacto**:
+1. HYP-008-01 recibe respaldo cualitativo preliminar: el split view facilita la identificación de divergencias.
+2. El instrumento visual cumple su función analítica, no solo decorativa.
+3. La observación justifica proceder con M4 (medición cuantitativa de tiempo de identificación).
+
+**Preguntas que responde**: PI-016.
+
+---
+
+## H015
+
+**Enunciado**: El aislamiento de rutas (atenuación de no seleccionadas vs ocultación completa) aumenta la capacidad de análisis al reducir interferencia visual sin perder contexto geográfico, permitiendo inspeccionar una ruta individual dentro del entorno operacional completo.
+
+**Evidencia**: SPEC-008, validación visual H3. Observación del investigador: "La función que más utilicé fue aislar una ruta" y "Permitió identificar una ruta correctamente, sin que las demás escondan el trazo en el mapa."
+
+**Impacto**:
+1. RF10 (atenuación en lugar de ocultación) se valida desde una perspectiva analítica: mantener las rutas atenuadas preserva el contexto geoespacial.
+2. El aislamiento no es un adorno visual — cumple una función cognitiva concreta: reduce interferencia, mantiene contexto, permite inspección individual.
+3. La función de aislamiento resultó ser la más utilizada durante la validación, sugiriendo que es la intervención de mayor valor analítico en SPEC-008.
+
+**Preguntas que responde**: PI-016, PI-017.
+
+---
+
+## H016
+
+**Enunciado**: El RoutePanel (listado interactivo con toggle on/off y aislamiento) aporta control analítico sin aumentar la carga cognitiva percibida, contradiciendo el riesgo de diseño identificado en la fase de planificación (PI-017: "más controles → más complejidad visual").
+
+**Evidencia**: SPEC-008, validación visual H2–H4. Observación del investigador: "Estos controles no añaden ruido. Por el contrario, son muy útiles" y "Resultó muy útil. Creo que fue una buena decisión."
+
+**Impacto**:
+1. PI-017 recibe respuesta preliminar: el nivel de detalle visual implementado (panel + toggle + aislamiento) no introduce sobrecarga cognitiva.
+2. La hipótesis de riesgo "más controles → más complejidad visual" no se cumple en este contexto experimental.
+3. El panel se percibe como un complemento necesario, no como ruido visual, lo que valida la decisión de diseño D015.
+
+**Preguntas que responde**: PI-017.
+
+---
+
+## H017
+
+**Enunciado**: La ausencia de indicadores de dirección de recorrido (flechas, puntos numerados, secuencia de navegación) limita la interpretación operacional de las rutas, incluso cuando la comparación visual entre modelos geodésico y vial es efectiva.
+
+**Evidencia**: SPEC-008, validación visual H2–H4. Observación del investigador: "No logro determinar qué dirección tomó la ruta" y sugerencias de solución: "Si existieran los puntos numerados o si la ruta tuviese forma de flechas, mostrando la dirección del movimiento."
+
+**Impacto**:
+1. La principal dificultad de uso no está en los controles ni en la visualización comparativa, sino en la comunicación de dirección y secuencia.
+2. Se abre una nueva línea de investigación: ¿qué elementos visuales adicionales son necesarios para comunicar secuencia y dirección de una operación logística?
+3. Potencial SPEC-009 enfocada en dirección de rutas, puntos numerados y secuencia de entregas.
+4. Este hallazgo es más relevante para la evolución del proyecto que BUG-004 (defecto técnico heredado), porque revela una limitación del instrumento visual actual.
+
+**Preguntas que responde**: PI-017 (abre futura investigación).

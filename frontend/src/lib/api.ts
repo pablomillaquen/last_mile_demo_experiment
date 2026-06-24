@@ -169,6 +169,7 @@ export interface Parameters {
   warehouse_lat: number;
   warehouse_lng: number;
   dataset: string;
+  distance_mode?: 'geodesic' | 'vial';
 }
 
 export interface RouteLeg {

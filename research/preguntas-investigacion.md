@@ -195,9 +195,9 @@ Cada pregunta tiene:
 
 **Pregunta**: ¿Cómo influye la visualización selectiva y comparativa de rutas en la capacidad de interpretar diferencias entre métricas geodésicas y viales?
 
-**Estado**: En investigación.
+**Estado**: Respondida parcialmente.
 
-**Hallazgos relacionados**: H012.
+**Hallazgos relacionados**: H012, H013, H014, H015.
 
 **Fase objetivo**: SPEC-008.
 
@@ -207,8 +207,32 @@ Cada pregunta tiene:
 
 **Pregunta**: ¿Qué nivel de detalle visual es necesario para comunicar eficazmente diferencias operacionales entre modelos geodésicos y viales sin introducir sobrecarga cognitiva?
 
-**Estado**: En investigación.
+**Estado**: Respondida parcialmente.
 
-**Hallazgos relacionados**: H012.
+**Hallazgos relacionados**: H012, H013, H015, H016, H017.
 
 **Fase objetivo**: SPEC-008.
+
+---
+
+## PI-018
+
+**Pregunta**: ¿Qué representación visual comunica más eficazmente la secuencia operacional y dirección de una ruta logística, manteniendo una carga cognitiva aceptable para el analista?
+
+**Contexto**: H017 identificó que la principal limitación del instrumento visual actual no está en la comparación geodésico/vial ni en los controles de filtrado, sino en la ausencia de indicadores de dirección de recorrido. El observador reportó: "No logro determinar qué dirección tomó la ruta" y sugirió puntos numerados, flechas de dirección y secuencia textual de navegación como posibles soluciones.
+
+**Naturaleza**: Pregunta comparativa — no presupone una solución única. Las intervenciones deben formularse como variantes experimentales competidoras (D018).
+
+**Posibles intervenciones a evaluar**:
+- Puntos numerados por orden de entrega
+- Flechas direccionales sobre polilíneas
+- Gradiente temporal de color (inicio→fin)
+- Animación secuencial del recorrido
+- Narrativa textual automática (ej: "Comenzó en X, giró a la derecha en Y, llegó a punto Z")
+- Combinaciones híbridas de las anteriores
+
+**Estado**: Abierta.
+
+**Hallazgos relacionados**: H017.
+
+**Fase objetivo**: Futura SPEC (posterior a SPEC-008).

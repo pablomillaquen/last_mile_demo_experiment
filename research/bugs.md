@@ -130,6 +130,52 @@ Requiere cambios en:
 
 ### Verificación final
 
+---
+
+## BUG-004
+
+**Título**: MapRendererService genera mapas PNG con líneas rectas (geodésicas) incluso en evaluaciones viales
+
+**Estado**: ABIERTO (no bloquea SPEC-008)
+
+**Prioridad**: BAJA
+
+**Fecha detección**: 2026-06-23
+
+### Descripción
+
+`MapRendererService::drawPolylines()` (L200–218) dibuja conexiones entre entregas usando `imageline()` con coordenadas `latitude/longitude`, generando siempre líneas rectas independientemente del `distance_mode` de la evaluación. Las imágenes PNG estáticas (`map_overview.png`, `map_route_*.png`, `map_anomalies.png`) no reflejan la geometría vial OSRM aunque esta exista en `route_legs`.
+
+### Impacto
+
+1. Las capturas PNG generadas durante evaluaciones viales muestran trayectorias geodésicas (rectas), no las rutas reales sobre calles.
+2. Esto fue documentado originalmente como limitación conocida en BUG-002 (L89, L144–148), pero nunca se corrigió para el renderizado PNG.
+3. El mapa interactivo Leaflet sí renderiza geometría vial correctamente (vía `route_legs.geometry`).
+
+### Causa raíz
+
+`MapRendererService` fue implementado antes de que existiera el concepto de `route_legs` con geometría vial. Usa `Route` → `routePackages` → coordinates para dibujar polilíneas con segmentos rectos entre puntos de entrega. No lee `route_legs.geometry` y no tiene lógica condicional por `distance_mode`.
+
+### Código relevante
+
+- `backend/app/Services/MapRendererService.php` L200–218 (`drawPolylines`)
+- `backend/app/Services/MapRendererService.php` L60–64 (`renderRouteMap`, mismo patrón)
+- `backend/app/Services/MeasurementService.php` L112–137 (llamadas a MapRendererService)
+
+### Comportamiento esperado
+
+- Si la evaluación tiene `distance_mode: vial` y `route_legs` con `geometry`, los mapas PNG deberían dibujar la geometría vial.
+- Si no hay `route_legs` (evaluaciones históricas), fallback a geodésico (líneas rectas).
+
+### Dependencias
+
+- El fix requeriría pasar `route_legs` a `MapRendererService` y modificar `drawPolylines` para usar `geometry` cuando esté disponible.
+- Alternativamente, generar las imágenes PNG desde el frontend (captura de Leaflet) sería un enfoque radicalmente distinto.
+
+### Nota
+
+Este bug no bloquea SPEC-008. El instrumento visual interactivo (SplitView, RoutePanel, aislamiento) funciona correctamente usando Leaflet. Las imágenes PNG estáticas son un artefacto secundario que puede corregirse en una iteración posterior.
+
 ✅ **Validación visual completada 2026-06-21**:
 - Capturas de pantalla en modo geodésico y vial (Eval #19, 150 entregas, 5 rutas)
 - Toggle Geodésico ↔ Vial funciona sin recarga de página

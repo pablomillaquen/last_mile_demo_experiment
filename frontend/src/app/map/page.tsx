@@ -13,6 +13,8 @@ interface PolylineData {
   positions: [number, number][];
   color: string;
   name: string;
+  routeId: number;
+  opacity?: number;
 }
 
 export default function MapPage() {
@@ -127,6 +129,7 @@ export default function MapPage() {
       positions,
       color: COLORS[idx % COLORS.length],
       name: route.name,
+      routeId: route.id,
     };
   });
 

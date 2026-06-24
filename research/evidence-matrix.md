@@ -36,6 +36,10 @@
 | PI-012 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, RNF2, execution_time_sec |
 | PI-013 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, M002, investigación futura |
 | PI-014 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006, D006, investigación futura |
+| PI-015 | Pregunta | `research/preguntas-investigacion.md` | SPEC-006A, H011 |
+| PI-016 | Pregunta | `research/preguntas-investigacion.md` | SPEC-008, H012–H015 |
+| PI-017 | Pregunta | `research/preguntas-investigacion.md` | SPEC-008, H013, H015–H017 |
+| PI-018 | Pregunta | `research/preguntas-investigacion.md` | SPEC-008, H017, dirección de recorrido |
 | D001 | Decisión | `research/decisiones.md` | SPEC-001, Diseño metodológico |
 | D002 | Decisión | `research/decisiones.md` | SPEC-002, Motor de evaluación |
 | D003 | Decisión | `research/decisiones.md` | SPEC-004, ExperimentRepository |
@@ -48,9 +52,15 @@
 | D010 | Decisión | `research/decisiones.md` | SPEC-007 — Versionado acumulativo de publicaciones |
 | D011 | Decisión | `research/decisiones.md` | SPEC-007 — Documento técnico como fuente de verdad |
 | D012 | Decisión | `research/decisiones.md` | SPEC-007 — Separación conocimiento acumulado vs comunicación publicada |
+| D013 | Decisión | `research/decisiones.md` | PUB-002 reescritura completa ante SPEC-008 |
+| D014 | Decisión | `research/decisiones.md` | PUB-001 como estándar editorial |
+| D015 | Decisión | `research/decisiones.md` | SPEC-008 — Split view como intervención experimental |
+| D016 | Decisión | `research/decisiones.md` | SPEC-008 — M4 como evaluación exploratoria, no controlada |
+| D017 | Decisión | `research/decisiones.md` | Inmutabilidad de documentos técnicos publicados |
 | BUG-001 | Bug | `research/bugs.md` | Exp001 modificado por `experiments:sync` — inmutable agregado |
 | BUG-002 | Bug | `research/bugs.md` | Mapa sin geometría vial OSRM — RESUELTO (SPEC-007) |
 | BUG-003 | Bug | `research/bugs.md` | Falta selector visual geodésico/vial — RESUELTO (SPEC-007) |
+| BUG-004 | Bug | `research/bugs.md` | RoutePanel no actuaba sobre MapView en modo simple — RESUELTO (SPEC-008) |
 | C001 | Contribución | `research/contribuciones.md` | SPEC-001, SPEC-002, SPEC-003, SPEC-004 |
 | C002 | Contribución | `research/contribuciones.md` | SPEC-003, SPEC-004 |
 | C003 | Contribución | `research/contribuciones.md` | SPEC-004, data-model.md |
@@ -73,6 +83,11 @@
 | H010 | SPEC-006: Exp002 — Modo vial ~82s vs geodésico ~0.25s (330x más lento) |
 | H011 | SPEC-006A: evaluation.json 84KB→132KB (geo route_legs) → 2.3MB (vial route_legs, +2640%) |
 | H012 | SPEC-006A: Eval #18 (geodésico 339 km) vs Eval #19 (vial 523 km), +54.3%. Ruta D 2.00×. |
+| H013 | SPEC-008 H1: Evaluation #14 vial. geodesicPolylines desde from/to lat/lng. vialPolylines desde geometry OSRM. |
+| H014 | SPEC-008 validación visual: "La diferencia entre modos se demuestra increíblemente bien" |
+| H015 | SPEC-008 validación visual: "La función que más utilicé fue aislar una ruta" |
+| H016 | SPEC-008 validación visual: "Estos controles no añaden ruido, son muy útiles" |
+| H017 | SPEC-008 validación visual: "No logro determinar qué dirección tomó la ruta" |
 
 ## Matriz Pregunta → Hallazgos → Contribución
 
@@ -93,15 +108,17 @@
 | PI-013 | H012 | C005 |
 | PI-014 | pendiente | C004 |
 | PI-015 | H011 | C005 |
-| PI-016 | H012 | — |
+| PI-016 | H012, H013, H014, H015 | — |
+| PI-017 | H013, H015, H016, H017 | — |
+| PI-018 | H017 | — |
 
 ## Estado de IDs
 
 | Tipo | Total | Pendientes |
 |------|-------|------------|
-| Hallazgos | 12 (H001–H012) | — |
-| Preguntas | 16 (PI-001–PI-016) | PI-013, PI-014, PI-016 investigación futura |
-| Decisiones | 12 (D001–D012) | — |
+| Hallazgos | 17 (H001–H017) | — |
+| Preguntas | 18 (PI-001–PI-018) | PI-013, PI-014, PI-015, PI-018 investigación futura; PI-016, PI-017 respondidas parcialmente |
+| Decisiones | 17 (D001–D017) | — |
 | Contribuciones | 5 (C001–C005) | — |
 | Validaciones | 6 (V001–V006) | — |
-| Bugs | 3 (BUG-001—BUG-003) | Todos resueltos |
+| Bugs | 4 (BUG-001—BUG-004) | Todos resueltos |

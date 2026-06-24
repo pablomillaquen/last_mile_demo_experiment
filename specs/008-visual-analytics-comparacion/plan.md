@@ -191,17 +191,17 @@ Esta fase utiliza **evaluación exploratoria por observador único** (investigad
 
 ---
 
-## Hitos
+## Estado de hitos (SPEC-008 completada)
 
-| Hito | Descripción | Dependencias |
-|------|-------------|-------------|
-| H0 | Preparación de contratos: routeId en PolylineData, limpieza de tipos | Ninguna |
-| H1 | SplitView: dos mapas sincronizados (geodésico/vial) | H0 |
-| H2 | RoutePanel: listado interactivo de rutas con toggle on/off | H1 |
-| H3 | RouteIsolation: selección individual + atenuación de rutas | H2 |
-| H4 | Integration: toggle modo simple/split sin recarga | H1, H2, H3 |
-| H5 | Evidencia experimental: mediciones M1–M4, capturas, hallazgos, evidence matrix | H1–H4 |
-| H6 | Trabajo derivado posterior: documento-tecnico-v3 (esbozo), PUB-003 (posterior) | H5 (depende de hallazgos) |
+| Hito | Descripción | Estado |
+|------|-------------|--------|
+| H0 | Preparación de contratos: routeId en PolylineData, limpieza de tipos | ✅ Completado |
+| H1 | SplitView: dos mapas sincronizados (geodésico/vial) | ✅ Completado |
+| H2 | RoutePanel: listado interactivo de rutas con toggle on/off | ✅ Completado |
+| H3 | RouteIsolation: selección individual + atenuación de rutas | ✅ Completado |
+| H4 | Integration: toggle modo simple/split sin recarga | ✅ Completado |
+| H5 | Evidencia experimental: hallazgos H014–H017, evidence matrix actualizada, M4 documentado como exploratorio (D016) | ✅ Completado |
+| H6 | Trabajo derivado posterior: documento-tecnico-v3 (esbozo), PUB-003 (posterior) | Pendiente — post-SPEC-008 |
 
 ---
 
@@ -338,21 +338,21 @@ evaluations/[id]/page.tsx
 ## Validación
 
 ### Técnica
-1. `npm run build` — Sin errores de compilación
-2. `npm run lint` — Sin errores de lint
+1. `npm run build` — Sin errores de compilación ✅
+2. `npm run lint` — Sin errores de lint ✅
 
 ### Funcional (ejecutar en EXP-002)
-3. SplitView: dos mapas sincronizados, <200ms de retardo
-4. RoutePanel: toggle on/off oculta rutas en ambos mapas
-5. Aislamiento: atenuación opacity 0.2 en rutas no aisladas
-6. Toggle simple/split: preserva estado visibleRoutes e isolatedRoute (CA10)
-7. EXP-001: split view deshabilitado, mensaje claro
+3. SplitView: dos mapas sincronizados, <200ms de retardo ✅
+4. RoutePanel: toggle on/off oculta rutas en ambos mapas ✅
+5. Aislamiento: atenuación opacity 0.2 en rutas no aisladas ✅
+6. Toggle simple/split: preserva estado visibleRoutes e isolatedRoute (CA10) ✅
+7. EXP-001: split view deshabilitado, mensaje claro ✅
 
-### Experimental (H5)
-8. Ejecutar M4: 5 mediciones modo simple + 5 mediciones modo split
-9. Registrar resultados en `assets/mediciones.md`
-10. Evaluar HYP-008-01: ¿split view redujo el tiempo promedio?
-11. Evaluar HYP-008-02: ¿el observador reporta menor carga cognitiva con filtrado?
+### Experimental (H5) — Ver D016
+8. M4 no se ejecutó como medición cuantitativa formal por limitaciones metodológicas (n=1, respuesta conocida, efecto aprendizaje). Ver `research/decisiones.md` (D016).
+9. Mediciones documentadas como exploratorias en `assets/mediciones.md` ✅
+10. HYP-008-01: **No evaluada cuantitativamente**. La hipótesis sigue abierta para estudios controlados futuros.
+11. HYP-008-02: **Respondida parcialmente** por H016. El observador reporta que los controles no aumentan la carga cognitiva.
 
 ### Editorial (D014)
 Cualquier publicación derivada (documento-tecnico-v3, PUB-003) debe pasar el checklist editorial antes de marcarse como publicada. Ver `publications/PUB-001-geodesic-baseline/` como referencia de formato y profundidad.

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { evaluationsApi, Evaluation, RouteMetric, Anomaly, RouteLeg } from '@/lib/api';
@@ -8,6 +8,9 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const MapView = dynamic(() => import('@/components/MapView'), { ssr: false });
 const RouteModeToggle = dynamic(() => import('@/components/RouteModeToggle'), { ssr: false });
+const SplitMapView = dynamic(() => import('@/components/SplitMapView'), { ssr: false });
+const ViewModeToggle = dynamic(() => import('@/components/ViewModeToggle'), { ssr: false });
+const RoutePanel = dynamic(() => import('@/components/RoutePanel'), { ssr: false });
 
 const COLORS = ['#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
@@ -34,11 +37,13 @@ function MetricCard({ label, value, unit, color }: { label: string; value: strin
 
 function ParametersCard({ params }: { params: Evaluation['parameters'] }) {
   if (!params) return null;
+  const modeLabel = params.distance_mode === 'vial' ? 'Vial (OSRM)' : 'Geodésico';
   const rows: [string, string][] = [
     ['Umbral cercanía (km)', String(params.near_delivery_threshold_km)],
     ['Ratio ignorado', String(params.ignored_delivery_ratio)],
     ['Random Seed', params.random_seed !== null ? String(params.random_seed) : 'N/A'],
     ['Algoritmo', `${params.algorithm} v${params.algorithm_version}`],
+    ['Modo distancia', modeLabel],
     ['Bodega', `${params.warehouse_lat}, ${params.warehouse_lng}`],
     ['Dataset', params.dataset],
   ];
@@ -251,6 +256,8 @@ interface PolylineData {
   positions: [number, number][];
   color: string;
   name: string;
+  routeId: number;
+  opacity?: number;
 }
 
 export default function EvaluationDetailPage() {
@@ -259,6 +266,9 @@ export default function EvaluationDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showParams, setShowParams] = useState(false);
   const [mode, setMode] = useState<'geodesic' | 'vial'>('geodesic');
+  const [viewMode, setViewMode] = useState<'simple' | 'split'>('simple');
+  const [visibleRoutes, setVisibleRoutes] = useState<Set<number>>(new Set());
+  const [isolatedRoute, setIsolatedRoute] = useState<number | null>(null);
 
   const routeLegs = evaluation?.route_legs;
   const routeMetrics = evaluation?.route_metrics;
@@ -298,18 +308,49 @@ export default function EvaluationDetailPage() {
         }
         positions.push([leg.to_lat, leg.to_lng]);
       });
-      result.push({ positions, color, name });
+      result.push({ positions, color, name, routeId });
     });
     return result;
   }, [routeLegs, routeColorById, routeNameById]);
 
   const vialAvailable = routeLegs !== undefined && routeLegs.some(leg => leg.mode === 'vial');
 
+  const routes = useMemo(() => {
+    return (routeMetrics || []).map(rm => ({ id: rm.route_id, name: rm.route_name }));
+  }, [routeMetrics]);
+
+  const handleToggleRoute = useCallback((routeId: number) => {
+    setVisibleRoutes(prev => {
+      const next = new Set(prev);
+      if (next.has(routeId)) next.delete(routeId);
+      else next.add(routeId);
+      return next;
+    });
+  }, []);
+
+  const handleIsolateRoute = useCallback((routeId: number | null) => {
+    setIsolatedRoute(routeId);
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    setVisibleRoutes(new Set(routes.map(r => r.id)));
+  }, [routes]);
+
+  const handleDeselectAll = useCallback(() => {
+    setVisibleRoutes(new Set());
+  }, []);
+
   useEffect(() => {
     const id = Number(params.id);
     if (!id) return;
     evaluationsApi.get(id).then(setEvaluation).catch(console.error).finally(() => setLoading(false));
   }, [params.id]);
+
+  useEffect(() => {
+    if (routeMetrics) {
+      setVisibleRoutes(new Set(routeMetrics.map(rm => rm.route_id)));
+    }
+  }, [routeMetrics]);
 
   if (loading) return <div className="p-4 text-gray-500">Cargando evaluación...</div>;
   if (!evaluation) return <div className="p-4 text-red-500">Evaluación no encontrada</div>;
@@ -328,6 +369,13 @@ export default function EvaluationDetailPage() {
         </h1>
         <span className="text-xs text-gray-400 ml-auto">
           {evaluation.parameters?.dataset} | {evaluation.total_deliveries} entregas, {evaluation.total_routes} rutas
+          <span className={`ml-2 inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase ${
+            evaluation.parameters?.distance_mode === 'vial'
+              ? 'bg-amber-100 text-amber-800'
+              : 'bg-blue-100 text-blue-800'
+          }`}>
+            {evaluation.parameters?.distance_mode === 'vial' ? 'Vial' : 'Geodésico'}
+          </span>
         </span>
       </div>
 
@@ -375,23 +423,57 @@ export default function EvaluationDetailPage() {
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Mapa Interactivo</h2>
-          <RouteModeToggle mode={mode} onModeChange={setMode} vialAvailable={vialAvailable} />
+          <div className="flex items-center gap-2">
+            <RouteModeToggle mode={mode} onModeChange={setMode} vialAvailable={vialAvailable} />
+            <ViewModeToggle viewMode={viewMode} onViewModeChange={setViewMode} splitAvailable={vialAvailable} />
+          </div>
         </div>
-        <div className="bg-white rounded border shadow-sm">
-          <MapView
-            packages={[]}
-            polylines={geodesicPolylines}
-            routeLegs={routeLegs}
-            mode={mode}
-            routeColorById={routeColorById}
-            routeNameById={routeNameById}
-          />
+        <div className="flex gap-3">
+          <div className="w-56 shrink-0">
+            <RoutePanel
+              routes={routes}
+              routeColorById={routeColorById}
+              visibleRoutes={visibleRoutes}
+              isolatedRoute={isolatedRoute}
+              onToggleRoute={handleToggleRoute}
+              onIsolateRoute={handleIsolateRoute}
+              onSelectAll={handleSelectAll}
+              onDeselectAll={handleDeselectAll}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            {viewMode === 'split' ? (
+              <SplitMapView
+                polylines={geodesicPolylines}
+                routeLegs={routeLegs}
+                routeColorById={routeColorById}
+                routeNameById={routeNameById}
+                visibleRoutes={visibleRoutes}
+                isolatedRoute={isolatedRoute}
+              />
+            ) : (
+              <>
+                <div className="bg-white rounded border shadow-sm">
+                  <MapView
+                    packages={[]}
+                    polylines={geodesicPolylines}
+                    routeLegs={routeLegs}
+                    mode={mode}
+                    routeColorById={routeColorById}
+                    routeNameById={routeNameById}
+                    visibleRoutes={visibleRoutes}
+                    isolatedRoute={isolatedRoute}
+                  />
+                </div>
+                {!vialAvailable && mode === 'vial' && (
+                  <p className="text-xs text-amber-600">
+                    No hay geometría vial disponible para esta evaluación.
+                  </p>
+                )}
+              </>
+            )}
+          </div>
         </div>
-        {!vialAvailable && mode === 'vial' && (
-          <p className="text-xs text-amber-600">
-            No hay geometría vial disponible para esta evaluación.
-          </p>
-        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
