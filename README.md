@@ -118,6 +118,76 @@ Ver `specs/006-road-network-integration/quickstart.md` para 8 escenarios de vali
 - **Cache de descarga**: `download-osm.sh` cachea el archivo PBF de Chile (~200 MB) en el volumen `osrm-data`. Para forzar redescarga: `docker compose run --rm osrm-prepare rm -f /data/chile-latest.osm.pbf && make prepare-osrm`.
 - **Tiempo de preprocesamiento**: ~7 minutos (extract + contract + partition + customize para algoritmo MLD).
 
+## Analítica Visual Comparativa (SPEC-008)
+
+La vista de detalle de evaluación (`/evaluations/{id}`) incorpora tres herramientas de análisis visual que transforman el mapa en un instrumento de investigación:
+
+### Split View (vista comparativa)
+
+Dos mapas Leaflet sincronizados lado a lado: el izquierdo muestra rutas en modo **geodésico** (línea recta), el derecho en modo **vial** (red OSM real). Arrastrar o hacer zoom en un mapa sincroniza automáticamente el otro.
+
+### RoutePanel (panel de rutas)
+
+Listado interactivo de rutas con:
+- **Checkbox** por ruta — oculta/muestra la ruta en ambos mapas simultáneamente
+- **Aislamiento** (clic en fila) — atenúa las rutas no seleccionadas (opacity 0.2) en lugar de ocultarlas, preservando el contexto geográfico
+- **Selección/deselección masiva** de todas las rutas
+- Panel colapsable para no obstruir el mapa
+
+### Modo simple / comparativo
+
+Toggle que permite alternar entre la vista simple (un mapa con toggle geodésico/vial, comportamiento SPEC-007) y la vista comparativa (split view + RoutePanel). El estado de selección de rutas se preserva al cambiar de modo.
+
+### Visualización
+
+```bash
+# Acceder a la evaluación EXP-002 (vial, 155 legs, 5 rutas A–E)
+open http://localhost:3000/evaluations/19
+
+# Navegación:
+# - "Comparativa" → activa split view
+# - "Geodésico" / "Vial" → cambia modo en vista simple
+# - Checkboxes → filtran rutas por visibilidad
+# - Clic en fila → aísla ruta con atenuación
+```
+
+### Capturas de referencia
+
+| Captura | Descripción |
+|---------|-------------|
+| `specs/008-visual-analytics-comparacion/assets/captures/01-vista-simple-geodesica.png` | Vista simple, modo geodésico |
+| `specs/008-visual-analytics-comparacion/assets/captures/02-split-view.png` | Split view: geodésico (izq) vs vial (der) |
+| `specs/008-visual-analytics-comparacion/assets/captures/03-ruta-aislada.png` | Ruta D aislada, demás atenuadas |
+| `specs/008-visual-analytics-comparacion/assets/captures/04-filtrado-activo.png` | RoutePanel con 2 rutas ocultas |
+| `specs/008-visual-analytics-comparacion/assets/captures/05-direccion-ambigua.png` | Caso donde la dirección no es clara |
+
+### Nota sobre frontend en Docker
+
+El contenedor frontend utiliza un volumen separado para `frontend/.next/`. Si experimentas problemas de permisos al reconstruir:
+
+```bash
+# Recrear contenedor (fuerza rebuild limpio)
+docker compose up -d --force-recreate frontend
+
+# O limpiar .next desde dentro del contenedor
+docker compose exec frontend sh -c "rm -rf /app/.next/*"
+```
+
+## Hallazgos de investigación
+
+El proyecto mantiene un registro acumulativo de 17 hallazgos formales (H001–H017) respaldados por evidencia experimental:
+
+| Hallazgo | Enunciado | Fuente |
+|----------|-----------|--------|
+| H007 | Distancias viales 62.5% mayores que geodésicas (factor 1.62×) | SPEC-006 |
+| H012 | Distancia vial +54.3% sobre geodésico (339→523 km, +184 km). Ruta D: 2.00× | SPEC-006A |
+| H014 | Split view reduce esfuerzo de interpretación visual de divergencias | SPEC-008 |
+| H015 | Aislamiento de rutas (atenuación) aumenta capacidad analítica | SPEC-008 |
+| H016 | RoutePanel aporta control sin aumentar carga cognitiva | SPEC-008 |
+| H017 | Ausencia de dirección de recorrido limita interpretación operacional | SPEC-008 |
+
+Para el listado completo (H001–H017, PI-001–PI-018, D001–D017): `research/resumen-ejecutivo.md`.
+
 ## Estructura del proyecto
 
 ```
@@ -134,7 +204,9 @@ Ver `specs/006-road-network-integration/quickstart.md` para 8 escenarios de vali
 │   ├── 003-results-measurement/
 │   ├── 004-experiment-reporting/
 │   ├── 005-research-publication/
-│   └── 006-road-network-integration/
+│   ├── 006-road-network-integration/
+│   ├── 007-road-network-visualization/
+│   └── 008-visual-analytics-comparacion/
 ├── experiments/           # Experimentos ejecutados
 │   ├── 001-baseline-comparison/
 │   └── 002-road-network/  # Exp002: geodesic vs vial (M001–M006)
